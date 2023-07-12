@@ -12,19 +12,19 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import './Diploma.scss'
 import { useCallback } from 'react'
 
-const mentions = { AB: 'Assez bien', B: 'Bien', TB: 'Très bien' }
-const notes = { AB: 13.5, B: 15.5, TB: 17.5 }
+const mentions = { AB: 'Assez bien', B: 'Bien', TB: 'Très bien' } as any
+const notes = { AB: 13.5, B: 15.5, TB: 17.5 } as any
 
 const states = { certificate: '', cdate: new Date() }
 
-const getMention = note => {
+const getMention = (note: any) => {
   if(!note) note = 17
   else if(note < 14) return 'AB'
   else if(note < 16) return 'B'
   else if(note >= 16) return 'TB'
 }
 
-const Diploma = (props) => {
+const Diploma = (props: any) => {
   const {
     active = true, close, actFormation, actProgram,
     formation: {formations}, customer: {customers},
@@ -32,16 +32,16 @@ const Diploma = (props) => {
     saveCert, savePayment
   } = props
   const program = actProgram
-  const { formation, students} = useMemo(_ => {
+  const { formation, students} = useMemo(() => {
     return {
       formation: actFormation || formations[program.formationId],
-      students: _payments.filter(({type, targetId}) => {
+      students: _payments.filter(({type, targetId}: any) => {
         return type === FORMATION && targetId === program.id
-      }).map(p => {
+      }).map((p: any) => {
         return {
           ...p,
           customer: customers[p.customerId],
-          cert: _certs.find(c => c.formationId === p.id)
+          cert: _certs.find((c: any) => c.formationId === p.id)
         }
       })
     }
@@ -56,14 +56,14 @@ const Diploma = (props) => {
   const ref = useRef(null)
 
   // MEMOS
-  const printable = useMemo(() => { return !students.find(({cert}) => !cert) }, [students])
+  const printable = useMemo(() => { return !students.find(({cert}: any) => !cert) }, [students])
   const curCert = useMemo(() => {
-    const curStud = students.find(({id}) => id === cur)
+    const curStud = students.find(({id}: any) => id === cur)
     return curStud?.cert
   }, [students, cur])
 
   // PRINT HANDLERS
-  const printAll = useMemo(_ => async e => {
+  const printAll = useMemo(() => async (e: any) => {
     e.target.closest('.Diploma').classList.remove('single')
     await bridge('print', {opts: {
       printBackground: true, color: false,
@@ -76,9 +76,23 @@ const Diploma = (props) => {
       }
     }})
   }, [program])
-  const printCurrent = useMemo(_ => async e => {
+  // const printCurrent = useMemo(() => async (e: any) => {
+  //   e.target.closest('.Diploma').classList.add('single')
+  //   const {firstname, lastname} = students.find(({id}: any) => id === cur).customer
+  //   await bridge('print', {opts: {
+  //     printBackground: true, color: false,
+  //     marginsType: 1, landscape: true, pageSize: 'A4',
+  //     pdf: {
+  //       folder: "Certificats",
+  //       name: `[${new Date().getTime()}] ${formation.name}` +
+  //         ` - Rentrée(${formatDate(program.date, {precise: true})}) - ${lastname.toUpperCase()} ${firstname}`
+  //     },
+  //     margins: { marginType : 'printableArea' }
+  //   }})
+  // })
+  const printCurrent = useMemo(() => async (e: any) => {
     e.target.closest('.Diploma').classList.add('single')
-    const {firstname, lastname} = students.find(({id}) => id === cur).customer
+    const {firstname, lastname} = students.find(({id}: any) => id === cur).customer
     await bridge('print', {opts: {
       printBackground: true, color: false,
       marginsType: 1, landscape: true, pageSize: 'A4',
@@ -89,9 +103,11 @@ const Diploma = (props) => {
       },
       margins: { marginType : 'printableArea' }
     }})
-  })
-  const prepareCertificates = useCallback(_ => {
-    students.forEach(async ({id: formationId, customer, cert}) => {
+  }, [])
+
+
+  const prepareCertificates = useCallback(() => {
+    students.forEach(async ({id: formationId, customer, cert}: any) => {
       if(!cert){
         const {id} = await saveCert({ mention: 15, formationId })
         savePayment({
@@ -130,8 +146,8 @@ const Diploma = (props) => {
             <ScrollBar className='list-stud-parent'>
               <div className="list-stud">
                 {
-                  students.map(({rest, amount, id, customer, cert}) => {
-                    const cp = cert && _payments.find(({type, targetId}) => type === CERT && targetId === cert?.id)
+                  students.map(({rest, amount, id, customer, cert}: any) => {
+                    const cp = cert && _payments.find(({type, targetId}: any) => type === CERT && targetId === cert?.id)
                     return (
                       <div onClick={_ => setCur(id)} className={clsx("student", id === cur && 'current', rest && "invalid")} key={id}>
                         <div
@@ -176,7 +192,7 @@ const Diploma = (props) => {
           </div>
           <div className="to-print">
             {
-              students.map(({customer, cert = {}, id}) => {
+              students.map(({customer, cert = {}, id}: any) => {
                 return (
                   <div className={clsx("diploma", id === cur && "show")} key={id} >
                     <div className="certificate-type">{certificate}</div>
@@ -195,7 +211,7 @@ const Diploma = (props) => {
                         </div>
                         <div className="mention">
                           <span>Mention : </span>
-                          <span className="val">{(mentions[getMention(cert?.mention)] || "").toUpperCase()}</span>
+                          <span className="val">{(mentions[getMention(cert?.mention) || 'B']).toUpperCase()}</span>
                         </div>
                         <div className="date">{formatDate(cdate, {precise: true, preciseYear: true})}</div> 
                       </div>

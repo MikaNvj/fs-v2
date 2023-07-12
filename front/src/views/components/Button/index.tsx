@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import React, {useState} from 'react'
 import  './Button.scss'
 
-export default function Button(props) {
+export default function Button(props: any) {
   const {
     text, children, autowait, outlined, className, inactive,
     rounded, color, lower, waiting, full, onClick, style, ...rest

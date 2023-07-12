@@ -14,7 +14,7 @@ const states = {
 }
 
 
-const CustomerActivity = (props) => {
+const CustomerActivity = (props: any) => {
   const {
     close, incomer, saveIncome, savePayment,
     income: { _incomes }, payment: { _payments },
@@ -33,9 +33,9 @@ const CustomerActivity = (props) => {
     !restEdited && State.setRestValue(0)
   }, [restEdited])
 
-  const allPayments = useMemo(_ => {
-    return _payments.filter(({ customerId, inactive, rest }) => !inactive && customerId === get(incomer, 'id') && rest != null)
-      .sort(({ updatedAt: a }, { updatedAt: b }) => a < b ? 1 : -1)
+  const allPayments = useMemo(() => {
+    return _payments.filter(({ customerId, inactive, rest }: any) => !inactive && customerId === get(incomer, 'id') && rest != null)
+      .sort(({ updatedAt: a }: any, { updatedAt: b }: any) => a < b ? 1 : -1)
   }, [_payments, incomer.id])
 
   return (
@@ -59,7 +59,7 @@ const CustomerActivity = (props) => {
       <div className="e-right">
         <ScrollBar className='payments'>
           {
-            !!incomer && allPayments.map(payment => {
+            !!incomer && allPayments.map((payment: any) => {
               return (
                 <React.Fragment key={payment.id}>
                   {
@@ -105,7 +105,7 @@ const CustomerActivity = (props) => {
                           onKeyDown={e => {
                             if (e.key === 'Enter') {
                               const today = toSimpleDate()
-                              const income = _incomes.find(({ date, paymentId }) => date === today && paymentId === payment.id) || {
+                              const income = _incomes.find(({ date, paymentId }: any) => date === today && paymentId === payment.id) || {
                                 date: today,
                                 paymentId: payment.id,
                                 amount: 0
@@ -123,8 +123,8 @@ const CustomerActivity = (props) => {
                   {
                     State.openedPayment === payment.id && <div className={'incomes'}>
                       {
-                        _incomes.filter(({ paymentId }) => paymentId === payment.id)
-                          .map(({ date, amount, id }) => {
+                        _incomes.filter(({ paymentId }: any) => paymentId === payment.id)
+                          .map(({ date, amount, id }: any) => {
                             return (
                               <div key={id} className="income">
                                 <div className="in-date">{formatDate(date)}</div>
@@ -145,7 +145,7 @@ const CustomerActivity = (props) => {
   )
 }
 
-const format = payment => {
+const format = (payment: any) => {
   return <React.Fragment>
     {payment.type === CONNEXION && formatConnexion(payment)}
     {payment.type === FORMATION && formatFormation(payment)}
@@ -153,7 +153,7 @@ const format = payment => {
   </React.Fragment>
 }
 
-const formatCert = payment => {
+const formatCert = (payment: any) => {
   const {formationId: fpid} = Store.getCurrentState(`cert.certs.${payment.targetId}`) || {}
   const fpayment = Store.getCurrentState(`payment.payments.${fpid}`) || {}
   return (
@@ -164,7 +164,7 @@ const formatCert = payment => {
   )
 }
 
-const formatFormation = (payment, ftion = true) => {
+const formatFormation = (payment: any, ftion = true) => {
   const all = Store.getCurrentState(`program.programs.${payment.targetId}`) || {}
   const { date, formationId } = all
   const fname = Store.getCurrentState(`formation.formations.${formationId}.name`)
@@ -176,7 +176,7 @@ const formatFormation = (payment, ftion = true) => {
   )
 }
 
-const formatConnexion = (payment) => {
+const formatConnexion = (payment: any) => {
   return (
     <span>
       <span className='pn-type'>Connexion</span>

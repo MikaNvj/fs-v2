@@ -5,7 +5,7 @@ import Input from '../Input'
 import { bulkSetter } from '../../../services/functions'
 import Button from '../Button'
 import ScrollBar from 'react-perfect-scrollbar'
-export const Validator = Input.validator
+export const Validator = Input.validator as any
 
 const states = {
   show: false,
@@ -22,7 +22,7 @@ const defields = [
   { label: 'Files', name: "files", type: 'file', multiple: true, validator: Validator().required() }
 ]
 
-const Editor = (props) => {
+const Editor = (props: any) => {
   // Props & states
   const { active, close, fields = defields, position = 'center', title = 'Offre' } = props
   const value = props.value || empty
@@ -56,7 +56,7 @@ const Editor = (props) => {
 
 
   // Effects
-  useEffect(() => active ? S.setShow(true) : setTimeout(_ => S.setShow(false), 300), [active])
+  useEffect(() => active ? S.setShow(true) : setTimeout(() => S.setShow(false), 300), [active])
   useEffect(() => I.set(transformFields(fields, value)), [fields, value, active])
   useEffect(() => S.error && S.setError(false), [I])
 
@@ -67,14 +67,14 @@ const Editor = (props) => {
         <div className="e-title">{title}</div>
         <ScrollBar className="e-fields">
           {
-            fields.filter(({ name }) => name in I).map((field, key) => {
+            fields.filter(({ name }: any) => name in I).map((field: any, key: any) => {
               const { name, errorMessage = `invalide`, validator = Validator().ignore(), ...rest } = field
               return <React.Fragment key={key}>
                 <Input {...rest}
                   required={validator.rq}
                   value={I[name]}
                   error={S.error && !validator.validate(I[name], I) && errorMessage}
-                  onChange={val => I.set(name, val)}
+                  onChange={(val: any) => I.set(name, val)}
                 />
               </React.Fragment>
             })
@@ -87,8 +87,12 @@ const Editor = (props) => {
 }
 
 export default Editor
-const transformFields = (fields, value = {}) => fields.reduce((obj, { name, type }) => {
+// const transformFields = (fields: any, value = {}) => fields.reduce((obj: any, { name, type }: any) => {
+//   return name ? ({ ...obj, [name]: value[name] || ('file' === type ? [] : '') }) : obj
+// }, {})
+const transformFields = (fields: any, value: any = {}) => fields.reduce((obj: any, { name, type }: any) => {
   return name ? ({ ...obj, [name]: value[name] || ('file' === type ? [] : '') }) : obj
 }, {})
-const validateFields = (fields, I) => fields.filter(({ validator }) => !!validator)
-  .reduce((ok, { validator, name }) => ok && validator.validate(I[name], I), true)
+
+const validateFields = (fields: any, I: any) => fields.filter(({ validator }: any) => !!validator)
+  .reduce((ok: any, { validator, name }: any) => ok && validator.validate(I[name], I), true)

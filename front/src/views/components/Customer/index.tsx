@@ -6,14 +6,14 @@ import { Server } from '../../../services/api'
 import { addZero, computeAge, toPhone } from '../../../services/functions'
 import './Customer.scss'
 
-const Customer = function (props) {
+const Customer = function (props: any) {
   const {
     customer, setIncomer, onSelect,
     edit, payment:{_payments: payments}
   } = props
 
   const debt = useMemo(() => {
-    return !!payments.find(({ customerId, rest }) => customerId === customer.id && rest)
+    return !!payments.find(({ customerId, rest }: any) => customerId === customer.id && rest)
   }, [customer.id, payments])
 
   return (
