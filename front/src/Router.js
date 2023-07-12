@@ -16,7 +16,7 @@ function Router(props) {
   } = props
   return (
     <Switch>
-      {connected && <Route component={Login} />}
+      {!connected && <Route component={Login} />}
       {
         [...protectedRoutes, ...routes].map(({ path, component, exact }, key) => {
           if (typeof component === 'string') {
