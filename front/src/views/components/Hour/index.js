@@ -178,6 +178,4 @@ const Hour = (props) => {
   )
 }
 
-
-
 export default Hour

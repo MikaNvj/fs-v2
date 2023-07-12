@@ -43,4 +43,5 @@ const HeaderProgramm = (props: any) => {
     </div>
   )
 }
-export default connect(HeaderProgramm, ["payment"])
+// export default connect(HeaderProgramm, ["payment"])
+export default HeaderProgramm

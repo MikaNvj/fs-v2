@@ -6,13 +6,9 @@ import { bulkSetter } from '../../../services/functions'
 import { FiUserCheck } from "react-icons/fi"
 export const Validator = Input.validator
 
-
-
 const states = {
   show: false
 }
-
-
 
 const ModalSuccess = (props: any) => {
   // Props & states

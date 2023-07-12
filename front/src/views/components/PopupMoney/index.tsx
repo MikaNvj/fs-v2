@@ -84,4 +84,5 @@ const PopupMoney = (props: any) => {
     </div>
   )
 }
-export default connect(PopupMoney, ['income'])
+// export default connect(PopupMoney, ['income'])
+export default PopupMoney

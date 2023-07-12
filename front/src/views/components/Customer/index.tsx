@@ -48,4 +48,5 @@ const Customer = function (props: any) {
   )
 }
 
-export default connect(Customer, ['payment'])
+// export default connect(Customer, ['payment'])
+export default Customer

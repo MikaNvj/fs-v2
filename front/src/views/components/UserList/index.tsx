@@ -85,8 +85,8 @@ const UserList = (props: any) => {
                 })().map((customer: any) => (
                   <Customer
                     key={customer.id}
-                    customer={customer}
                     onSelect={onSelect}
+                    customer={customer}
                     setIncomer={(incomer: any) => {
                       State.set({
                         edited: incomer,
@@ -107,4 +107,5 @@ const UserList = (props: any) => {
     </React.Fragment>
   )
 }
-export default connect(UserList, ["customer"])
+// export default connect(UserList, ["customer"])
+export default UserList

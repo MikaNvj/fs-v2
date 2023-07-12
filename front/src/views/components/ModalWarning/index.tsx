@@ -6,13 +6,9 @@ import { bulkSetter } from '../../../services/functions'
 import { FiAlertOctagon } from "react-icons/fi"
 export const Validator = Input.validator
 
-
-
 const states = {
   show: false
 }
-
-
 
 const ModalWarning = (props: any) => {
   // Props & states

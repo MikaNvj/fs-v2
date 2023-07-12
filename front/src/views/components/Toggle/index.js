@@ -4,10 +4,11 @@ import {ContextDisabled} from "../AutreAbonnement/index"
 import './Toggle.scss'
 import { connect } from '../../../redux/store'
 
-const Toggle = (props: any) => {
+const Toggle = (props) => {
   const [isToggled, setIsToggled] = useState(false);
   const onToggle = () => setIsToggled(!isToggled);
-  const {disabled, setDisabled, mount, type}: any = useContext(ContextDisabled)
+  // const {disabled, setDisabled, mount, type}: any = useContext(ContextDisabled)
+  const {disabled, setDisabled, mount, type} = useContext(ContextDisabled)
 
   const {
     savePayment
@@ -37,4 +38,5 @@ const Toggle = (props: any) => {
     </div>
   )
 }
-export default connect(Toggle, ["payment"])
+// export default connect(Toggle, ["payment"])
+export default Toggle
