@@ -1,0 +1,79 @@
+.container {
+  display: flex;
+  background: #181616cb;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: 0.21s;
+  button {
+    border:none;
+    border-radius: 1%;
+    outline: none;
+    background: rgba(16, 150, 212, 0.829);
+    width: 140px;
+    height: 45px;
+    opacity: 4.44;
+    color: white;
+    font-size: 20px;
+    letter-spacing: 1.2px;
+  }
+  .modal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 450px;
+    height: 220px;
+    background: white;
+    z-index: 100;
+    visibility: hidden;
+    .modal-content {
+      position:relative;
+      width: 100%;
+      // height: 100vh;
+      .close-btn {
+        position: absolute;
+        font-size: 25px;
+        right: 2%;
+        z-index: 33;
+        cursor: pointer;
+      }
+      .message {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        h6 {
+          position: absolute;
+          text-align: center;
+          width: 100%;
+          top: 16%;
+          font-size: 18px;
+          color: #333333d6;
+        }
+        .btn-annuler {
+          background: #f15656;
+          position: absolute;
+          bottom: 10%;
+          left: 8%;
+          height: 38px;
+        }
+        .btn-save {
+          position: absolute;
+          background: #04b790;
+          width: 198px;
+          height: 38px;
+          right: 8%;
+          bottom: 10%;
+          cursor:pointer;
+        }
+      }
+    }
+  }
+  .show {
+    visibility: visible;
+    // display: flex;
+  }
+}

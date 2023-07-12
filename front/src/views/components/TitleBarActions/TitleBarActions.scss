@@ -1,0 +1,17 @@
+.TitleBarActions {
+  display: flex;
+  .tba-btn{
+    width: 48px;
+    height:32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg{
+      width: 12px;
+      height: 12px;
+    }
+    &:hover{ background: rgba(255,255,255,.1) }
+    &:active{ background: rgba(255,255,255,.2) }
+    &.close:hover{ background: #e81123 }
+  }
+}

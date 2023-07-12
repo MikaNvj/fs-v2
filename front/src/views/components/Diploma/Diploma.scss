@@ -1,0 +1,390 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/parents.scss";
+
+.DiplomaParent{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 32px;
+  @media print{
+    backdrop-filter: none;
+  }
+}
+.Diploma {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  gap: 2em;
+  width: 90%;
+  height: 90%;
+  width: auto;
+  font-size: 3.5mm;
+  align-items: stretch;
+  &.single{
+    .diploma:not(.show){
+      @media print{
+        display: none;
+      }
+    }
+  }
+  .close-button{
+    @extend %close;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    color: #fff;
+    background: #ff7957;
+    box-shadow: 0 0 2px #fff;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+  }
+  .student-list{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 300px;
+    @media print{
+      display: none;
+    }
+    .tp-header{
+      padding: 1em 1.5em;
+      background-image: linear-gradient(to left top, rgba(rgb(255, 255, 255), 0.4), rgba(rgb(255, 255, 255), 0.4)), url(../../../assets/images/colored.jpg);
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      color: #fff;
+      border-radius: .5em;
+      box-shadow: 0 0 3px #888;
+      .d-buttons{
+        display: flex;
+        flex-direction: row;
+        gap: 1em;
+        margin-top: .5em;
+        .button{
+          font-size: .8em;
+          padding: .5em 1em;
+          border-radius: .3em;
+          text-align: center;
+          cursor: pointer;
+          &.print-button{
+            background-color: #fff;
+            color: $main-color;
+            box-shadow: 0 0 2px $main-color;
+          }
+        }
+      }
+      .title{
+        font-size: .8em;
+      }
+      .subtitle{
+        margin-top: .2em;
+      }
+    }
+    .list{
+      flex: 1;
+      background-color: rgba($main-color, .3);
+      border-radius: .5em;
+      box-shadow: 0 0 2px #888;
+      position: relative;
+      .list-stud-parent{
+        position: absolute;
+        top: 0; left: 0;
+        right: 0; bottom: 0;
+      }
+      .student{
+        display: flex;
+        border-radius: 3px;
+        padding: 5px;
+        margin: 3px;
+        background: rgba(#fff, .9);
+        position: relative;
+        cursor: pointer;
+        .name{
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          color: $main-color;
+          .rest{
+            color: #c01111;
+            opacity: .5;
+            font-size: .75em;
+            align-self: flex-end;
+            bottom: .5em;
+            right: .5em;
+            &:after{
+              content: '';
+              position: absolute;
+              top: 3px; right: 3px; width: 10px; height: 10px;
+              border-radius: 100%;
+              background: rgb(255, 128, 128);
+            }
+          }
+        }
+        .photo{
+          background-size: cover;
+          border-radius: 5px;
+          margin-right: 1em;
+          width: 40px;
+          height: 40px;
+          background-position: center;
+          background-image: url(../../../assets/images/avatar-man.png);
+          &.F {
+            background-image: url(../../../assets/images/avatar-woman.png);
+          }
+        }
+        &.current{
+          background: rgba(#ddf, .9);
+        }
+      }
+    }
+  }
+  @media print{
+    -webkit-print-color-adjust: exact;
+    // filter: saturate(0);
+  }
+  @media print{
+    overflow-y: visible;
+  }
+  .right-print-side{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .customize{
+      font-size: 1.1em;
+      background-color: rgba(#fff, .9);
+      padding: .5em 1em;
+      border-radius: .4em;
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      @media print{
+        display: none;
+      }
+      .Input{
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+      .mentions{
+        margin-top: 1em;
+        display: flex;
+        gap: 1em;
+        justify-content: center;
+        .mention{
+          background: $main-color;
+          color: #fff;
+          border-radius: 1.5em;
+          padding: .4em 1.5em;
+          line-height: 1.2;
+          text-shadow: 0 0 1px #777;
+          transform: scale(.9);
+          cursor: pointer;
+          &.active{
+            background-image: url(../../../assets/images/colored.jpg);
+            background-size: cover;
+            background-position: 0 25%;
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+    .to-print {
+      display: flex;
+      flex-direction: column;
+      align-self: center;
+      @media print{
+        display: initial;
+      }
+      .diploma{
+        background: rgba(#fff, .5);
+        break-inside: avoid-page;
+        width: 200mm;
+        background-image: url(../../../assets/images/certificate.jpg);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        font-family: "Bradley Hand ITC";
+        font-size: 5mm;
+        text-align: center;
+        position: relative;
+        display: none;
+        &:before{
+          content: '';
+          top: 5%;
+          background-image: url(../../../assets/images/logo.png);
+          background-size: contain;
+          background-repeat: no-repeat;
+          width: 3.5em;
+          height: 3.5em;
+          right: 10.5%;
+          position: absolute;
+          border-radius: 100%;
+          box-shadow: 0 0 0 .15em rgba(#fff, .7);
+        }
+        &.show{
+          display: initial;
+          @media print{
+            display: flex;
+          }
+        }
+        @media print{
+          display: flex;
+        }
+        &::after{
+          content: '';
+          display: block;
+          padding-bottom: 70.707070707%;
+        } 
+        @media print{
+          width: 100vw;
+          font-size: 2.5vw;
+        }
+        .certificate-type{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          top: 14.5%;
+          height: 7.5%;
+          left: 11.5%;
+          right: 24%;
+          color: rgba(#fff, .7);
+          font-size: .8em;
+          text-transform: uppercase;
+          font-family: "Segoe Script";
+          &:empty:before{
+            content: 'Certificat de fin de formation';
+          }
+        }
+        .content{
+          position: absolute;
+          top: 22%;
+          left: 0;
+          right: 24%;
+          bottom: 0;
+          .part1{
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 75%;
+            padding-top: 1.6em;
+            display: flex;
+            box-sizing: border-box;
+            flex-direction: column;
+            justify-content: space-between;
+            .present{
+              
+            }
+            .name{
+              width: 80%;
+              margin: 0 auto;
+              border-top: .1em solid #f0860e;
+              border-bottom: .1em solid #f0860e;
+              padding: .25em;
+              font-weight: bold;
+              font-family: "Segoe Script";
+              font-weight: bolder;
+              color: #000075;
+              .val{
+                width: 90%;
+                margin: 0 auto;
+                
+              }
+            }
+            .birth{
+              margin-top: -.5em;
+              font-size: .7em;
+              opacity: .6;
+            }
+            .finish{
+              margin-top: -.3em;
+            }
+            .formation{
+              .val{
+                color: $main-color;
+                font-weight: bolder;
+              }
+            }
+            .mention{
+              span:not(.val){
+                font-size: .8em;
+              }
+              .val{
+                color: blue;
+              }
+            }
+            .date{
+              font-size: .8em;
+            }
+          }
+          .part2{
+            position: absolute;
+            bottom: 0; left: 0; right: 0; height: 25%;
+            .signatures{
+              display: flex;
+              margin: auto;
+              justify-content: space-between;
+              width: 80%;
+              font-size: .8em;
+              padding-top: .3em;
+            }
+          }
+        }
+      }
+      table {
+        margin: 0 1.5em;
+        border-collapse: collapse;
+        background-color: #fff;
+        font-size: 3.5mm;
+        position: relative;
+        border-top-right-radius: 1em;
+        border-top-left-radius: 1em;
+        overflow: hidden;
+        padding: 1px;
+        box-shadow: 0 0 0 .1mm rgb(202, 202, 202);
+        @media print {
+          font-size: inherit;
+        }
+        .phone-th{
+          width: 5.7em;
+        }
+        
+        th {
+          padding: 0.5em;
+          min-width: 1.5em;
+          margin: .05mm;
+          box-shadow: 0 0 0 .1mm rgb(202, 202, 202);
+          margin-left: .05mm;
+        }
+        td {
+          font-size: 0.9em;
+          padding: 0.4em 0.5em;
+          margin-left: .05mm;
+          margin-top: .05mm;
+          box-shadow: 0 0 0 .1mm rgb(202, 202, 202);
+        }
+      }
+    }
+  }
+  ::selection {
+    background: transparent
+  }
+}
+
+@media print {
+  @page{
+    margin: .5cm .5cm .5cm .5cm; 
+  }
+  body{
+    background: none !important;
+  }
+  .App{
+    display: none !important;
+  }
+  .DiplomaParent{
+    position: relative;
+    top: 0;
+    padding: 0;
+  }
+}

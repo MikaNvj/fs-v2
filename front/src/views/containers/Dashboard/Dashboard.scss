@@ -1,0 +1,166 @@
+.Dashboard {
+  flex: 1;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1em;
+  .incomes {
+    height: 50vh;
+    width: 800px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .data-view {
+    display: flex;
+    gap: 1em;
+    width: 800px;
+    margin: 0 auto;
+    > .view {
+      height: 15vh;
+      font-weight: 100;
+      line-height: 1;
+      &.remote {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        flex: 1;
+        > div {
+          transition: transform .2s ease;
+          cursor: pointer;
+          &.year {
+            font-size: 10vh;
+            cursor: pointer;
+            color: rgb(10, 50, 170);
+          }
+          &.month {
+            font-size: 4vh;
+            color: #444;
+            position: relative;
+            .allmonths{
+              font-size: .5em;
+              position: absolute;
+              top: 100%;
+              display: flex;
+              flex-wrap: wrap;
+              background-color: #fff;
+              border-radius: .5em;
+              box-shadow: 0 0 3px #aaa;
+              width: 12em;
+              overflow: hidden;
+              opacity: 0;
+              transition: opacity .3s ease, visibility 0s .3s ease;
+              .onemonth{
+                font-weight: 500;
+                width: 25%;
+                padding: .5em .5em;
+                box-sizing: border-box;
+                &:hover{
+                  background: dodgerblue;
+                  color: #fff;
+                }
+              }
+            }
+            &:hover{
+              .allmonths{
+                transition: opacity .3s ease, visibility 0s 0s ease;
+                opacity: 1;
+              }
+            }
+          }
+          &:hover{
+            transform: scale(1.1);
+          }
+        }
+      }
+      &.movements{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: space-evenly;
+        &:before{
+          margin-top: -1em;
+          content: '';
+          width: 2em;
+          height: 2em;
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+          background-image: url(../../../assets/icons/wallet.svg);
+          align-self: center;
+        }
+        >div{
+          font-size: 2.8vh;
+          transition: transform .2s ease;
+          display: flex;
+          align-items: flex-end;
+          &:hover{
+            transform: scale(1.05);
+          }
+          &:before{
+            margin-right: .8em;
+            line-height: 1;
+          }
+          &.income:before{
+            content: '+';
+          }
+          &.outcome:before{
+            content: '-';
+          }
+          &.new-customer:before{
+            background-image: url(../../../assets/icons/customer.svg);
+          }
+          span{
+            font-size: .7em;
+            margin-left: .3em;
+          }
+          
+        }
+
+      }
+      &.customers{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: space-evenly;
+        &:before{
+          margin-top: -1em;
+          content: '';
+          width: 2em;
+          height: 2em;
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+          background-image: url(../../../assets/icons/customer.svg);
+          align-self: center;
+        }
+        >div{
+          font-size: 2.8vh;
+          transition: transform .2s ease;
+          display: flex;
+          align-items: flex-end;
+          &:hover{
+            transform: scale(1.05);
+          }
+          &.news:before{
+            content: '+';
+            margin-right: .5em;
+            line-height: 1;
+          }
+          span{
+            font-size: .7em;
+            margin-left: .3em;
+          }
+        }
+      }
+    }
+  }
+  .view {
+    padding: 1em;
+    background: rgba(#fff, 0.7);
+    box-shadow: 0 0 3px #aaa;
+    border-radius: 0.5em;
+  }
+}

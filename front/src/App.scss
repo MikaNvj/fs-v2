@@ -1,0 +1,15 @@
+.App{
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(180deg, transparent 0%, rgba(#fff, .8) 70%);
+  padding-top: 32px;
+  box-sizing: border-box;
+  .AppBody{
+    flex: 1;
+    display: flex;
+    position: relative;
+  }
+  *{
+    outline: none;
+  }
+}

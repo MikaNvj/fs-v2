@@ -1,0 +1,114 @@
+.Header {
+  position: absolute;
+  top: 0; left: 0;
+  right: 0;
+  justify-content: space-between;
+  display: flex;
+  background: rgba($color: #2a72a2, $alpha: .3);
+  -webkit-app-region: drag;
+  z-index: 9999;
+  .logo{
+    height: 1.7em;
+    margin: 0 .5em;
+    filter: brightness(0) invert(1);
+    align-self: center;
+  }
+  .buttons{
+    -webkit-app-region: no-drag;
+    user-select: none;
+    display: flex;
+    height: 2em;
+    box-shadow: 0 4px 10px 0 #0000001a, 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+
+    transform: translate3d(0, 1em, 0);
+    will-change: transform;
+    transition: transform .3s ease;
+    .button{
+      color: #497CB1;
+      display: flex;
+      line-height: 1;
+      align-items: center;
+      padding: 0;
+      box-sizing: border-box;
+      height: 2.5em;
+      padding: 0 .8em;
+      cursor: pointer;
+      background-color: #eaf4f8;
+      backface-visibility: hidden;
+      transition: .3s ease;
+      display: flex;
+      gap: .5em;
+      box-shadow: 0 0 0 1px rgba(0, 0, 116, .1);
+      .hb-text{
+        text-transform: uppercase;
+        font-size: .65em;
+        overflow: hidden;
+        transition: .3s ease;
+        display: flex;
+        flex-direction: column;
+        max-width: 80px;
+        .mini{
+          font-size: .7em;
+          line-height: 1.2;
+        }
+      }
+      .hb-icon{
+        width: 1.2em;
+        height: 1.2em;
+        background-position: center;
+        background-size: 95% auto;
+        background-repeat: no-repeat;
+        transition: .3s ease;
+        margin-right: .3em;
+        &.connexion{
+          background-image: url(../../../assets/icons/wifi.svg);
+        }
+        &.formation{
+          background-image: url(../../../assets/icons/formation.svg);
+        }
+        &.money{
+          background-image: url(../../../assets/icons/money.svg);
+        }
+        &.others{
+          background-image: url(../../../assets/icons/others.svg);
+        }
+        &.dash{
+          background-image: url(../../../assets/icons/wallet.svg);
+        }
+      }
+      &.active{
+        background-color: #497CB1;
+        color: #fff;
+        gap: .7em;
+        .hb-icon{
+          transform: scale(1.5);
+          filter: brightness(0) invert(1);
+        }
+        .hb-text{
+          font-size: .8em;
+        }
+      }
+      &:first-child{
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        padding-left: 1.2em;
+      }
+      &:last-child{
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        padding-right: 1.2em;
+      }
+    }
+  }
+  .rightest-one, .buttons, .logo{
+    -webkit-app-region: no-drag;
+  }
+  &:hover{
+    .buttons{
+      // will-change: transform;
+    }
+  }
+  .rightest-one{
+    display: flex;
+  }
+}

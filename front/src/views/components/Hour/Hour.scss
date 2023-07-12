@@ -1,0 +1,73 @@
+.Hour {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  box-shadow: 0 0 2px #aaa;
+  padding: .2em;
+  border-radius: .2em;
+  background: #fff;
+  input{
+    min-width: 0;
+    display: block;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    color: #444;
+    background: transparent;
+    &::placeholder{
+      color: #ccc !important;
+    }
+  }
+  .hour{
+    font-size: 2em;
+    position: relative;
+    z-index: 1;
+    background: #fff;
+  }
+  input ~ .dates{
+    border-top: 1px solid rgba(#000, .05);
+  }
+  .dates{
+    display: flex;
+    transition: margin-top .2s ease;
+    input{
+      height: 30px;
+      display: block;
+      flex: 1;
+      &.year, &.month{
+        flex: 2;
+      }
+    }
+    .Input{
+      min-width: 30px;
+      margin: 0!important;
+      flex: 2;
+      font-size: 1rem;
+      &.date{
+        .bi-options{
+          width: 200px;
+        }
+      }
+      &:before{
+        width: 4px;
+        height: 4px;
+        transform: rotate(-45deg);
+        margin-top: -5px;
+      }
+      input{
+        padding-right: 0;
+      }
+      .bi-options{
+        font-size: .8rem;
+        z-index: 5;
+      }
+    }
+  }
+  &:not(.always-on):not(:focus-within){
+    .dates{
+      margin-top: -30px;
+    }
+  }
+}

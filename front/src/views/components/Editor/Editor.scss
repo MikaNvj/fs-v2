@@ -1,0 +1,84 @@
+@import '../../../assets/styles/parents.scss';
+@import '../../../assets/styles/colors.scss';
+
+.Editor {
+  position: absolute !important;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  background: rgba($color: #fff, $alpha: .3);
+  overflow: hidden;
+  visibility: hidden;
+  transition: opacity .2s ease;
+  opacity: 0;
+  padding: 1em;
+  &.active{
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .2s ease;
+  }
+  .e-content{
+    background: rgba(#fff, .8);
+    min-height: 30%;
+    max-height: calc(100% - 3em);
+    box-shadow: 0 0 5px #aaa;
+    padding: 1em 1.5em;
+    position: relative;
+    border-radius:.5em;
+    left: 0;
+    min-width: 370px;
+    transition: .2s ease;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .e-title{
+      color: $main-color;
+      text-shadow: rgba($color: #000, $alpha: .2);
+      font-variant: small-caps;
+      text-align: center;
+      margin-bottom: 1em
+    }
+    .e-close{
+      @extend %close;
+      position: absolute;
+      right: 1.2em;
+      top: 1.2em;
+    }
+    .e-fields{
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 -1em;
+      margin-bottom: 1em;
+      align-self: stretch;
+    }
+    .Input:not(:last-child){
+      margin-bottom: .5em;
+    }
+  }
+  &.on-left{
+    justify-content: flex-start;
+    &:not(.active) .e-content{
+      transform: translate3d(-110%, 0, 0);
+    }
+  }
+  &.on-right{
+    justify-content: flex-end;
+    &:not(.active) .e-content{
+      transform: translate3d(110%, 0, 0);
+    }
+  }
+  &.on-center{
+    justify-content: center;
+    &:not(.active){
+      .e-content{
+        transform: translate3d(0, 5em, 0);
+      }
+    }
+  }
+}

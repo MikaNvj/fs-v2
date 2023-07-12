@@ -1,0 +1,88 @@
+.Toggle {
+        $primary: #082757;
+        $primary-light: #2b43a5;
+        $secondary: #b0cde9;
+        $secondary-light: #a0bbd6;
+        $transition: all .5s ease;
+        $bp-largest: 75em;     // 1200px
+        $bp-large: 68.75em;    // 1100px
+        $bp-medium: 56.25em;   // 900px
+        $bp-small: 37.5em;     // 600px
+        $bp-smallest: 31.25em; // 500px
+
+        margin-top: .8rem;
+         @media only screen and (max-width:  $bp-medium) {
+            margin-top: .4rem;
+        }
+         @media only screen and (max-width:  $bp-large) {
+             margin-top: .5rem;
+        }
+        input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            z-index: -1;
+        }
+        .check-trail {
+        display: flex;
+        align-items: center;
+        width: 2.5em;
+        height: 1.4em;
+        background: $secondary-light;
+        border-radius: 2.5em;
+        transition: $transition;
+        cursor: pointer;
+         @media only screen and (max-width:  $bp-large) {
+             width: 1.7em;
+             height: 1.1em;
+        }
+        @media only screen and (max-width:  $bp-medium) {
+             width: 1.5em;
+             height: 1em;
+         }
+        }
+        .check-handler {
+        display: flex;
+        margin-left: 0.5em;
+        justify-content: center;
+        align-items: center;
+        width: 1.2em;
+        height: 1.2em;
+        background: $secondary;
+        border-radius: 50%;
+        transition: $transition;
+        box-shadow: 0 0 4px rgba(7, 63, 148, 0.3);
+        @media only screen and (max-width:  $bp-large) {
+             width: .9em;
+             height: .9em;
+        }
+         @media only screen and (max-width:  $bp-medium) {
+             width: .7em;
+             height: .7em;
+          }
+        &:before {
+            content: "\00D7";
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+            @media only screen and (max-width:  $bp-large) {
+             font-size: .8em;
+           }
+           @media only screen and (max-width:  $bp-medium) {
+              font-size: .8em;
+           }
+        }
+        }
+        input[type="checkbox"]:checked + .check-trail {
+        background: $primary-light;
+        .check-handler {
+            margin-left: 50%;
+            background: $primary;
+            &::before {
+            content: "\2714"
+            }
+        }
+    }
+
+
+ 
+}

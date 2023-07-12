@@ -1,0 +1,121 @@
+.hidden {
+  visibility: hidden;
+}
+.certificat {
+  visibility: visible;
+  margin:0;
+  padding: 0;
+  height: 793.7007874px;
+  width: 1122.519685px;
+  background: #ffffff;
+  border: 1px solid black;
+  .header {
+    flex-basis: 100%;
+    width: 100%;
+    height: 25%;
+    background: #014f86;
+    display: flex;
+    flex-wrap:wrap;
+    .left {
+      flex-basis: 20%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      .logo {
+        width: 50px;
+        height: 50px;
+        background: cornsilk;
+        text-align: center;
+        &:hover {
+          border: 1px solid #0f0a00;
+        } 
+      }
+    }
+    .center {
+      flex-basis: 60%;
+      text-align: center;
+      word-break: break-all;
+    }
+    .right {
+      flex-basis: 20%;
+    }
+  
+  }
+  .content {
+    flex-basis: 100%;
+    // background: red;
+    display: flex;
+    flex-wrap:wrap;
+    // align-items: center;
+    font-size: 12px;
+    justify-content: center;
+    height: 75%;
+    padding: 16px; 
+    .left {
+      flex-basis: 80%;
+      text-align: center;
+      font-family:'Charmonman', cursive;
+      color: #005896ad;
+      letter-spacing: 2px;
+      p {
+        border: none;
+        border-bottom: 2px solid #ffc107b0;
+        padding-bottom: 1.3rem;
+        font-size: 24px;
+      }
+      #name {
+        border: none;
+        border-bottom: 2px solid #ffc107b0;
+        padding-bottom: 1.3rem;
+        transition: 0.38s;
+        transition-timing-function: ease-in-out;
+        position:relative;
+        resize:vertical;
+        overflow: hidden;
+        font-weight: bold;
+        &:hover {
+          border: 1px solid ;
+          span {
+            visibility: visible;
+          }
+        }
+        span {
+          cursor: pointer;
+          visibility: hidden;
+        }
+        .zoom-plus {
+          position: absolute;
+          left: 0%;
+          bottom: 0;
+          font-size: 30px;
+          color: #0f8ec7;
+        }
+        .zoom-moins {
+          position: absolute;
+          left: 4%;
+          bottom: 0;
+          font-size: 34px;
+          color: #dd2e28;
+        }
+      }
+      #date {
+        border: none;
+        padding-bottom: 1.8rem;
+        transition: 0.38s;
+        transition-timing-function: ease-in-out;
+        position:relative;
+        resize: both;
+        overflow: hidden;
+      }
+      #formation {
+        border: none;
+        b {
+          color: #0881d6;
+        }
+      }
+    }
+    .right {
+      flex-basis: 20%;
+    }
+  }
+}

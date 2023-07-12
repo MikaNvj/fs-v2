@@ -1,0 +1,215 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/parents.scss";
+
+.ConnexionItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  margin: 0.5em 0;
+  $mainColor: #4c628f;
+  .rest-message{
+    display: block;
+    line-height: 1.2;
+    text-align: center;
+    font-size: .8em;
+    padding: .2em .5em;
+    border-radius: .5em;
+    background-color: rgba(#fff, .3);
+    color: #333;
+    margin: auto;
+    margin-bottom: .2em;
+    
+  }
+  .customer-name{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: .75em;
+    background: #fff;
+    padding: .3em;
+    border-radius: .3em;
+    word-wrap: break-word;
+    width: 130px;
+    text-align: center;
+    cursor: default;
+    user-select: none;
+    position: relative;
+    &.debt:before{
+      content: '';
+      position: absolute;
+      top: -5px; left: -5px;
+      background-color: $error-color;
+      width: 10px;
+      height: 10px;
+      border-radius: 100%;
+    }
+    &.act{
+      background: $error-color;
+      transform: translate3d(0, -100%, 0);
+      .cancel{
+        color: #fff;
+      }
+    }
+    .phone{
+      color: rgb(20, 73, 122);
+      font-weight: bold;
+    }
+    .cancel{
+      color: firebrick;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .lastname{
+      font-size: .85em;
+    }
+  }
+  .validate{
+    position: relative;
+    border-radius: 100%;
+    background-size: cover;
+    background-position: center;
+    width: 3em;
+    height: 3em;
+    background-color: $main-color;
+    box-shadow: 0 0 2px 1px #fff;
+    background-image: url(../../../assets/icons/check.svg);
+    background-size: 50% auto;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    &:hover{
+      transform: scale(.9)
+    }
+    @extend %b-effect;
+    &.ready{
+      background-color: rgb(0, 153, 87);
+    }
+    &.anonym{
+      opacity: .5;
+      pointer-events: none;
+    }
+  }
+  .cx-customer{
+    position: relative;
+    border-radius: 100%;
+    background-size: cover;
+    background-position: center;
+    width: 3em;
+    height: 3em;
+    background-color: rgba(#000, .1);
+    background-image: url(../../../assets/images/avatar-man.png);
+    &.F {
+      background-image: url(../../../assets/images/avatar-woman.png);
+    }
+    .canceler{
+      background: #fff;
+      box-shadow: 0 0 3px #aaa;
+      border-radius: 100%;
+      position: absolute;
+      left: 0; right: 0;
+      top: 0; bottom: 0;
+      width: auto;
+      height: auto;
+      z-index: 999;
+      opacity: .9;
+      transform: scale(0);
+      @extend %close;
+      &:before, &::after{
+        width: 50%;
+      }
+      &.active{
+        background-color: rgb(255, 77, 77);
+        opacity: 1;
+        transform: scale(.5) translate3d(100%, -100%, 0) !important;
+      }
+      &.set-customer{
+        background-image: url(../../../assets/icons/registration.svg);
+        background-position: center;
+        background-size: 50% auto;
+        background-repeat: no-repeat;
+        &:before, &:after{
+          display: none;
+        }
+      }
+    }
+    &:hover:not(.active){
+      .canceler{
+        transform: scale(.8);
+      }
+    }
+    &:hover .cx-detail{
+      visibility: visible;
+      opacity: 1;
+      transition: opacity .2s ease, visibility 0s linear;
+    }
+  }
+  input{
+    font-family: inherit;
+    font-weight: 100;
+    &::placeholder {
+      color: #ccc;
+    }
+  }
+  .jeton {
+    min-width: 0;
+    border: none;
+    background: #fff;
+    padding: 0.4rem;
+    border-radius: 3px;
+    font-size: 1rem;
+    box-shadow: 1px 1px 3px #ccc;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 1.6em;
+    max-width: 1.5em;
+    text-transform: uppercase;
+    &:focus {
+      outline: none;
+      box-shadow: 1px 1px 3px #555;
+    }
+  }
+
+  .duration {
+    min-width: 0;
+    border: none;
+    background: #fff;
+    padding: 0.4rem;
+    border-radius: 3px;
+    font-size: 1rem;
+    box-shadow: 1px 1px 3px #ccc;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 1.8em;
+    max-width: 1.5em;
+    text-transform: uppercase;
+    max-width: 4em;
+    &:focus {
+      outline: none;
+      box-shadow: 1px 1px 3px #555;
+    }
+    &::placeholder {
+      font-size: .6em;
+    }
+  }
+  .price, .rest {
+    min-width: 0;
+    border: none;
+    background: #fff;
+    padding: 0.4rem;
+    border-radius: 3px;
+    font-size: 1rem;
+    box-shadow: 1px 1px 3px #ccc;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 1.8em;
+    max-width: 1.5em;
+    text-transform: uppercase;
+    max-width: 4em;
+    &::placeholder {
+      font-size: 0.6em;
+    }
+    &:focus {
+      outline: none;
+      box-shadow: 1px 1px 3px #555;
+    }
+  }
+}

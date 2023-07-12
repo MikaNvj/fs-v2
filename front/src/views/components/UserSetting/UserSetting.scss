@@ -1,0 +1,49 @@
+.UserSetting {
+  position: relative;
+  background-color: rgba(#fff, .1);
+  .us-button{
+    width: 48px;
+    height: 32px;
+    background-position: center;
+    background-size: auto 70%;
+    background-repeat: no-repeat;
+    background-image: url(../../../assets/icons/user.svg);
+    cursor: pointer;
+    transition: .2s ease;
+    &:hover{
+      transform: scale(1.2);
+    }
+  }
+  .us-content{
+    left: 50%;
+    position: absolute;
+    background-color: #fff;
+    border-radius: .5em;
+    overflow: hidden;
+    transform: translate3d(-50%, 0, 0);
+    border: 1px solid rgba(#fff, .2);
+    margin: .3em 0;
+    visibility: hidden;
+    opacity: 0;
+    .us-item{
+      line-height: 1;
+      font-size: .8em;
+      cursor: pointer;
+      text-align: center;
+      white-space: nowrap;
+      padding: .7em 1.5em;
+      &.user{
+        color: #fff;
+        text-transform: uppercase;
+        background-color: dodgerblue;
+      }
+    }
+  }
+  &:focus-within{
+    .us-content{
+      visibility: visible;
+      opacity: 1;
+
+    }
+  }
+}

@@ -1,0 +1,63 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/spin.scss";
+
+.Button {
+  width: 60%;
+  position: relative;
+  border: 2px solid var(--color, $main-color);
+  border-radius: 3px;
+  color: #fff;
+  margin: 0 auto;
+  padding: 0.5em;
+  background-color: var(--color, $main-color);
+  cursor: pointer;
+  transition: 0.2s ease;
+  &:not(.lower){
+    text-transform: uppercase;
+  }
+  &.waiting {
+    color: transparent !important;
+    pointer-events: none;
+    opacity: .8;
+    &:before {
+      content: "";
+      border-radius: 100%;
+      display: block;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #fff;
+      animation: spin 1s linear infinite;
+      border-top-color: transparent;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -9px;
+      margin-left: -9px;
+    }
+  }
+  &:hover {
+    box-shadow: 0 0 0 2px var(--color, $main-color);
+  }
+  &.rounded {
+    border-radius: 20px;
+  }
+  &.full {
+    display: block;
+  }
+  &.outlined {
+    background: transparent;
+    color: $main-color;
+    &.waiting {
+      &:before {
+        border-color: $main-color;
+        border-top-color: transparent;
+      }
+    }
+  }
+  &.inactive {
+    pointer-events: none;
+    opacity: .7;
+    filter: saturate(.2);
+  }
+}
+

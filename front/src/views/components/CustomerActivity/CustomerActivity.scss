@@ -1,0 +1,195 @@
+@import "../../../assets/styles/parents.scss";
+@import "../../../assets/styles/colors.scss";
+.CustomerActivity {
+  border-radius: 0.5em;
+  background: rgba($color: rgb(252, 249, 249), $alpha: 0.9);
+  min-height: 92%;
+  max-height: calc(100% - 3em);
+  box-shadow: 0 0 5px #aaa;
+  position: relative;
+  transition: 0.2s ease;
+  box-sizing: border-box;
+  display: flex;
+  border-radius: 10px;
+  overflow: hidden;
+  .e-close {
+    @extend %close;
+    position: absolute;
+    right: .5em;
+    top: .5em;
+  }
+  .e-left {
+    width: 20vw;
+    min-width: 200px;
+    background-image: linear-gradient(to left top, rgba(rgb(255, 255, 255), 0.3), rgba(rgb(255, 255, 255), 0.3)), url(../../../assets/images/colored.jpg);
+      gap: 1em;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    user-select: none;
+    .e-details{
+      color: #fff;
+      margin: 0 auto;
+      padding: .5em 1.5em;
+      cursor: pointer;
+      border: 1px solid #fff;
+      font-size: .8em;
+      border-radius: 20px;
+      @extend %b-effect;
+    }
+    .e-avatar {
+      height: 160px;
+      width: 160px;
+      border-radius: 5px;
+      overflow: hidden;
+      align-self: center;
+      background-color: rgba(#fff, 0.4);
+      background-size: cover;
+      margin-bottom: 0.2em;
+      background-image: url(../../../assets/images/avatar-man.png);
+      &.F {
+        background-image: url(../../../assets/images/avatar-woman.png);
+      }
+    }
+    .e-name,
+    .e-phone {
+      color: #eee;
+      text-align: center;
+      line-height: 1.5;
+    }
+  }
+  .e-right {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 2em;
+    margin-top:  2.5em;
+    width: 50vw;
+    .payments {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .payment-message{
+        font-size: .7em;
+        text-align: right;
+        color: #333;
+        margin-right: .5em;
+        span{
+          font-weight: bold;
+          color: $main-color;
+
+        }
+      }
+      .payment {
+        min-height: 30px;
+        background-color: #fff;
+        box-shadow: 0 0 0 1px rgb(213, 213, 213);
+        overflow: hidden;
+        border-radius: .2em;
+        margin: 3px 5px;
+        display: flex;
+        &.opened{
+          border-radius: .2em .2em 0 0;
+          margin-bottom: 0;
+        }
+        .p-name{
+          padding: .3em .5em;
+          flex: 1;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          &:before{
+            content: '';
+            opacity: .3;
+            width: 8px;
+            min-width: 8px;
+            height: 8px;
+            background: red;
+            margin-right: .5em;
+            border-radius: .5em;
+            align-self: flex-start;
+            margin-top: .3em;
+          }
+          .pn-date{
+            color: $main-color;
+            font-size: .7em;
+          }
+          .pn-type{
+            font-size: .8em;
+            color: #333;
+            margin-right: .4em;
+          }
+        }
+        .p-data {
+          justify-content: flex-end;
+          display: flex;
+          padding: .2em .5em;
+          text-align: right;
+          background-color: rgb(217, 240, 255);
+          align-items: center;
+        }
+        .p-rest{
+          background-color: rgb(255, 237, 241);
+        }
+        input{
+          height: 25px;
+          width: 70px;
+          padding: 0 .6em;
+          font-size: 1.1em;
+          border: none;
+          align-self: center;
+        }
+        .pay{
+          align-self: center;
+          background: rgba($main-color, 0.7);
+          box-shadow: 0 0 2px $main-color;
+          padding: .3em 1em;
+          margin: 0 .3em;
+          border-radius: 1em;
+          color: #fff;
+          cursor: pointer;
+          transition: .2s linear;
+          font-size: .8em;
+          &:active{
+            transform: scale(.95);
+            transition: none;
+          }
+        }
+        &.rest{
+          .p-name{
+            &:before{
+              background: green;
+            }
+          }
+        }
+      }
+      .incomes{
+        background: red;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        margin: 0 .3em;
+        border-radius: 0 0 .3em .3em;
+        box-shadow: 0 0 0 1px rgb(213, 213, 213);
+        margin-bottom: .2em;
+        padding: 0 .3em;
+        .income{
+          padding: .5em;
+          display: flex;
+          font-size: .8em;
+          justify-content: flex-end;
+          .in-date{
+            padding: 0 .5em;
+            color: $main-color;
+          }
+          .in-amount{
+            font-weight: bold;
+            color: #333;
+          }
+        }
+      }
+    }
+  }
+}

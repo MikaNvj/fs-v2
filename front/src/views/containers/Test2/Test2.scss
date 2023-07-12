@@ -1,0 +1,8 @@
+.Test2 {
+  webview{
+    display: block;   /* iframes are inline by default */
+    border: none;     /* Reset default border */
+    height: 400px;     /* Viewport-relative units */
+    width: 600px;
+  }
+}

@@ -1,0 +1,85 @@
+@import "../../../assets/styles/parents.scss";
+@import "../../../assets/styles/colors.scss";
+
+.UserList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  .list-header {
+    padding: 1em;
+    gap: 1em;
+    display: flex;
+    justify-content: flex-end;
+    .search {
+      display: flex;
+      align-items: center;
+      width: 20em;
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5em;
+      background: #fff;
+      box-shadow: 0 0 3px #888;
+      input {
+        font-family: inherit;
+        font-size: inherit;
+        color: inherit;
+        background-color: transparent;
+        border: none;
+        padding: 0.7em 2em;
+        width: 90%;
+        transition: all 0.2s;
+        &::-webkit-input-placeholder {
+          font-weight: 100;
+        }
+      }
+      &:after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 3em;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url(../../../assets/icons/search.svg);
+        background-size: auto 40%;
+      }
+    }
+    .new-user-btn {
+      @extend %b-effect;
+      background: #fff;
+      border-radius: 1.5em;
+      width: 2.7em;
+      height: 2.7em;
+      background-size: auto 50%;
+      background-image: url(../../../assets/icons/registration.svg);
+      background-position: center 45%;
+      background-repeat: no-repeat;
+      cursor: pointer;
+      box-shadow: 0 0 3px #888;
+      opacity: .7;
+      &:hover{
+        opacity: 1;
+      }
+    }
+  }
+  .list-user {
+    position: relative;
+    flex: 1;
+    margin-bottom: .5em;
+    .users-scrollbar{
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+    .users {
+      display: flex;
+      justify-content: space-evenly;
+      padding: 1em;
+      gap: 1em;
+      flex-wrap: wrap;
+    }
+  }
+}

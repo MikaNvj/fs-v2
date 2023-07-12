@@ -1,0 +1,32 @@
+import React, { useState } from 'react'
+import { BrowserRouter } from "react-router-dom"
+import { bulkSetter } from './services/functions'
+import { AppContext } from './services/provider'
+import { connect } from './redux/store'
+import Popup from './views/components/Popup'
+import Router from './Router'
+import './App.scss'
+import Header from './views/components/Header'
+const states = {
+  popup: { message: "" },
+  connected: false
+}
+
+function App(props) {
+  const global = bulkSetter(...useState(states))
+  return (
+    <AppContext.Provider value={global}>
+      <BrowserRouter>
+        <div className="App">
+          <Header connected={global.connected} />
+          <Popup {...global.popup} />
+          <div className="AppBody">
+            <Router connected={global.connected && props.auth.token} />
+          </div>
+        </div>
+      </BrowserRouter>
+    </AppContext.Provider>
+  )
+}
+
+export default connect(App, ['auth'])

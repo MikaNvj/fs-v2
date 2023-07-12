@@ -1,0 +1,150 @@
+@import "../../../assets/styles/colors.scss";
+.PrintListParent{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 32px;
+  @media print{
+    backdrop-filter: none;
+  }
+}
+.PrintList {
+  @media print{
+    -webkit-print-color-adjust: exact;
+    // filter: saturate(0);
+  }
+  box-shadow: 0 0 3px #888;
+  width: 90%;
+  height: 90%;
+  background: #fff;
+  width: 210mm;
+  font-size: 3.5mm;
+  overflow-y: auto;
+  @media print{
+    overflow-y: visible;
+  }
+  .to-print {
+    display: flex;
+    flex-direction: column;
+    .tp-header{
+      padding: 1em 1.5em;
+      padding-bottom: 3em;
+      background-image: url(../../../assets/images/login-background1.jpg);
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      margin-bottom: -.5em;
+      color: #fff;
+      &:after{
+        content: '';
+        display: flex;
+        background: #fff;
+        position: absolute;
+        bottom: -2px; left: 0; right: 0;
+        height: 2em;
+        border-top-left-radius: 2em;
+        border-top-right-radius: 2em;
+      }
+      &:before{
+        content: '';
+        position: absolute;
+        width: 3em;
+        height: 3em;
+        position: absolute;
+        right: 1.5em;
+        top: 1em;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-image: url(../../../assets/images/logo.png);
+      }
+      .title{
+        font-size: .8em;
+      }
+      .subtitle{
+        margin-top: .2em;
+        font-size: 1.2em;
+      }
+    }
+    .close-button{
+      position: absolute;
+      padding: .5em 1em;
+      color: #fff;
+      border-radius: .3em;
+      box-shadow: 0 0 2px #fff;
+      right: 13em;
+      top: 1.5em;
+      cursor: pointer;
+      @media print{
+        display: none;
+      }
+    }
+    .print-button{
+      position: absolute;
+      padding: .5em 1em;
+      background-color: #fff;
+      border-radius: .3em;
+      color: $main-color;
+      box-shadow: 0 0 2px $main-color;
+      right: 6em;
+      top: 1.5em;
+      cursor: pointer;
+      @media print{
+        display: none;
+      }
+    }
+    table {
+      margin: 0 1.5em;
+      border-collapse: collapse;
+      background-color: #fff;
+      font-size: 3.5mm;
+      position: relative;
+      border-top-right-radius: 1em;
+      border-top-left-radius: 1em;
+      overflow: hidden;
+      padding: 1px;
+      box-shadow: 0 0 0 .1mm rgb(202, 202, 202);
+      .phone-th{
+        width: 5.7em;
+      }
+      @media print {
+        font-size: inherit;
+      }
+      th {
+        padding: 0.5em;
+        min-width: 1.5em;
+        margin: .05mm;
+        box-shadow: 0 0 0 .1mm rgb(202, 202, 202);
+        margin-left: .05mm;
+      }
+      td {
+        font-size: 0.9em;
+        padding: 0.4em 0.5em;
+        margin-left: .05mm;
+        margin-top: .05mm;
+        box-shadow: 0 0 0 .1mm rgb(202, 202, 202);
+      }
+    }
+  }
+  ::selection {
+    background: transparent;
+  }
+}
+
+@media print {
+  @page{
+    margin: .5cm .5cm .5cm .5cm; 
+  }
+  body{
+    background: none !important;
+  }
+  .App{
+    display: none !important;
+  }
+  .PrintListParent{
+    position: relative;
+    top: 0;
+    padding: 0;
+  }
+}

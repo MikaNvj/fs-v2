@@ -1,0 +1,53 @@
+%plus{
+  width: 1.5em;
+  height: 1.5em;
+  cursor: pointer;
+  position: relative;
+  transition: .2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover{
+    transition: 0s ease;
+    transform: scale(1.2);
+  }
+  &:before, &::after{
+    display: block;
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 1px;
+    background: #333;
+  }
+  &:after{
+    transform: rotate(90deg);
+  }
+  &.inside{
+    &:before, &::after{
+      width: 60%;
+    }
+  }
+  &.white{
+    &:before, &::after{
+      background: #fff;
+    }
+  }
+}
+
+%close{
+  @extend %plus;
+  &:before, &::after{
+    transform: rotate(45deg);
+  }
+  &:after{
+    transform: rotate(-45deg);
+  }
+}
+
+%b-effect{
+  transition: .2s ease;
+  &:active{
+    transform: scale(1.1) !important;
+    transition: none;
+  }
+}

@@ -1,0 +1,104 @@
+@import "../../../assets/styles/colors.scss";
+
+.PaidConnexion {
+  box-shadow: 0 0 3px gray;
+  background-color: rgba(#fff, 0.9);
+  border-radius: 1em;
+  height: 90%;
+  width: 850px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  .pc-header {
+    padding: 0.5em;
+    display: flex;
+    justify-content: center;
+    background-image: url(../../../assets/images/colored.jpg);
+    background-size: cover;
+    background-position: 0 22%;
+  }
+  .pc-body {
+    flex: 1;
+    position: relative;
+    .paids {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      .paid-list {
+        padding: 0.3em 1em;
+        .connexion {
+          display: flex;
+          gap: 1em;
+          margin: 0.3em;
+          box-shadow: 0 0 2px #aaa;
+          border-radius: .3em;
+          align-items: center;
+          .hours {
+            border-radius: 0.3em;
+            gap: .3em;
+            display: flex;
+            flex-direction: column;
+            color: #666;
+            padding: 0.1em 0.5em;
+            font-size: .8em;
+          }
+
+          .customer-name {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 0.75em;
+            padding: 0.3em;
+            border-radius: 0.3em;
+            word-wrap: break-word;
+            width: 200px;
+            text-align: center;
+            cursor: default;
+            user-select: none;
+            &.act {
+              background: firebrick;
+              transform: translate3d(0, -100%, 0);
+              .cancel {
+                color: #fff;
+              }
+            }
+            .phone {
+              color: rgb(20, 73, 122);
+              font-weight: bold;
+            }
+            .cancel {
+              color: firebrick;
+              font-weight: bold;
+              cursor: pointer;
+            }
+            .lastname {
+              font-size: 0.85em;
+            }
+          }
+          .amount{
+            width: 100px;
+            height: 30px;
+            color: rgb(20, 73, 122);
+            font-weight: bold;
+            font-size: 1.3em;
+            text-align: right;
+          }
+          .rest{
+            font-size: .8em;
+            color: #333;
+            display: flex;
+            align-items: center;
+            span{
+              color: rgb(20, 73, 122);
+              font-weight: bold;
+              font-size: 1.5em;
+              margin-left: .3em;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,115 @@
+@import '../../../assets/styles/parents.scss';
+
+.AutrePayement {
+  flex: 1;
+  display: flex;
+  margin-top: 1em;
+  position: relative;
+  .ap-header{
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5em;
+    padding: 0 .3em;
+    .creator{
+      width: 75%;
+      padding: .3em;
+      background-color: rgba(rgb(113, 54, 138), 0.8);
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: .5em;
+      text-transform: uppercase;
+      box-shadow: 0 0 0 1px rgba(#fff, .3);
+      cursor: pointer;
+      transition: .2s ease;
+      transform: scale(1);
+      font-weight: 700;
+      span{
+        color: #fff;
+        font-size: .6em;
+        transform: scaleX(.8);
+        letter-spacing: .1em;
+      }
+      &:after{
+        content: '';
+        width: 40px;
+        height: 40px;
+        margin-top: .2em;
+        margin-bottom: .2em;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      &.copy:after{ background-image: url(../../../assets/icons/copy.svg) }
+      &.email:after{ background-image: url(../../../assets/icons/mail.svg) }
+      &.print:after{ background-image: url(../../../assets/icons/print.svg) }
+      &.subscribe:after{ background-image: url(../../../assets/icons/subscription.svg) }
+      &.scan:after{ background-image: url(../../../assets/icons/scan.svg) }
+      &.repair:after{ background-image: url(../../../assets/icons/repair.svg) }
+      &:hover{
+        transform: scale(1.1);
+      }
+      &:active{
+        transform: scale(1);
+        transition: none;
+      }
+    }
+  }
+  .ap-content{
+    flex: 1;
+    position: relative;
+    .ap-list{
+      position: absolute;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      display: flex;
+      justify-content: center;
+      .aps{
+        display: flex;
+        flex-direction: column;
+
+      }
+    }
+  }
+  
+  .customer-choose{
+    position: absolute;
+    left: 0; bottom: 0;
+    right: 0; top: 0;
+    z-index: 1000;
+    background-color: rgba(dodgerblue,.3);
+    padding: 2em 5em;
+    padding-top: 1em;
+    display: flex;
+    backdrop-filter: blur(  5px);
+    .close-chooser{
+      width: 2em;
+      height: 2em;
+      background: #fff;
+      box-shadow: 0 0 3px #aaa;
+      border-radius: 100%;
+      position: absolute;
+      left: 4.2em;
+      top: 0;
+      z-index: 999;
+      @extend %close;
+      opacity: .5;
+      &:before, &::after{
+        width: 50%;
+      }
+      &:hover{
+        opacity: .9;
+      }
+    }
+    .UserList{
+      background-color: rgba(#fff, .4);
+      border-radius: 1em;
+      box-shadow: 0 2px 5px #666;
+    }
+  }
+}

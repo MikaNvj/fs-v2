@@ -1,0 +1,204 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/parents.scss";
+
+.SubscriptionItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin: 0.5em 0;
+  $mainColor: #4c628f;
+  align-items: center;
+  .offer {
+    margin: 0;
+    height: 2.7em;
+    min-width: 1.5em;
+    width: 10em;
+    &:before{
+      right: .8em;
+    }
+    input {
+      min-width: 0;
+      border: none;
+      background: #fff;
+      padding: 0.4rem;
+      border-radius: 3px;
+      font-size: 1rem;
+      box-shadow: 1px 1px 3px #ccc;
+      transition: all 0.3s ease;
+      text-align: center;
+      font-size: 1em;
+      padding-right: 1em;
+      &:focus {
+        outline: none;
+        box-shadow: 1px 1px 3px #555;
+      }
+      &::placeholder {
+        font-size: .8em;
+        line-height: 5;
+      }
+    }
+  }
+  .start, .stop {
+    > .dates {
+      height: 2.3em;
+      align-items: center;
+    }
+  }
+  .stop{
+    pointer-events: none;
+  }
+  .date-sep{
+    align-self: center;
+    color: #fff;
+    text-shadow: 0 0 1px #888;
+  }
+
+
+  .validate {
+    position: relative;
+    border-radius: 100%;
+    background-size: cover;
+    background-position: center;
+    width: 3em;
+    height: 3em;
+    background-color: $main-color;
+    box-shadow: 0 0 2px 1px #fff;
+    background-image: url(../../../assets/icons/check.svg);
+    background-size: 50% auto;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    &:hover {
+      transform: scale(0.9);
+    }
+    @extend %b-effect;
+    &.ready {
+      background-color: rgb(0, 153, 87);
+    }
+    &.anonym{
+      opacity: .5;
+      pointer-events: none;
+    }
+  }
+  .cx-customer {
+    position: relative;
+    border-radius: 100%;
+    background-size: cover;
+    background-position: center;
+    width: 3em;
+    height: 3em;
+    background-color: rgba(#000, 0.1);
+    background-image: url(../../../assets/images/avatar-man.png);
+    &.F {
+      background-image: url(../../../assets/images/avatar-woman.png);
+    }
+    .canceler{
+      background: #fff;
+      box-shadow: 0 0 3px #aaa;
+      border-radius: 100%;
+      position: absolute;
+      left: 0; right: 0;
+      top: 0; bottom: 0;
+      width: auto;
+      height: auto;
+      z-index: 999;
+      opacity: .9;
+      transform: scale(0);
+      @extend %close;
+      &:before, &::after{
+        width: 50%;
+      }
+      &.active{
+        background-color: rgb(255, 131, 131);
+        opacity: 1;
+        transform: scale(.5) translate3d(100%, -100%, 0) !important;
+      }
+      &.set-customer{
+        background-image: url(../../../assets/icons/registration.svg);
+        background-position: center;
+        background-size: 50% auto;
+        background-repeat: no-repeat;
+        &:before, &:after{
+          display: none;
+        }
+      }
+    }
+    &:hover:not(.active){
+      .canceler{
+        transform: scale(.8);
+      }
+    }  
+    .cx-detail {
+      color: #555;
+      min-width: 100px;
+      font-size: 0.8em;
+      background: #fff;
+      padding: 0.3em;
+      border-radius: 0.3em;
+      position: absolute;
+      top: 100%;
+      margin-top: 0.2em;
+      left: 0;
+      z-index: 5;
+      box-shadow: 0 0 3px #888;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0s 0.2s linear;
+      .cx-name {
+        font-size: 0.9em;
+      }
+      .cx-facebook {
+        width: 1.2em;
+        height: 1.2em;
+        box-shadow: 0 0 2px #888;
+        border-radius: 3px;
+        cursor: pointer;
+        background-color: $main-color;
+        cursor: pointer;
+        background-image: url(../../../assets/icons/facebook.svg);
+        background-size: auto 80%;
+        background-position: 100% 100%;
+        background-repeat: no-repeat;
+        margin-bottom: 0.5em;
+      }
+    }
+    &:hover .cx-detail {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.2s ease, visibility 0s linear;
+    }
+  }
+  input {
+    font-family: inherit;
+    font-weight: 100;
+    &::placeholder {
+      color: #ccc;
+    }
+  }
+  .price,
+  .rest {
+    min-width: 0;
+    border: none;
+    background: #fff;
+    padding: .27rem 0.4rem;
+    border-radius: 3px;
+    font-size: 1rem;
+    box-shadow: 1px 1px 3px #ccc;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 1.8em;
+    max-width: 1.5em;
+    text-transform: uppercase;
+    max-width: 4em;
+    &::placeholder {
+      font-size: 0.6em;
+    }
+    &:focus {
+      outline: none;
+      box-shadow: 1px 1px 3px #555;
+    }
+  }
+}

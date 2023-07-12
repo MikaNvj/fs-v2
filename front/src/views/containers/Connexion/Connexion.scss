@@ -1,0 +1,72 @@
+@import '../../../assets/styles/parents.scss';
+
+.Connexion {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  .connexions{  
+    display: flex ;
+    flex: 1;
+    flex-direction: column;
+    align-self: center;
+    padding: 5px;
+    padding-right: 20px;
+  }
+  .c-options{
+    padding: .5em;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: .5em;
+    --color: #3A9BDC;
+    .Button{
+      width: auto;
+      padding-left: 1.5em;
+      padding-right: 1.5em;
+      margin: 0;
+      font-size: .8em;
+      &.validated{
+        font-size: .7em;
+      }
+    }
+  }
+}
+
+.customer-choose{
+  padding: 2em 5em;
+  position: absolute;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  display: flex;
+  .UserList{
+    background-color: rgba(#fff, .4);
+    border-radius: 1em;
+    box-shadow: 0 2px 5px #666;
+  }
+}
+
+.close-chooser, .close-paid{
+  width: 2em;
+  height: 2em;
+  background: #fff;
+  box-shadow: 0 0 3px #aaa;
+  border-radius: 100%;
+  position: absolute;
+  right: 4.2em;
+  top: 1.2em;
+  z-index: 999;
+  @extend %close;
+  opacity: .5;
+  &:before, &::after{
+    width: 50%;
+  }
+  &:hover{
+    opacity: .9;
+  }
+  &.close-paid{
+    right: calc(50% - 425px + 1em);
+    top: calc(8.3%);
+  }
+}

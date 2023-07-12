@@ -1,0 +1,64 @@
+.Login {
+  flex: 1;
+  background-image: url(../../../assets/images/login-background.jpg);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  .message{
+    padding: 1em 2em;
+    color: #fff;
+    text-shadow: 0 0 3px dodgerblue;
+    font-size: 3em;
+    text-align: right;
+    padding-top: 0;
+    margin-top: -3em;
+  }
+  .container{
+    &:before{
+      content: '';
+      width: 7em;
+      height: 7em;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translate3d(-50%, -50%, 0);
+      background-image: url(../../../assets/images/logo.png);
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+      box-shadow: 0 0 0 8px #DBEBFA;
+    }
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #DBEBFA;
+    padding: 3em 3em;
+    padding-top: 5.5em;
+    padding-bottom: 0;
+    border-radius: .5em;
+    margin-left: 2em;
+    filter: drop-shadow(0 1px 50px #aaa);
+    .title{
+      font-size: 1.2em;
+      color: #444;
+      font-variant: small-caps;
+      text-align: center;
+      margin-top: -1em;
+      margin-bottom: 1em;
+    }
+    .Input{
+      margin-bottom: 2em;
+    }
+    .error{
+      font-size: .75em;
+      padding: 1rem;
+      text-align: center;
+      color: rgb(255, 70, 70);
+      &:empty::before{
+        content: '&';
+        color: transparent;
+      }
+    }
+  }
+}

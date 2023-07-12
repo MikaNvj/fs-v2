@@ -1,0 +1,79 @@
+@import '../../../assets/styles/parents.scss';
+
+.PhotoCropper {
+  width: 100%;
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  .preview{
+    overflow: hidden;
+    border-radius: .5em;
+    border: .3em solid #fff;
+    cursor: pointer;
+    width: 25vh;
+    height: 25vh;
+    box-shadow: 0 0 3px #aaa;
+    position: relative;
+    transition: .2s ease;
+    &:after{
+      content: 'Cliquez pour valider';
+      position: absolute;
+      text-align: center;
+      font-size: .75em;
+      background: rgba(#fff, .7);
+      color: #444;
+      width: 70%;
+      top: 50%; left: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      padding: .7em 1em;
+      line-height: 1;
+      border-radius: .3em;
+      opacity: 0;
+      transition: .2s ease;
+    }
+    &:hover{
+      transform: scale(1.03);
+      &::after{
+        opacity: 1;
+      }
+    }
+    &:active{
+      transform: scale(1);
+      transition: none;
+    }
+  }
+
+  .the-cropper-parent{
+    width: 60%;
+    height: 60%;
+    border: .4em solid #fff;
+    border-radius: .5em;
+    box-shadow: 0 0 3px #aaa;
+    position: relative;
+    .close-cropper{
+      width: 2em;
+      height: 2em;
+      background: #fff;
+      box-shadow: 0 0 3px #aaa;
+      border-radius: 100%;
+      position: absolute;
+      right: -1em;
+      top: -1em;
+      z-index: 999;
+      @extend %close;
+      opacity: .5;
+      &:before, &::after{
+        width: 50%;
+      }
+      &:hover{
+        opacity: 1;
+      }
+    }
+    .the-cropper{
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

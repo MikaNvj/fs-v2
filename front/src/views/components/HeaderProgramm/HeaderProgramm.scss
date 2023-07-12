@@ -1,0 +1,109 @@
+@import '../../../assets/styles/parents.scss';
+@import '../../../assets/styles/colors.scss';
+
+.HeaderProgramm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 0;
+  transition: max-height .1s ease, opacity .1s linear;
+  background: rgba(#007, 0.2);
+  opacity: 0;
+  border-radius: .3em;
+  margin-right: .5em;
+  margin-top: .5em;
+  .hp-left{
+    display: flex;
+    align-self: stretch;
+    .f-name{
+      color: #fff;
+      font-weight: 500;
+      align-self: center;
+    }
+    .hp-menu{
+      width: 40px;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      &:before{
+        content: '';
+        flex: 1;
+        filter: brightness(0) invert(1);
+        background-size: 30% auto;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url(../../../assets/icons/menu.svg);
+
+      }
+      .menu-items{
+        background-color: #fff;
+        top: 100%; left: .2em;
+        width: 10em;
+        position: absolute;
+        border-radius: 3px;
+        margin-top: .2em;
+        overflow: hidden;
+        visibility: hidden;
+        .menu-item{
+          color: #333;
+          font-size: .85em;
+          padding: .5em;
+          padding-left: 1em;
+          &:hover{
+            background: rgba($main-color, .6);
+            color: #fff;
+          }
+        }
+      }
+      &:focus-within{
+        .menu-items{
+          visibility: visible;
+        }
+      }
+    }
+  }
+  &.active{
+    max-height: 50px;
+    opacity: 1;
+  }
+  .close-hp{
+    @extend %close;
+    width: 1em;
+    margin-right: .5em;
+  }
+  .program-details {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5em;
+    padding: .5em;
+    align-items: center;
+    cursor: pointer;
+    .img-box {
+      font-size: .8em;
+      padding: 0.3em 0.7em;
+      border-radius: .3em;
+      box-shadow: 0 0 0 1px #ddd;
+      display: flex;
+      align-items: center;
+      color: #fff;
+      text-shadow: 0 0 1px #eee;
+      transition: transform .2s ease;
+      &:before{
+        font-size: 1rem;
+        content: '';
+        width: 1.5em;
+        height: 1.5em;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        margin-right: .5em;
+      }
+      &.count:before{ background-image: url(../../../assets/icons/people.svg) }
+      &.date:before{ background-image: url(../../../assets/icons/calendar.svg) }
+      &.price:before{ background-image: url(../../../assets/icons/price-tag.svg) }
+      // &:hover{
+      //   transform: scale(1.05);
+      // }
+    }
+  }
+}
