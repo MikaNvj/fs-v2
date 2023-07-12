@@ -5,14 +5,14 @@ import { connect } from '../../../redux/store'
 import { addZero, formatDate, get, toAmount } from '../../../services/functions'
 import { FORMATION } from '../../../services/constants'
 
-const HeaderProgramm = (props) => {
+const HeaderProgramm = (props: any) => {
   const {
     curProgram, close, printList, showList, showDiploma,
     payment: {_payments}
   } = props
 
   const count = useMemo(() => {
-    return curProgram ? _payments.filter(({type, targetId}) => type === FORMATION && targetId === curProgram.id ).length : 0
+    return curProgram ? _payments.filter(({type, targetId}: any) => type === FORMATION && targetId === curProgram.id ).length : 0
   }, [get(curProgram, 'id'), _payments])
 
   return (

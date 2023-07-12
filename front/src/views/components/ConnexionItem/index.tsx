@@ -12,24 +12,24 @@ import {toAmount} from '../../../services/functions/index'
 import {connect} from '../../../redux/store/index'
 
 const Times = {
-  add: (date, min) => {
+  add: (date: any, min: any) => {
     const d = new Date(date)
     d.setTime(d.getTime() + 1000 * 60 * min)
     return d
   },
-  reduce: (date, min) => {
+  reduce: (date: any, min: any) => {
     const d = new Date(date)
     d.setTime(d.getTime() - 1000 * 60 * min)
     return d
   },
-  duration: (d1, d2) => {
+  duration: (d1: any, d2: any) => {
     if (!d1 || !d2) return 0
     return Math.abs(new Date(d1).getTime() - new Date(d2).getTime()) / (1000 * 60)
   }
 }
 
 
-const ConnexionItem = (props) => {
+const ConnexionItem = (props: any) => {
   const durRef = useRef('')
   const {
     value, customer, paymnt, saveIncome, showUser,
@@ -47,7 +47,7 @@ const ConnexionItem = (props) => {
       start: value.start && new Date(value.start),
       stop: paymnt.amount ? value.stop && new Date(value.stop) : null
   }))
-  const [rest, setRest] = useState(null)
+  const [rest, setRest] = useState<number | null>(null)
   const [canceled, setCanceled] = useState(false)
 
   useEffect(() => {
@@ -82,14 +82,14 @@ const ConnexionItem = (props) => {
     }
   }, [state.start, state.stop])
 
-  useEffect(_ => {
-    let tmt
-    if (canceled) tmt = setTimeout(_ => setCanceled(false), 3500)
-    return _ => clearTimeout(tmt)
+  useEffect(() => {
+    let tmt: any
+    if (canceled) tmt = setTimeout(() => setCanceled(false), 3500)
+    return () => clearTimeout(tmt)
   }, [canceled])
 
   const debt = useMemo(() => {
-    return customer ? !!payments.find(({ customerId, rest }) => customerId === customer.id && rest) : false
+    return customer ? !!payments.find(({ customerId, rest }: any) => customerId === customer.id && rest) : false
   }, [customer, payments])
 
   return (
@@ -113,13 +113,13 @@ const ConnexionItem = (props) => {
               <span>{firstname}</span>
               <span className='phone'>{toPhone(phone)}</span>
           </div> : <div onClick={e => {
-            const cl = e.target.closest('.customer-name').classList
+            const cl = (e.target as any).closest('.customer-name').classList
             if(cl.contains('act')){
               savePayment({ ...paymnt, inactive: true })
             }
             else {
               cl.add('act')
-              setTimeout(_ => cl.remove('act'), 2500)
+              setTimeout(() => cl.remove('act'), 2500)
             }
           }} className="customer-name">
             <span className='cancel'>Supprimer</span>
