@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "clsx": "^1.2.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
   }
 }
