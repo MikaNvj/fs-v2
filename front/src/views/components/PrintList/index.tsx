@@ -5,7 +5,7 @@ import Modal from '../../portals/Modal'
 import  './PrintList.scss'
 import {formatDate} from '../../../services/functions/index'
 
-function PrintList(props) {
+function PrintList(props: any) {
   const {
     active, selected, close,
     formation, program,
@@ -45,7 +45,7 @@ function PrintList(props) {
             </thead>
             <tbody>
               {
-                selected.map((id, i) => {
+                selected.map((id: any, i: any) => {
                   const customer = customers[id]
                   return (
                     <tr key={i}>

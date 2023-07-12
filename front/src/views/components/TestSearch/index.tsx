@@ -59,7 +59,7 @@ const customer = [
 
 
 
-const TestSearch = (props) => {
+const TestSearch = (props: any) => {
   const [show, setShow] = useState(false)
   const { 
     hide,

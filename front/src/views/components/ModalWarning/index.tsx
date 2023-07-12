@@ -14,7 +14,7 @@ const states = {
 
 
 
-const ModalWarning = (props) => {
+const ModalWarning = (props: any) => {
   // Props & states
   const { active, close } = props
   const S = bulkSetter(...useState(states))
@@ -22,7 +22,7 @@ const ModalWarning = (props) => {
   // Save
 
   // Effects
-  useEffect(() => active ? S.setShow(true) : setTimeout(_ => S.setShow(false), 300), [active])
+  useEffect(() => active ? S.setShow(true) : setTimeout(() => S.setShow(false), 300), [active])
 
   return (
     <div className={clsx('ModalWarning on-center', active && 'active', S.show && 'show')}>

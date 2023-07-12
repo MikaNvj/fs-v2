@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
-import clsx from 'clsx'
+import clsx from 'clsx';
 import {ContextDisabled} from "../AutreAbonnement/index"
 import './Toggle.scss'
 import { connect } from '../../../redux/store'
 
-const Toggle = (props) => {
+const Toggle = (props: any) => {
   const [isToggled, setIsToggled] = useState(false);
   const onToggle = () => setIsToggled(!isToggled);
-  const {disabled, setDisabled, mount, type} = useContext(ContextDisabled)
+  const {disabled, setDisabled, mount, type}: any = useContext(ContextDisabled)
 
   const {
     savePayment
@@ -30,8 +30,8 @@ const Toggle = (props) => {
   return (
     <div className={clsx('Toggle')}>
       <input id="chck" type="checkbox" checked={isToggled} onClick={setPayment} onChange={onToggle} disabled={disabled}/>
-      <label for="chck" class="check-trail">
-        <span class="check-handler"></span>
+      <label htmlFor="chck" className="check-trail">
+        <span className="check-handler"></span>
       </label>
       {/* <p>IsToglle {isToggled ? "on" : "off"}</p> */}
     </div>

@@ -12,7 +12,7 @@ const states = {
   error: undefined
 }
 
-const ModalConfirm = (props) => {
+const ModalConfirm = (props: any) => {
   const {  active, close, text, handler, error, title } = props
   const S = bulkSetter(...useState(states))
   
@@ -29,7 +29,7 @@ const ModalConfirm = (props) => {
         <div className="e-btn">
           <Button rounded className="e-btn-annuler" onClick={close}>{error ? 'OK' : 'Annuler'}</Button>
           {
-            !error && <Button className="e-btn-save" onClick={async _ => {
+            !error && <Button className="e-btn-save" onClick={async () => {
               await handler()
               close()
             }} rounded text="Confirmer" />

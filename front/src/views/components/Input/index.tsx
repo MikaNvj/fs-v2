@@ -6,7 +6,7 @@ import ScrollBar from 'react-perfect-scrollbar'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import Hour from '../Hour'
 
-export default function Input(props) {
+export default function Input(props: any) {
   //Props
   let {
     type = "text", label = '', onChange: _onChange, readOnly,
@@ -50,30 +50,30 @@ export default function Input(props) {
 }
 
 Input.validator = () => {
-  const V = []
-  const meths = {
-    min: (min = 0) => V.push(val => (val || '').length >= min) && V,
-    max: (max = Number.MAX_SAFE_INTEGER) => V.push(val => (val || '').length <= max) && V,
-    mail: _ => V.push(val => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(val)) && V,
-    regex: regex => V.push(val => regex.test(val)) && V,
-    ignore: _ => V.push(_ => true) && V,
-    func: fnc => V.push((val, vals) => fnc(val, vals)) && V,
-    notIn: arr => V.push(val => !arr.includes(val)) && V,
-    in: arr => V.push(val => arr.includes(val)) && V,
-    required: (rq = true) => (rq && V.push(val => !!(Array.isArray(val) ? val.length : val)) && Object.assign(V, { rq: !!rq }) && V) || V,
-    validate: (val, vals = {}) => ((!val || (Array.isArray(val) && val.length === 0)) && !V.rq) || V.reduce((ok, valid) => ok && valid(val || '', vals), true)
+  const V: any = []
+  const meths: any = {
+    min: (min = 0) => V.push((val: any) => (val || '').length >= min) && V,
+    max: (max = Number.MAX_SAFE_INTEGER) => V.push((val: any) => (val || '').length <= max) && V,
+    mail: () => V.push((val: any) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(val)) && V,
+    regex: (regex: any) => V.push((val: any) => regex.test(val)) && V,
+    ignore: () => V.push(() => true) && V,
+    func: (fnc: any) => V.push((val: any, vals: any) => fnc(val, vals)) && V,
+    notIn: (arr: any) => V.push((val: any) => !arr.includes(val)) && V,
+    in: (arr: any) => V.push((val: any) => arr.includes(val)) && V,
+    required: (rq = true) => (rq && V.push((val: any) => !!(Array.isArray(val) ? val.length : val)) && Object.assign(V, { rq: !!rq }) && V) || V,
+    validate: (val: any, vals = {}) => ((!val || (Array.isArray(val) && val.length === 0)) && !V.rq) || V.reduce((ok: any, valid: any) => ok && valid(val || '', vals), true)
   }
   Object.assign(V, meths)
   return V
 }
 
-const prevent = e => {
+const prevent = (e: any) => {
   e.preventDefault()
   e.stopPropagation()
   return true
 }
 
-const ISwitch = (props) => {
+const ISwitch = (props: any) => {
   let { value, values = [false, true], onChange } = props
   useEffect(() => {
     if (!values.includes(props.value)) {
@@ -86,7 +86,7 @@ const ISwitch = (props) => {
   )
 }
 
-const IDate = (props) => {
+const IDate = (props: any) => {
   const { onChange, value } = props
   return (
     <Hour
@@ -97,7 +97,7 @@ const IDate = (props) => {
   )
 }
 
-const IDateTime = (props) => {
+const IDateTime = (props: any) => {
   const { onChange, value } = props
   return (
     <Hour
@@ -108,22 +108,22 @@ const IDateTime = (props) => {
   )
 }
 
-const IInput = (props) => {
+const IInput = (props: any) => {
   const sep = "  "
   let {
     onChange, error, centered, multiple, value = multiple ? [] : '', options,
     autofill, prefix, type, search, setSearch, iref, alwaysActive, maxOption, colored, ...rest
   } = props
-  useEffect(_ => props.value === undefined && onChange && onChange(value), [props.value])
+  useEffect(()=> props.value === undefined && onChange && onChange(value), [props.value])
 
-  const getValues = useMemo(_ => () => {
-    const vals = options.filter(({ value: v }) => {
+  const getValues = useMemo(()=> () => {
+    const vals = options.filter(({ value: v }: any) => {
       return multiple ? value.includes(v) : value === v
-    }).map(({ label }) => label).join(', ')
+    }).map(({ label }: any) => label).join(', ')
     return `${vals}${vals && search && ','}${vals && sep}${search}`
   }, [multiple, value, search])
 
-  const change = useMemo(_ => e => {
+  const change = useMemo(()=> (e: any )=> {
     const { target: { value: val } } = e
     if (!options) onChange && onChange(val, e)
     else if (multiple ? value.length : value !== undefined) setSearch(val.split(sep)[1] || '')
@@ -143,12 +143,12 @@ const IInput = (props) => {
   )
 }
 
-const IOptions = (props) => {
+const IOptions = (props: any) => {
   const { options, onChange, centered, perline = 1, value = [], setActive, maxOption = 4, multiple, search, colored, setSearch } = props
-  const changeList = val => {
+  const changeList = (val: any) => {
     if (multiple) {
       const value = props.value || []
-      if (value.includes(val)) val = value.filter(v => v != val)
+      if (value.includes(val)) val = value.filter((v: any) => v != val)
       else val = [...value, val]
       setActive(!!val.length)
     }
@@ -160,7 +160,7 @@ const IOptions = (props) => {
     <React.Fragment>
       <ScrollBar style={maxOption ? { maxHeight: 31 * maxOption } : {}} className={clsx("bi-options", colored && 'colored', centered && 'centered')}>
         {
-          (search ? fuzzyFilter(options, search, ({ label: _ }) => _) : options).map(({ label, value: val }, key) => {
+          (search ? fuzzyFilter(options, search, ({ label: _ }) => _) : options).map(({ label, value: val }: any, key: any) => {
             const active = multiple ? value.includes(val) : value === val
             const Type = multiple ? 'button' : 'div'
             return (
@@ -178,9 +178,9 @@ const IOptions = (props) => {
   )
 }
 
-const IFile = (props) => {
+const IFile = (props: any) => {
   let { onChange, value = [], multiple, ...rest } = props
-  useEffect(_ => props.value === undefined && onChange && onChange(value), [props.value])
+  useEffect(() => props.value === undefined && onChange && onChange(value), [props.value])
   return (
     <div className={clsx('file')}>
       {
@@ -188,7 +188,7 @@ const IFile = (props) => {
           <span>{value.length === 1 ? value[0].name : `${addZero(value.length)} fichiers séléctionnés`}</span>
           {
             value.length === 1 && <div
-              onClick={e => onChange && onChange(value.filter(o => o !== value[0]), e)}
+              onClick={e => onChange && onChange(value.filter((o: any) => o !== value[0]), e)}
               className="remove-image"
             />
           }
@@ -196,7 +196,7 @@ const IFile = (props) => {
       }
       <label className={clsx('empty', value.length > 0 && 'empty-more')}>
         {value.length === 0 && 'Ajouter un fichier...'}
-        <input onChange={e => {
+        <input onChange={(e: any )=> {
           if (e.target.files.length) {
             const files = props.multiple ? [...value, ...Array.from(e.target.files)] : Array.from(e.target.files)
             onChange && onChange(files, e)
@@ -209,11 +209,11 @@ const IFile = (props) => {
         value.length > 1 && <ScrollBar tabIndex={1} className="file-list">
           <div onClick={e => prevent(e)} className="file-list-content">
             {
-              value.map((file, key) => {
+              value.map((file: any, key: any) => {
                 return <div className="filename" key={key}>
                   <span>{file.name}</span>
                   <div
-                    onClick={e => onChange && onChange(value.filter(o => o !== file), e)}
+                    onClick={e => onChange && onChange(value.filter((o: any) => o !== file), e)}
                     className="remove-image"
                   />
                 </div>
@@ -226,9 +226,9 @@ const IFile = (props) => {
   )
 }
 
-const IImage = (props) => {
+const IImage = (props: any) => {
   const { value = [], onChange, square } = props
-  useEffect(_ => props.value === undefined && onChange && onChange(value), [props.value])
+  useEffect(()=> props.value === undefined && onChange && onChange(value), [props.value])
   const firstImage = React.useMemo(() => value[0] && URL.createObjectURL(value[0]), [value[0]])
 
   return (
@@ -237,7 +237,7 @@ const IImage = (props) => {
       className={clsx("image-container", value.length && 'filled', square && 'square')}
     >
       <input
-        onChange={e => {
+        onChange={(e: any) => {
           if (e.target.files.length) {
             onChange && onChange(Array.from(e.target.files), e)
             e.target.value = ""

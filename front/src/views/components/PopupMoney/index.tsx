@@ -11,13 +11,13 @@ const states = {
   isLogin: true
 }
 
-const PopupMoney = (props) => {
+const PopupMoney = (props: any) => {
   const state = bulkSetter(...useState({ ...states }))
   const { input, ...State } = state
   const { active, close, income: { _incomes } } = props
 
   // Methods
-  const pmRef = useRef(null)
+  const pmRef: any = useRef(null)
 
   useEffect(() => {
     active && pmRef.current && pmRef.current.focus()
@@ -25,8 +25,8 @@ const PopupMoney = (props) => {
 
   const total = useMemo(() => {
     const today = `${new Date().getFullYear()}-${addZero(new Date().getMonth() + 1)}-${addZero(new Date().getDate())}`
-    const incs = {}
-    _incomes.forEach((one) => {
+    const incs: any = {}
+    _incomes.forEach((one: any) => {
       const { date = "", paymentId } = one
       if (date.startsWith(today)) {
         const { type, inactive, amount, rest } = Store.getCurrentState(`payment.payments.${paymentId}`) || {}
@@ -51,8 +51,8 @@ const PopupMoney = (props) => {
 
   return (
     <div onBlur={e => {
-      setTimeout(_ => {
-        if (!document.activeElement.closest('.PopupMoney')) {
+      setTimeout(() => {
+        if (!document.activeElement?.closest('.PopupMoney')) {
           state.setIsLogin(true)
           close()
         }

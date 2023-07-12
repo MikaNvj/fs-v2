@@ -14,7 +14,7 @@ const states = {
 
 
 
-const ModalSuccess = (props) => {
+const ModalSuccess = (props: any) => {
   // Props & states
   const { active, close } = props
   const S = bulkSetter(...useState(states))
@@ -22,7 +22,7 @@ const ModalSuccess = (props) => {
   // Save
 
   // Effects
-  useEffect(() => active ? S.setShow(true) : setTimeout(_ => S.setShow(false), 300), [active])
+  useEffect(() => active ? S.setShow(true) : setTimeout(() => S.setShow(false), 300), [active])
 
   return (
     <div className={clsx('ModalSuccess on-center', active && 'active', S.show && 'show')}>
