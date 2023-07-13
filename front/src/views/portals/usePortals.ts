@@ -1,8 +1,8 @@
 import { useRef, useEffect } from 'react';
 
 
-function usePortal({parentSelector, active, classNames, close}) {
-  const elemRef = useRef(null)
+function usePortal({parentSelector, active, classNames, close}: any) {
+  const elemRef: any = useRef(null)
   const createElem = () => {
     if(!elemRef.current) {
       elemRef.current = document.createElement('div')
@@ -21,7 +21,7 @@ function usePortal({parentSelector, active, classNames, close}) {
     }
     return elemRef.current
   }
-  useEffect(_ => {
+  useEffect(() => {
     const parent = document.querySelector(parentSelector)
     createElem()
     parent.appendChild(elemRef.current);

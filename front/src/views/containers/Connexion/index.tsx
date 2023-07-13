@@ -17,7 +17,7 @@ const states = {
   curUser: null, showPaid: false
 }
 
-const Connexion = (props) => {
+const Connexion = (props: any) => {
   const {
     payment: { _payments }, connexion: { connexions },
     customer: { customers },
@@ -29,17 +29,17 @@ const Connexion = (props) => {
     showPaid, setShowPaid, activity, setActivity, ...State
   } = bulkSetter(...useState({ ...states }))
 
-  const allConnexions = useMemo(_ => {
-    return _payments.filter(({ type, rest = null, targetId, inactive }) => {
+  const allConnexions = useMemo(()=> {
+    return _payments.filter(({ type, rest = null, targetId, inactive }: any) => {
       return !inactive && type === CONNEXION && connexions[targetId] && rest === null
     })
   }, [_payments])
 
-  const showCustomer = useCallback((customer, activity) => {
+  const showCustomer = useCallback((customer: any, activity: any) => {
     State.set({
       curUser: customer, activity
     })
-  })
+  }, [])
 
   return (
     <div className={clsx('Connexion')}>
@@ -47,10 +47,10 @@ const Connexion = (props) => {
         <Button
           rounded
           className="validated"
-          onClick={_ => setShowPaid(true)}>Validés</Button>
+          onClick={()=> setShowPaid(true)}>Validés</Button>
         <Button
           rounded
-          onClick={async _ => {
+          onClick={async ()=> {
             const { id } = await saveConnexion({})
             await savePayment({
               targetId: id,
@@ -62,14 +62,14 @@ const Connexion = (props) => {
       </div>
       <ScrollBar className="connexions">
         {
-          allConnexions.filter(payment => connexions[payment.targetId]).map((payment) => {
+          allConnexions.filter((payment: any) => connexions[payment.targetId]).map((payment: any) => {
             return <ConnexionItem
               key={payment.id}
               value={connexions[payment.targetId]}
               customer={customers[payment.customerId]}
               paymnt={payment}
               setChosenPayment={setChosenPayment}
-              showUser={_ => showCustomer(customers[payment.customerId], false)}
+              showUser={()=> showCustomer(customers[payment.customerId], false)}
               saveConnexion={saveConnexion}
               savePayment={savePayment}
               saveIncome={saveIncome}
@@ -83,7 +83,7 @@ const Connexion = (props) => {
           parentSelector='.AppBody'
         >
           <div className="customer-choose">
-            <div onClick={_ => setChosenPayment(null)} className="close-chooser" />
+            <div onClick={()=> setChosenPayment(null)} className="close-chooser" />
             <UserList
               onSelect={async customer => {
                 savePayment({
@@ -101,7 +101,7 @@ const Connexion = (props) => {
           active={showPaid}
           parentSelector='.AppBody'
         >
-          <div onClick={_ => setShowPaid(false)} className="close-paid" />
+          <div onClick={()=> setShowPaid(false)} className="close-paid" />
           <PaidConnexion showCustomer={showCustomer} />
         </Modal>
       }

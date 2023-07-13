@@ -33,7 +33,7 @@ const options = {
   },
 };
 
-const Dashboard = (props) => {
+const Dashboard = (props: any) => {
   const {
     income: { _incomes }
   } = props
@@ -46,10 +46,10 @@ const Dashboard = (props) => {
   }))
 
   useEffect(() => {
-    const [y, m] = month.split('-').map(n => parseInt(n))
-    let incs = _incomes.filter(({ date }) => date && date.startsWith(month))
-    const total = {}
-    incs.forEach(({ date, amount, paymentId }) => {
+    const [y, m] = month.split('-').map((n: any) => parseInt(n))
+    let incs = _incomes.filter(({ date }: any) => date && date.startsWith(month))
+    const total: any = {}
+    incs.forEach(({ date, amount, paymentId }: any) => {
       date = parseInt(date.split('-').slice(-1)[0])
       if (!total[date]) total[date] = { total: 0 }
       const { type } = Store.getCurrentState(`payment.payments.${paymentId}`) || {}
@@ -95,8 +95,8 @@ const Dashboard = (props) => {
           </div>
         </div>
         <div className="view movements">
-          <div className="income">{toAmount(data.datasets[0].data.reduce((t, o) => t + o, 0), '')} <span>Ar</span></div>
-          <div className="outcome">{toAmount(Math.floor(data.datasets[0].data.reduce((t, o) => t + o, 0) / 900 * 7) * 100, '')}<span>Ar</span></div>
+          <div className="income">{toAmount(data.datasets[0].data.reduce((t: any, o: any) => t + o, 0), '')} <span>Ar</span></div>
+          <div className="outcome">{toAmount(Math.floor(data.datasets[0].data.reduce((t: any, o: any) => t + o, 0) / 900 * 7) * 100, '')}<span>Ar</span></div>
         </div>
         <div className="view customers">
           <div className="new-customer">{toAmount(Object.keys(Store.getCurrentState('customer.customers')).length, '')} <span>Clients</span></div>
@@ -104,7 +104,7 @@ const Dashboard = (props) => {
         </div>
       </div>
       <div className="incomes view">
-        <Bar data={data} options={options} />
+        <Bar data={data} options={options as any} />
       </div>
     </div>
   )

@@ -21,14 +21,14 @@ const LineContenair = () => {
               </div>
             </div>
 
-            <div class="connexions-container-parent">
-              <div class="activities">
-                <div tabindex="1" class="activities-content"></div>
+            <div className="connexions-container-parent">
+              <div className="activities">
+                <div tabIndex={1} className="activities-content"></div>
               </div>
-              <div class="connexions-container-container swiper-container">
-                <div class="swiper-wrapper">
+              <div className="connexions-container-container swiper-container">
+                <div className="swiper-wrapper">
 
-                  <div class="connexions-container swiper-slide">
+                  <div className="connexions-container swiper-slide">
                     <Connexion />
                   </div>
                 </div>

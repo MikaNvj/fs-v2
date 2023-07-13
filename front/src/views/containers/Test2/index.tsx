@@ -4,7 +4,7 @@ import './Test2.scss'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
 import bridge from '../../../services/bridge/index'
-import qs from 'query-string'
+// import qs from 'query-string'
 const Test2 = () => {
 
   return (

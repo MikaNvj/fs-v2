@@ -15,14 +15,14 @@ const states = {
   selectedPayment: null
 }
 
-const AutrePayement = (props) => {
+const AutrePayement = (props: any) => {
   const {
     savePayment, saveSub, saveIncome, saveCopy,
     payment: { _payments }, sub: {subs},
     customer: { customers }, copy: {copies}
   } = props
 
-  const create = useMemo(() => async (type) => {
+  const create = useMemo(() => async (type: any) => {
     let id, creator
     if(type === SUB) creator = saveSub
     else if([COPY, PRINT].includes(type)) creator = saveCopy
@@ -55,9 +55,9 @@ const AutrePayement = (props) => {
         <ScrollBar className="ap-list">
           <div className="aps">
             {
-              _payments.filter(({ type, rest = null, inactive }) => !inactive && others.includes(type) && rest === null)
-                .map((payment) => {
-                  let Comp, objList, opts = {
+              _payments.filter(({ type, rest = null, inactive }: any) => !inactive && others.includes(type) && rest === null)
+                .map((payment: any) => {
+                  let Comp, objList, opts: any = {
                     key: payment.id,
                     customer: customers[payment.customerId],
                     saveIncome, savePayment,
@@ -69,7 +69,7 @@ const AutrePayement = (props) => {
                     opts = {
                       ...opts, value: subs[payment.targetId],
                       saveSub
-                    }
+                    } 
                   }
                   else if([COPY, PRINT].includes(payment.type)){
                     objList = copies
@@ -77,7 +77,7 @@ const AutrePayement = (props) => {
                     opts = {
                       ...opts, value: copies[payment.targetId],
                       saveCopy
-                    }
+                    } 
                   } 
                   return Comp && opts.value ? <Comp
                     value = {objList && objList[payment.targetId]}
@@ -99,7 +99,7 @@ const AutrePayement = (props) => {
         !!selectedPayment && <div className="customer-choose">
           <div onClick={_ => setSelectedPayment(false)} className="close-chooser"/>
           <UserList
-            onSelect={async customer => {
+            onSelect={async (customer: any) => {
               savePayment({
                 ...selectedPayment,
                 customerId: customer.id

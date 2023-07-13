@@ -16,7 +16,7 @@ const defState = {
   error: ''
 }
 
-const Login = ({ signin }) => {
+const Login = ({ signin }: any) => {
   const State = bulkSetter(...useState({ ...defState, login: Store.getCurrentState('auth.user.username') || '' }))
   const { setConnected } = useAppContext()
   const {
@@ -39,16 +39,16 @@ const Login = ({ signin }) => {
     }
   }, [State])
 
-  const connectOnFly = useCallback(password => {
+  const connectOnFly = useCallback((password: any )=> {
     if(LocalData.passlength === password.length){
       const { user: { email, username }, token } = Store.getCurrentState('auth')
       if (token && [email, username].includes(login)) {
         try {
-          signin({ password, login }).then(_ => setConnected(true))
+          signin({ password, login }).then(() => setConnected(true))
         } catch (e) { }
       }
     }
-  })
+  },[])
 
   return (
     <div className={clsx('Login')}>
@@ -61,8 +61,8 @@ const Login = ({ signin }) => {
           autoFocus = {!login}
         />
         <Input
-          onKeyPress={e => e.code === 'Enter' && logIn()}
-          onKeyUp={e => connectOnFly(e.target.value)}
+          onKeyPress={(e: any) => e.code === 'Enter' && logIn()}
+          onKeyUp={(e: any) => connectOnFly(e.target.value)}
           {...input('password')}
           type='password'
           label="Mot de passe"

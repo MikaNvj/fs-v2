@@ -4,8 +4,8 @@ import { createPortal } from 'react-dom';
 import usePortal from './usePortals';
 import './Modal.scss'
 
-const Modal = (props) =>  {
-  const tmt = React.useRef(null)
+const Modal = (props: any) =>  {
+  const tmt = React.useRef< any>(null)
   const {children, parentSelector = '#root', active, className, close, optimize = true, timeout = 300} = props
   const [show, setShow] = React.useState(active)
   React.useEffect(() => {
@@ -15,7 +15,7 @@ const Modal = (props) =>  {
     }
     else tmt.current = setTimeout(_ => setShow(false), timeout)  
   }, [active])
-  const target = usePortal({
+  const target: any = usePortal({
     parentSelector,
     classNames: clsx('Modal', className),
     active, close
