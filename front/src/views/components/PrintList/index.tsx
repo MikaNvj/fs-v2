@@ -65,5 +65,5 @@ function PrintList(props: any) {
   )
 }
 
-// export default connect(PrintList, ['customer'])
-export default PrintList
+export default connect(PrintList, ['customer'])
+// export default PrintList

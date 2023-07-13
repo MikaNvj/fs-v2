@@ -237,5 +237,5 @@ const Diploma = (props: any) => {
   )
 }
 
-// export default connect(Diploma, ['customer', 'program', 'formation', 'payment', 'cert'])
-export default Diploma
+export default connect(Diploma, ['customer', 'program', 'formation', 'payment', 'cert'])
+// export default Diploma

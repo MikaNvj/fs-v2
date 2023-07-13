@@ -91,5 +91,5 @@ const TestSearch = (props: any) => {
   )
 }
 
-// export default connect(TestSearch, ["payment"])
-export default TestSearch
+export default connect(TestSearch, ["payment"])
+// export default TestSearch

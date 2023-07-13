@@ -107,5 +107,5 @@ const UserList = (props: any) => {
     </React.Fragment>
   )
 }
-// export default connect(UserList, ["customer"])
-export default UserList
+export default connect(UserList, ["customer"])
+// export default UserList

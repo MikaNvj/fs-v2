@@ -65,5 +65,5 @@ const PaidConnexion = (props: any) => {
   )
 }
 
-// export default connect(PaidConnexion, ["connexion", 'payment', 'customer'])
-export default PaidConnexion
+export default connect(PaidConnexion, ["connexion", 'payment', 'customer'])
+// export default PaidConnexion

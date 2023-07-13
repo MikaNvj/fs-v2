@@ -74,5 +74,5 @@ const Header = (props: any) => {
   )
 }
 
-// export default connect(Header)
-export default Header
+export default connect(Header)
+// export default Header
