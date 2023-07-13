@@ -19,7 +19,7 @@ const states = {
   modalConfirm: 0, modalWarning: 0, showDiploma: false,  openedCustomer: null
 }
 
-const Formation = (props) => {
+const Formation = (props: any) => {
   const {
     saveFormation, saveProgram, savePayment,
     formation: { _formations, formations }, program: { _programs },
@@ -37,27 +37,27 @@ const Formation = (props) => {
   } = bulkSetter(...useState({...states}))
 
   // Memos
-  const allPrograms = useMemo(_ => {
+  const allPrograms = useMemo(() => {
     return 
   }, [_programs])
 
-  const allFormations = useMemo(_ => {
-    const allPrograms = _programs.sort((a, b) => new Date(a.date) < new Date(b.date) ? 1 : -1)
-    return _formations.map(formation => {
-      const programs = allPrograms.filter(({formationId: fid}) => fid === formation.id)
+  const allFormations = useMemo(() => {
+    const allPrograms = _programs.sort((a: any, b: any) => new Date(a.date) < new Date(b.date) ? 1 : -1)
+    return _formations.map((formation: any) => {
+      const programs = allPrograms.filter(({formationId: fid}: any) => fid === formation.id)
       const filter = programs.length ? programs[0].date : formation.createdAt
       return {
         ...formation,
         programs, filter
       }
-    }).sort(({filter: fa}, {filter: fb}) => fa > fb ? -1 : 1)
+    }).sort(({filter: fa}: any, {filter: fb}: any) => fa > fb ? -1 : 1)
   }, [_formations, _programs])
 
   
   const customers = useMemo(() => {
     if(!activeProgram) return null
-    return _payments.filter(({type, targetId}) => type === FORMATION && targetId === activeProgram.id )
-      .map(({customerId}) => customerId)
+    return _payments.filter(({type, targetId}: any) => type === FORMATION && targetId === activeProgram.id )
+      .map(({customerId}: any) => customerId)
   }, [get(activeProgram, 'id'), _payments])
 
   return (
@@ -74,7 +74,7 @@ const Formation = (props) => {
           <ScrollBar className='formations-content'>
             {
               fuzzyFilter(allFormations, searchFormation, ({ name }) => name || '')
-              .map(({id, filter, programs: myprograms}) => {
+              .map(({id, filter, programs: myprograms}: any) => {
                 const formation = formations[id]
                 const { name } = formation
                 return (
@@ -98,7 +98,7 @@ const Formation = (props) => {
                     >
                       <ScrollBar>
                         {
-                          id === get(activeFormation, 'id') && myprograms.map((program) => {
+                          id === get(activeFormation, 'id') && myprograms.map((program: any) => {
                               const { date, price, detail, id } = program
                               return (
                                 <div
@@ -113,7 +113,7 @@ const Formation = (props) => {
                                       amount: program.price,
                                       rest: program.price
                                     }
-                                    const op = _payments.find((({ customerId, targetId, type }) => {
+                                    const op = _payments.find((({ customerId, targetId, type }: any) => {
                                       return customerId === customer.id && targetId === id && type === FORMATION
                                     }))
                                     setModalConfirm(
@@ -124,7 +124,7 @@ const Formation = (props) => {
                                           error: true
                                         } :
                                         {
-                                          handler: _ => {
+                                          handler: () => {
                                             savePayment(np)
                                             setActiveProgram(program)
                                             setOpenedCustomer(Store.getCurrentState('customer.customers.' + customer.id))
@@ -165,13 +165,13 @@ const Formation = (props) => {
       </div>
       <div className="right-container">
         <HeaderProgramm
-          close={_ => setActiveProgram(null)}
+          close={() => setActiveProgram(null)}
           curProgram={activeProgram}
           showList={setShowList}
           showDiploma={setShowDiploma}
         />
         <UserList
-          setOpenedCustomer={setOpenedCustomer}
+          setOpenedCustomer={setOpenedCustomer as any}
           openedCustomer={openedCustomer}
           programm={activeProgram && activeProgram.programmId}
           selected={customers}
@@ -201,7 +201,7 @@ const Formation = (props) => {
           { label: 'Frais de Certificat', name: "certprice"},
           { label: 'Nombre de place', type: 'number', name: "place" },
         ]}
-        save={async ({ formation, ...data }) => {
+        save={async ({ formation, ...data }: any) => {
           await saveProgram(data)
           setActiveFormation(formations[data.formationId])
         }}
@@ -232,11 +232,11 @@ const Formation = (props) => {
       />
       {
         showList && <PrintList
-          selected={customers}
-          active={true}
+        selected={customers}
+        active={true}
           formation={activeFormation}
           program={activeProgram}
-          close={_ => setShowList(false)}
+          close={() => setShowList(false)}
         />
       }
       {
@@ -244,7 +244,7 @@ const Formation = (props) => {
           active={true}
           actFormation={activeFormation}
           actProgram={activeProgram}
-          close={_ => setShowDiploma(false)}
+          close={() => setShowDiploma(false)}
         />
       }
     </div>
