@@ -122,7 +122,8 @@ const Modele = (props: any) => {
         <div className="content">
           <div className="left">
             <p>Le présent document atteste que</p>
-            <h3 id="name" ontouchstart="ts(event)" ontouchmove="tm(event)"
+            {/* <h3 id="name" ontouchstart="ts(event)" ontouchmove="tm(event)" */}
+            <h3 id="name"
             ><b> TOLONJANAHARY Nandrasanaela Daniel Aimé</b>
               <span className="zoom-plus" onClick={_ => zoomIt('plus')}>+</span>
               <span className="zoom-moins" onClick={_ => zoomIt('moins')}>-</span>

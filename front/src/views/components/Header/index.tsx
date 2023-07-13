@@ -65,7 +65,7 @@ const Header = (props: any) => {
         </div>
       }
 
-      <PopupMoney close={() => setMoney(false)} active={money} />
+      <PopupMoney active={money} close={() => setMoney(false)}/>
       <div className='rightest-one'>
         { connected && <UserSetting/> }
         <TitleBarActions />
@@ -73,4 +73,6 @@ const Header = (props: any) => {
     </div>
   )
 }
-export default connect(Header)
+
+// export default connect(Header)
+export default Header
