@@ -257,12 +257,13 @@ let UserComponent = (props) => {
                 //   facebook: JSON.stringify(State.facebook),
                 //   photo: await getPhotoFile(State.photo)
                 // })
-                _setCustomers(async (customers) => ([...customers, 
-                {
-                   ...State.get(['server', 'potentialPhotos']),
-                  facebook: JSON.stringify(State.facebook),
-                  photo: await getPhotoFile(State.photo)
-                }]))
+                _setCustomers(
+                  [..._customers, {
+                    ...State.get(['server', 'potentialPhotos']),
+                   facebook: JSON.stringify(State.facebook),
+                   photo: await getPhotoFile(State.photo)
+                 }]
+                )
 
                 quit()
               }} className="button-save">Sauvegarder</Button>
