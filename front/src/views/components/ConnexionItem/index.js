@@ -13,6 +13,7 @@ import {connect} from '../../../redux/store/index'
 
 import {useRecoilState} from "recoil";
 import { payementState } from '../../../recoil/atoms/payement';
+import { customerState } from '../../../recoil/atoms/customer';
 
 const Times = {
   add: (date, min) => {
@@ -31,21 +32,20 @@ const Times = {
   }
 }
 
-
 const ConnexionItem = (props) => {
 
+  const [_customers, _setCustomers] = useRecoilState()
   const durRef = useRef('')
   const {
     value, customer, paymnt, saveIncome, showUser,
     saveConnexion, savePayment, setChosenPayment,
     payment:{_payments: payments}
   } = props
-  
+
   const {
     facebook, lastname, firstname,
     sex, photo, phone, id
   } = customer || {}
-
 
   const state = bulkSetter(...useState({
       start: value.start && new Date(value.start),
@@ -187,5 +187,6 @@ const ConnexionItem = (props) => {
   )
 }
 
-export default connect(ConnexionItem, ['payment'])
+// export default connect(ConnexionItem, ['payment'])
+export default ConnexionItem
 
