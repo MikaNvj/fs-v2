@@ -11,6 +11,9 @@ import { Server } from '../../../services/api'
 import {toAmount} from '../../../services/functions/index'
 import {connect} from '../../../redux/store/index'
 
+import {useRecoilState} from "recoil";
+import { payementState } from '../../../recoil/atoms/payement';
+
 const Times = {
   add: (date, min) => {
     const d = new Date(date)
@@ -30,6 +33,7 @@ const Times = {
 
 
 const ConnexionItem = (props) => {
+
   const durRef = useRef('')
   const {
     value, customer, paymnt, saveIncome, showUser,
@@ -183,4 +187,5 @@ const ConnexionItem = (props) => {
   )
 }
 
-export default connect(ConnexionItem, ['payment'])
+// export default connect(ConnexionItem, ['payment'])
+
