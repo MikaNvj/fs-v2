@@ -185,5 +185,5 @@ const formatConnexion = (payment: any) => {
   )
 }
 
-export default connect(CustomerActivity, ["payment", 'income', 'formation', 'program'])
-// export default CustomerActivity
+// export default connect(CustomerActivity, ["payment", 'income', 'formation', 'program'])
+export default CustomerActivity
