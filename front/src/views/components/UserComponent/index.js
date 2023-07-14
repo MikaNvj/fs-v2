@@ -15,6 +15,10 @@ import CustomerActivity from '../CustomerActivity'
 import {toPhone} from '../../../services/functions/index'
 import Modal from '../../portals/Modal'
 
+import { customerState } from '../../../recoil/atoms/customer'
+import { payementState } from '../../../recoil/atoms/payement'
+import {useRecoilState} from 'recoil'
+
 export const Validator = Input.validator
 
 const states = {
@@ -35,9 +39,17 @@ const getPhotoFile = async url => {
 }
 
 let UserComponent = (props) => {
+
+  const [_customers, _setCustomers] = useRecoilState(customerState)
+  const [payments, _setPayment] = useRecoilState(payementState)
+
+  useEffect(() => {
+    console.log(_customers)
+  }, [_customers])  
+
   const {
     saveCustomer, close, edited,
-    setActivity, activity, payment:{_payments: payments}
+    setActivity, activity
   } = props
   const State = bulkSetter(...useState({ ...states }))
 
@@ -240,11 +252,18 @@ let UserComponent = (props) => {
             </div>
             <div className="view-bottom">
               <Button autowait rounded onClick={async () => {
-                await saveCustomer({
-                  ...State.get(['server', 'potentialPhotos']),
+                // await saveCustomer({
+                //   ...State.get(['server', 'potentialPhotos']),
+                //   facebook: JSON.stringify(State.facebook),
+                //   photo: await getPhotoFile(State.photo)
+                // })
+                _setCustomers(async (customers) => ([...customers, 
+                {
+                   ...State.get(['server', 'potentialPhotos']),
                   facebook: JSON.stringify(State.facebook),
                   photo: await getPhotoFile(State.photo)
-                })
+                }]))
+
                 quit()
               }} className="button-save">Sauvegarder</Button>
             </div>
@@ -255,7 +274,7 @@ let UserComponent = (props) => {
   )
 }
 
-UserComponent = connect(UserComponent, ["customer", "payment"])
+// UserComponent = connect(UserComponent, ["customer", "payment"])
 
 const Splitter = props => {
   return (

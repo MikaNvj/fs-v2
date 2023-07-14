@@ -4,11 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Store from './redux/store';
+import { RecoilRoot } from "recoil";
 
 ReactDOM.render(
   <React.StrictMode>
     <Store.StoreProvider>
-      <App />
+      <RecoilRoot>
+        <App />
+      </ RecoilRoot>
     </Store.StoreProvider>
   </React.StrictMode>,
   document.getElementById('root')

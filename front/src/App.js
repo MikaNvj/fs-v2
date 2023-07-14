@@ -9,7 +9,7 @@ import './App.scss'
 import Header from './views/components/Header'
 const states = {
   popup: { message: "" },
-  connected: false
+  connected: true
 }
 
 

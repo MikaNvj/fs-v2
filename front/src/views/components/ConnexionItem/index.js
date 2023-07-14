@@ -187,5 +187,5 @@ const ConnexionItem = (props) => {
   )
 }
 
-// export default connect(ConnexionItem, ['payment'])
+export default connect(ConnexionItem, ['payment'])
 
