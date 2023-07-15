@@ -92,6 +92,7 @@ class Sync {
       }
     })
   }
+  
 }
 
 export default new Sync()
