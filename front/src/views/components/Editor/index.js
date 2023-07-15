@@ -40,6 +40,7 @@ const Editor = (props) => {
             ...value,
             ...I.get()
           })
+          // setFormation([...formation,{...value,...I.get}])
         } catch (err) {
           console.warn(
             "Error during saving. values:",
