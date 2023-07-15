@@ -43,9 +43,7 @@ let UserComponent = (props) => {
   const [_customers, _setCustomers] = useRecoilState(customerState)
   const [payments, _setPayment] = useRecoilState(payementState)
 
-  useEffect(() => {
-    console.log(_customers)
-  }, [_customers])  
+ 
 
   const {
     saveCustomer, close, edited,

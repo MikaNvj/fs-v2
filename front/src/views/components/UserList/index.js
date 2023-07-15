@@ -9,9 +9,11 @@ import ScrollBar from 'react-perfect-scrollbar'
 import Customer from '../Customer'
 import { useCallback } from 'react'
 import { useEffect } from 'react'
+import { useRecoilState } from 'recoil'
+import { customerState } from '../../../recoil/atoms/customer'
 
 const UserList = (props) => {
-
+  const [_customer, _setcustomer] = useRecoilState(customerState)
   const {
     selected, onSelect, openedCustomer, setOpenedCustomer,
     customer: { _customers, customers }
@@ -25,7 +27,9 @@ const UserList = (props) => {
     search: '', edited: null, activity: false,
     incomer: null, showPay: false
   }))
-
+  useEffect(() => {
+    console.log(_customer)
+  }, [_customer]) 
   const searchRef = useRef(null)
 
   const ref = useRef();
@@ -79,7 +83,11 @@ const UserList = (props) => {
             <div className="users">
               {
                 (_ => {
-                  const cust = (selected ? selected.map(id => customers[id]) : _customers).filter(({inactive}) => !inactive)
+                //   const cust = (selected ? selected.map(id => customers[id]) : _customers).filter(({inactive}) => !inactive)
+                //   if (search) return fuzzyFilter(cust, search, ({ firstname, lastname }) => `${firstname} ${lastname}`).slice(0, 50)
+                //   else return cust.sort(({ updatedAt: a }, { updatedAt: b }) => a < b ? 1 : -1).slice(0, 50)
+                // })()
+                const cust = (selected ? selected.map(id => _customer[id]) : _customer).filter(({inactive}) => !inactive)
                   if (search) return fuzzyFilter(cust, search, ({ firstname, lastname }) => `${firstname} ${lastname}`).slice(0, 50)
                   else return cust.sort(({ updatedAt: a }, { updatedAt: b }) => a < b ? 1 : -1).slice(0, 50)
                 })().map(customer => (
