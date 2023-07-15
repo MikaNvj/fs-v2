@@ -75,7 +75,6 @@ class Sync {
         })
       }
     }
-    
   }
 
   updateRedux = async (news, aliases = {}) => {
