@@ -12,7 +12,6 @@ const states = {
   connected: true
 }
 
-
 function App(props) {
   const global = bulkSetter(...useState(states))
   return (
