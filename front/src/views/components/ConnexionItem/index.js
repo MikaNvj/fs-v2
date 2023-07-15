@@ -34,7 +34,7 @@ const Times = {
 
 const ConnexionItem = (props) => {
 
-  const [_customers, _setCustomers] = useRecoilState()
+  // const [_customers, _setCustomers] = useRecoilState()
   const durRef = useRef('')
   const {
     value, customer, paymnt, saveIncome, showUser,
@@ -187,6 +187,5 @@ const ConnexionItem = (props) => {
   )
 }
 
-// export default connect(ConnexionItem, ['payment'])
-export default ConnexionItem
-
+export default connect(ConnexionItem, ['payment'])
+// export default ConnexionItem
