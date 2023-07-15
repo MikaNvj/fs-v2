@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter } from "react-router-dom"
 import { bulkSetter } from './services/functions'
 import { AppContext } from './services/provider'
@@ -8,6 +8,8 @@ import Router from './Router'
 import './App.scss'
 import Header from './views/components/Header'
 import Recoil from './services/iDB/Recoil'
+import { useRecoilState } from 'recoil'
+import { formationState } from './recoil/atoms/formation'
 const states = {
   popup: { message: "" },
   connected: true
@@ -15,6 +17,10 @@ const states = {
 
 function App(props) {
   const global = bulkSetter(...useState(states))
+  const [_f,_setf] = useRecoilState(formationState)
+  useEffect(()=>{
+    console.log(_f)
+  }, [_f])
   return (
     <AppContext.Provider value={global}>
       <BrowserRouter>
