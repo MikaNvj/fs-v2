@@ -18,6 +18,7 @@ import Modal from '../../portals/Modal'
 import { customerState } from '../../../recoil/atoms/customer'
 import { payementState } from '../../../recoil/atoms/payement'
 import {useRecoilState} from 'recoil'
+import { triggerEvent } from '../../../services/iDB/Recoil'
 
 export const Validator = Input.validator
 
@@ -42,8 +43,6 @@ let UserComponent = (props) => {
 
   const [_customers, _setCustomers] = useRecoilState(customerState)
   const [payments, _setPayment] = useRecoilState(payementState)
-
- 
 
   const {
     saveCustomer, close, edited,
@@ -250,18 +249,19 @@ let UserComponent = (props) => {
             </div>
             <div className="view-bottom">
               <Button autowait rounded onClick={async () => {
-                // await saveCustomer({
-                //   ...State.get(['server', 'potentialPhotos']),
-                //   facebook: JSON.stringify(State.facebook),
-                //   photo: await getPhotoFile(State.photo)
-                // })
-                _setCustomers(
-                  [..._customers, {
-                    ...State.get(['server', 'potentialPhotos']),
-                   facebook: JSON.stringify(State.facebook),
-                   photo: await getPhotoFile(State.photo)
-                 }]
-                )
+                await saveCustomer({
+                  ...State.get(['server', 'potentialPhotos']),
+                  facebook: JSON.stringify(State.facebook),
+                  photo: await getPhotoFile(State.photo)
+                })
+                // _setCustomers(
+                //   [..._customers, {
+                //     ...State.get(['server', 'potentialPhotos']),
+                //    facebook: JSON.stringify(State.facebook),
+                //    photo: await getPhotoFile(State.photo)
+                //  }]
+                // )
+                // triggerEvent('aaa')
 
                 quit()
               }} className="button-save">Sauvegarder</Button>
@@ -273,7 +273,7 @@ let UserComponent = (props) => {
   )
 }
 
-// UserComponent = connect(UserComponent, ["customer", "payment"])
+UserComponent = connect(UserComponent, ["customer", "payment"])
 
 const Splitter = props => {
   return (

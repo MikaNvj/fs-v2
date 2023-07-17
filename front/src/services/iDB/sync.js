@@ -54,7 +54,7 @@ class Sync {
       await Promise.all(objs.map(async (obj) => {
         const { model, ...val } = obj
         model && await DB.save(model, val)
-        //triggerEvent(model) //call triggerEvent 
+        triggerEvent(model) //call triggerEvent 
       }))
       this.updateOnline()
     }
