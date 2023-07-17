@@ -11,6 +11,9 @@ import { CONNEXION } from '../../../services/constants'
 import Modal from '../../portals/Modal'
 import UserComponent from '../../components/UserComponent'
 import PaidConnexion from '../../components/PaidConnexion'
+import { useRecoilState } from 'recoil'
+import { connexionState } from '../../../recoil/atoms/connexion'
+import { payementState } from '../../../recoil/atoms/payement'
 
 const states = {
   chosenPayment: null, activity: false,
@@ -40,7 +43,16 @@ const Connexion = (props) => {
       curUser: customer, activity
     })
   })
-
+  const [_connexionrecoil, _setconnex] = useRecoilState(connexionState)
+  const [_paymentrecoil, _setpayment] = useRecoilState(payementState)
+  
+  
+  const _allConnexion = useMemo(_ => {
+    return _paymentrecoil.filter(({ type, rest = null, targetId, inactive }) => {
+      return !inactive && type === CONNEXION 
+    })
+  }, [_paymentrecoil])
+  // console.log(allConnexions, _allConnexion)
   return (
     <div className={clsx('Connexion')}>
       <div className='c-options'>
@@ -62,7 +74,7 @@ const Connexion = (props) => {
       </div>
       <ScrollBar className="connexions">
         {
-          allConnexions.filter(payment => connexions[payment.targetId]).map((payment) => {
+          _allConnexion.filter(payment => connexions[payment.targetId]).map((payment) => {
             return <ConnexionItem
               key={payment.id}
               value={connexions[payment.targetId]}
@@ -118,4 +130,4 @@ const Connexion = (props) => {
 }
 
 export default connect(Connexion, ["connexion", 'payment', 'customer'])
-
+// export default Connexion;

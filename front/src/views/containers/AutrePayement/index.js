@@ -8,6 +8,8 @@ import ScrollBar from 'react-perfect-scrollbar'
 import UserList from '../../components/UserList'
 import { bulkSetter } from '../../../services/functions'
 import CopyItem from '../../components/CopyItem'
+import { useRecoilState } from 'recoil'
+import { payementState } from '../../../recoil/atoms/payement'
 
 const others = [COPY, EMAIL, PRINT, REPAIR, SCAN, SUB]
 
@@ -16,6 +18,8 @@ const states = {
 }
 
 const AutrePayement = (props) => {
+  const [_paymentrecoil, _setpaymentrecoil ] = useRecoilState(payementState)
+
   const {
     savePayment, saveSub, saveIncome, saveCopy,
     payment: { _payments }, sub: {subs},
@@ -37,8 +41,6 @@ const AutrePayement = (props) => {
   const {
     selectedPayment, setSelectedPayment, ...State
   } = bulkSetter(...useState({...states}))
-
-
   return (
     <div className={clsx('AutrePayement')}>
       <div className="ap-header">
@@ -55,7 +57,8 @@ const AutrePayement = (props) => {
         <ScrollBar className="ap-list">
           <div className="aps">
             {
-              _payments.filter(({ type, rest = null, inactive }) => !inactive && others.includes(type) && rest === null)
+              // _payments.filter(({ type, rest = null, inactive }) => !inactive && others.includes(type) && rest === null)
+              _paymentrecoil.filter(({ type, rest = null, inactive }) => !inactive && others.includes(type) && rest === null)
                 .map((payment) => {
                   let Comp, objList, opts = {
                     key: payment.id,
