@@ -4,6 +4,7 @@ import LocalData from '../LocalData'
 import DB from './db'
 import * as Types from '../../redux/types/index'
 import Store from '../../redux/store'
+import {triggerEvent} from './Recoil'
 
 class Sync {
   constructor() {
@@ -53,6 +54,7 @@ class Sync {
       await Promise.all(objs.map(async (obj) => {
         const { model, ...val } = obj
         model && await DB.save(model, val)
+        //triggerEvent(model) //call triggerEvent 
       }))
       this.updateOnline()
     }
