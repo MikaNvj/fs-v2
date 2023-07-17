@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import clsx from "clsx";
 import "./Formation.scss";
 import Editor, { Validator } from "../../components/Editor";
+import  levenshtein  from 'fast-levenshtein'
 import {
   bulkSetter,
   formatDate,
@@ -137,21 +138,12 @@ const Formation = (props) => {
     resultat.sort(function (a, b) {
       var aIndex = getIndexOfMatchingSubstring(a,recherche);
       var bIndex = getIndexOfMatchingSubstring(b,recherche);
-  
       if (aIndex === -1) return 1; 
       if (bIndex === -1) return -1; 
   
       return aIndex - bIndex; 
     });
-  //   var resultats = [];
-  //   for (var i = 0; i < resultat.length; i++) {
-  //   if (resultat[i] === recherche) {
-  //     resultats.push(resultat[i]);
-  //   }
-  // }
-  // return resultats;
 
-  console.log(resultat)
     return resultat;
   }
   function getIndexOfMatchingSubstring(objet, query){
@@ -163,6 +155,7 @@ const Formation = (props) => {
   function onchange(event){
     const val = event.target.value;
     setformationstate(tabsearch(_formationrecoil, val, ['name']))
+    // console.log(levenshtein.get(val,tabsearch(_formationrecoil, val, ['name'])))
   }
 
   return (

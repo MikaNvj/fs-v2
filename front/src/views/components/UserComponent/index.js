@@ -261,7 +261,9 @@ let UserComponent = (props) => {
                 //    photo: await getPhotoFile(State.photo)
                 //  }]
                 // )
+
                 // triggerEvent('aaa')
+
 
                 quit()
               }} className="button-save">Sauvegarder</Button>
