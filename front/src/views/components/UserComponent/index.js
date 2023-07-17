@@ -250,18 +250,18 @@ let UserComponent = (props) => {
             </div>
             <div className="view-bottom">
               <Button autowait rounded onClick={async () => {
-                // await saveCustomer({
-                //   ...State.get(['server', 'potentialPhotos']),
-                //   facebook: JSON.stringify(State.facebook),
-                //   photo: await getPhotoFile(State.photo)
-                // })
-                _setCustomers(
-                  [..._customers, {
-                    ...State.get(['server', 'potentialPhotos']),
-                   facebook: JSON.stringify(State.facebook),
-                   photo: await getPhotoFile(State.photo)
-                 }]
-                )
+                await saveCustomer({
+                  ...State.get(['server', 'potentialPhotos']),
+                  facebook: JSON.stringify(State.facebook),
+                  photo: await getPhotoFile(State.photo)
+                })
+                // _setCustomers(
+                //   [..._customers, {
+                //     ...State.get(['server', 'potentialPhotos']),
+                //    facebook: JSON.stringify(State.facebook),
+                //    photo: await getPhotoFile(State.photo)
+                //  }]
+                // )
 
                 quit()
               }} className="button-save">Sauvegarder</Button>
@@ -273,7 +273,7 @@ let UserComponent = (props) => {
   )
 }
 
-// UserComponent = connect(UserComponent, ["customer", "payment"])
+UserComponent = connect(UserComponent, ["customer", "payment"])
 
 const Splitter = props => {
   return (
