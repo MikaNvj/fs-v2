@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 // import * as Atoms from "../../recoil/atoms"
 import { useRecoilState } from 'recoil'
 import { authState } from '../../recoil/atoms'
@@ -23,9 +23,6 @@ import {
 export const triggerEvent = (evName) => {
     document.dispatchEvent(new CustomEvent(evName))
 }
-const recoil_getter_from_listener = (eventName, listener) => {
-    document.addEventListener(eventName, listener)
-}
 
 export default function Recoil() {
 
@@ -40,7 +37,10 @@ export default function Recoil() {
     const [program, setProgram] = useRecoilState(programState)
     const [sub, setSub] = useRecoilState(subState)
     const [user, setUser] = useRecoilState(userState)
+    const [dbTablesHadlers, setHendler] = useState(1)
 
+    const models = ['cert', 'connexion', 'copy', 'customer', 'formation', 
+    'icomes', 'payment', 'program', 'sub', 'user']
     async function update_recoil(model) {
         switch (model) {
             case 'cert':
@@ -76,35 +76,30 @@ export default function Recoil() {
         }
     }
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const setters = {
-            "setcert": setCert,
-            "setconnection": setConnection,
-            "setcopy": setCopy,
-            "setcustomer": setCustomer,
-            "setformation": setFormation,
-            "seticomes": setIcomes,
-            "setpayment": setPayement,
-            "setProgram": setProgram,
-            "setsub": setSub,
-            "setuser": setUser
-        }
+    //     document.addEventListener('db_tables_change', () => {
+    //         setHendler(dbTablesHadlers + 1)
+    //     })
+
+    // }, [])
+
+    useEffect(() => {
 
         DB.dbTables().then(async models => {
             for (const model of models) {
 
                 update_recoil(model)
 
-                document.addEventListener(model, async (e) => {
-                    // setters[`set${model}`](await iDB[model].get(model))
+                document.addEventListener(model, (e) => {
                     update_recoil(model)
                 })
-                console.log(model + 'listeners called')
             }
 
         })
+        
     }, [])
+    // }, [dbTablesHadlers])
 
     return (
         <div>

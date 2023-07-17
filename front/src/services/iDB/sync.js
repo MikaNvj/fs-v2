@@ -25,6 +25,7 @@ class Sync {
     socket.on('updates', async ({ aliases, news, from }) => {
       LocalData.aliases = Object.assign(this.aliases, aliases)
       await DB.updateDatabase(news, aliases)
+      this.update_recoil(news)
       await this.updateRedux(news, aliases)
       if (from) {
         LocalData.from = from
@@ -54,7 +55,9 @@ class Sync {
       await Promise.all(objs.map(async (obj) => {
         const { model, ...val } = obj
         model && await DB.save(model, val)
-        triggerEvent(model) //call triggerEvent 
+        //triggerEvent(model) //call triggerEvent 
+
+        this.update_recoil_one_model(model)
       }))
       this.updateOnline()
     }
@@ -92,6 +95,16 @@ class Sync {
           Store.dispatch({ type, payload: news ? news[model] : await DB.getAll(model) })
         }
       }
+    })
+  }
+
+  update_recoil_one_model = (model) => {
+    triggerEvent(model)
+  }
+
+  update_recoil = (data) => {
+    Object.keys(data).map(model => {
+      this.update_recoil_one_model(model)
     })
   }
   

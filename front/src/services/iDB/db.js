@@ -51,7 +51,9 @@ export const updateDatabase = async (newData, aliases) => {
         tx.objectStore(table).put(one)
       })
     }
+
   }))
+
 }
 
 export const createTable = tables => new Promise(async (ok, ko) => {
