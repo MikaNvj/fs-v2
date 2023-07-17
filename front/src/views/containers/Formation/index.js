@@ -1,77 +1,168 @@
-import React, { useState, useMemo } from 'react'
-import clsx from 'clsx'
-import './Formation.scss'
-import Editor, { Validator } from '../../components/Editor'
-import { bulkSetter, formatDate, fuzzyFilter, get, toAmount } from '../../../services/functions'
-import Store, { connect } from '../../../redux/store'
-import HeaderProgramm from '../../components/HeaderProgramm';
-import ScrollBar from 'react-perfect-scrollbar'
-import ModalConfirm from '../../components/ModalConfirm'
-import ModalWarning from '../../components/ModalWarning'
-import UserList from '../../components/UserList'
-import { FORMATION } from '../../../services/constants/index'
-import PrintList from '../../components/PrintList'
-import Diploma from '../../components/Diploma'
+import React, { useState, useMemo } from "react";
+import clsx from "clsx";
+import "./Formation.scss";
+import Editor, { Validator } from "../../components/Editor";
+import {
+  bulkSetter,
+  formatDate,
+  fuzzyFilter,
+  get,
+  toAmount,
+} from "../../../services/functions";
+import Store, { connect } from "../../../redux/store";
+import HeaderProgramm from "../../components/HeaderProgramm";
+import ScrollBar from "react-perfect-scrollbar";
+import ModalConfirm from "../../components/ModalConfirm";
+import ModalWarning from "../../components/ModalWarning";
+import UserList from "../../components/UserList";
+import { FORMATION } from "../../../services/constants/index";
+import PrintList from "../../components/PrintList";
+import Diploma from "../../components/Diploma";
+import { useRecoilState } from "recoil";
+import { formationState } from "../../../recoil/atoms/formation";
+import { programState } from "../../../recoil/atoms/program";
+import {v4} from 'uuid'
 
 const states = {
-  edited: null, newProgram: false, showList: false,
-  activeFormation: null, activeProgram: null, draggedTo: 0, searchFormation: '',
-  modalConfirm: 0, modalWarning: 0, showDiploma: false,  openedCustomer: null
-}
+  edited: null,
+  newProgram: false,
+  showList: false,
+  activeFormation: null,
+  activeProgram: null,
+  draggedTo: 0,
+  searchFormation: "",
+  modalConfirm: 0,
+  modalWarning: 0,
+  showDiploma: false,
+  openedCustomer: null,
+};
 
 const Formation = (props) => {
+  const [_formationrecoil, _setformationrecoil] =
+    useRecoilState(formationState);
+  const [_programrecoil, _setprogramrecoil] = useRecoilState(programState);
   const {
-    saveFormation, saveProgram, savePayment,
-    formation: { _formations, formations }, program: { _programs },
-    payment: { _payments }
-  } = props
+    saveFormation,
+    saveProgram,
+    savePayment,
+    formation: { _formations, formations },
+    program: { _programs },
+    payment: { _payments },
+  } = props;
 
   // States
   const {
-    edited, setEdited, searchFormation, input: __input,
-    newProgram, setNewProgram,
-    modalConfirm, setModalConfirm, showList, showDiploma, setShowDiploma,
-    modalWarning, setModalWarning, setShowList, openedCustomer, setOpenedCustomer,
-    activeFormation, setActiveFormation,
-    activeProgram, setActiveProgram
-  } = bulkSetter(...useState({...states}))
+    edited,
+    setEdited,
+    searchFormation,
+    input: __input,
+    newProgram,
+    setNewProgram,
+    modalConfirm,
+    setModalConfirm,
+    showList,
+    showDiploma,
+    setShowDiploma,
+    modalWarning,
+    setModalWarning,
+    setShowList,
+    openedCustomer,
+    setOpenedCustomer,
+    activeFormation,
+    setActiveFormation,
+    activeProgram,
+    setActiveProgram,
+  } = bulkSetter(...useState({ ...states }));
 
-  // Memos
-  const allPrograms = useMemo(_ => {
-    return 
-  }, [_programs])
+  // // Memos
+  // const allPrograms = useMemo(_ => {
+  //   return
+  // }, [_programs])
 
-  const allFormations = useMemo(_ => {
-    const allPrograms = _programs.sort((a, b) => new Date(a.date) < new Date(b.date) ? 1 : -1)
-    return _formations.map(formation => {
-      const programs = allPrograms.filter(({formationId: fid}) => fid === formation.id)
-      const filter = programs.length ? programs[0].date : formation.createdAt
-      return {
-        ...formation,
-        programs, filter
-      }
-    }).sort(({filter: fa}, {filter: fb}) => fa > fb ? -1 : 1)
-  }, [_formations, _programs])
+  const allFormations = useMemo(
+    (_) => {
+      const allPrograms = _programs.sort((a, b) =>
+        new Date(a.date) < new Date(b.date) ? 1 : -1
+      );
+      return _formations
+        .map((formation) => {
+          const programs = allPrograms.filter(
+            ({ formationId: fid }) => fid === formation.id
+          );
+          const filter = programs.length
+            ? programs[0].date
+            : formation.createdAt;
+          return {
+            ...formation,
+            programs,
+            filter,
+          };
+        })
+        .sort(({ filter: fa }, { filter: fb }) => (fa > fb ? -1 : 1));
+    },
+    [_formations, _programs]
+  );
+  // const allFormations = useMemo(_ => {
+  //   const allPrograms = _programrecoil.sort((a, b) => new Date(a.date) < new Date(b.date) ? 1 : -1)
+  //   return _formationrecoil.map(formation => {
+  //     const programs = allPrograms.filter(({formationId: fid}) => fid === formation.id)
+  //     const filter = programs.length ? programs[0].date : formation.createdAt
+  //     return {
+  //       ...formation,
+  //       programs, filter
+  //     }
+  //   }).sort(({filter: fa}, {filter: fb}) => fa > fb ? -1 : 1)
+  // }, [_formationrecoil, _programrecoil])
 
-  
   const customers = useMemo(() => {
-    if(!activeProgram) return null
-    return _payments.filter(({type, targetId}) => type === FORMATION && targetId === activeProgram.id )
-      .map(({customerId}) => customerId)
-  }, [get(activeProgram, 'id'), _payments])
+    if (!activeProgram) return null;
+    return _payments
+      .filter(
+        ({ type, targetId }) =>
+          type === FORMATION && targetId === activeProgram.id
+      )
+      .map(({ customerId }) => customerId);
+  }, [get(activeProgram, "id"), _payments]);
 
   return (
-    <div className={clsx('Formation')}>
+    <div className={clsx("Formation")}>
       <div className="formations-container">
         <div className="formations-container-header">
-          <div className="add-formation-button" onClick={_ => setEdited({})} />
-          <div className="text-header">{'Formations'}</div>
+          <div
+            className="add-formation-button"
+            onClick={(_) => setEdited({})}
+          />
+          <div className="text-header">{"Formations"}</div>
         </div>
         <div className="formation-search">
-          <input {...__input('searchFormation')} type="text" />
+          <input {...__input("searchFormation")} type="text" />
         </div>
         <div className="formations">
-          <ScrollBar className='formations-content'>
+          <ScrollBar className="formations-content">
+            {_formationrecoil.map((e) => (
+              <div key={e.id} className={clsx("formation", get(activeFormation, 'id') === e.id && "active")}>
+              <div className={"formation-name"} onClick={_ => {
+                      
+              }}>
+                <div onClick={_ => setEdited(e.id)} className="menu" />
+                <div
+                  className='name'
+                  onClick={_ => setActiveFormation(get(activeFormation, 'id') === e.id ? null : e)}
+                >{e.name}</div>
+                <div
+                  onClick={_ => setNewProgram({ formationId: e.id, certprice: 5000, date: new Date(), place: 0 })}
+                  className="menu add"
+                />
+                
+              </div>
+              </div>
+              // <div
+              //   className="name">
+              //   {e.name}
+              // </div>
+            ))}
+          </ScrollBar>
+          {/* <ScrollBar className='formations-content'>
             {
               fuzzyFilter(allFormations, searchFormation, ({ name }) => name || '')
               .map(({id, filter, programs: myprograms}) => {
@@ -160,12 +251,12 @@ const Formation = (props) => {
                 )
               })
             }
-          </ScrollBar>
+          </ScrollBar> */}
         </div>
       </div>
       <div className="right-container">
         <HeaderProgramm
-          close={_ => setActiveProgram(null)}
+          close={(_) => setActiveProgram(null)}
           curProgram={activeProgram}
           showList={setShowList}
           showDiploma={setShowDiploma}
@@ -181,31 +272,55 @@ const Formation = (props) => {
         close={() => setEdited(null)}
         active={!!edited}
         value={edited}
-        title={(edited?.id ? "Modifier" : 'Nouvelle') + " Formation"}
+        title={(edited?.id ? "Modifier" : "Nouvelle") + " Formation"}
         fields={[
-          { label: 'Appelation', name: "name", validator: Validator().required() },
-          { label: 'Appelation Complète', name: "fullname" },
+          {
+            label: "Appelation",
+            name: "name",
+            validator: Validator().required(),
+          },
+          // { label: "Id", name: "id" },
+          { label: "Appelation Complète", name: "fullname" },
         ]}
-        save={saveFormation}
-        position='left'
+        // save={saveFormation}
+        // save={_setformationrecoil([..._formationrecoil,{...value,...I.get(),id: v4()}])}
+        save={async (...data ) => {
+          await _setformationrecoil([..._formationrecoil,{data,id: v4()}]);
+          
+        }}
+        position="left"
       />
       <Editor
         close={() => setNewProgram(null)}
         active={!!newProgram}
-        title={(newProgram?.id ? "Modifier" : 'Nouvelle') + " Date de Formation"}
+        title={
+          (newProgram?.id ? "Modifier" : "Nouvelle") + " Date de Formation"
+        }
         value={newProgram || {}}
         fields={[
-          { label: 'Frais de formation', type: 'number', name: "price", suffix: 'Ar', validator: Validator().required() },
-          { label: 'Date de debut', type: 'date', maxOption: 4, name: "date", validator: Validator().required() },
-          { label: 'Déscriptif', name: "detail"},
-          { label: 'Frais de Certificat', name: "certprice"},
-          { label: 'Nombre de place', type: 'number', name: "place" },
+          {
+            label: "Frais de formation",
+            type: "number",
+            name: "price",
+            suffix: "Ar",
+            validator: Validator().required(),
+          },
+          {
+            label: "Date de debut",
+            type: "date",
+            maxOption: 4,
+            name: "date",
+            validator: Validator().required(),
+          },
+          { label: "Déscriptif", name: "detail" },
+          { label: "Frais de Certificat", name: "certprice" },
+          { label: "Nombre de place", type: "number", name: "place" },
         ]}
         save={async ({ formation, ...data }) => {
-          await saveProgram(data)
-          setActiveFormation(formations[data.formationId])
+          await saveProgram(data);
+          setActiveFormation(formations[data.formationId]);
         }}
-        position='left'
+        position="left"
       />
       <ModalConfirm
         active={!!modalConfirm}
@@ -218,36 +333,69 @@ const Formation = (props) => {
       />
       <Editor
         title="Nouveau client"
-        fields={
-          [
-            { label: "firstname", name: "firstname", type: "text", validator: Validator().required },
-            { label: "secondname", name: "secondname", type: "text", validator: Validator().required },
-            { label: "birthday", name: "birthday", type: "date", validator: Validator().required },
-            { label: "email", name: "email", type: "text", validator: Validator().required },
-            { label: "facebook", name: "facebook", type: "text", validator: Validator().required },
-            { label: "adress", name: "adress", type: "text", validator: Validator().required },
-            { lable: "phone", name: "phone", type: "text", validator: Validator().required }
-          ]
-        }
+        fields={[
+          {
+            label: "firstname",
+            name: "firstname",
+            type: "text",
+            validator: Validator().required,
+          },
+          {
+            label: "secondname",
+            name: "secondname",
+            type: "text",
+            validator: Validator().required,
+          },
+          {
+            label: "birthday",
+            name: "birthday",
+            type: "date",
+            validator: Validator().required,
+          },
+          {
+            label: "email",
+            name: "email",
+            type: "text",
+            validator: Validator().required,
+          },
+          {
+            label: "facebook",
+            name: "facebook",
+            type: "text",
+            validator: Validator().required,
+          },
+          {
+            label: "adress",
+            name: "adress",
+            type: "text",
+            validator: Validator().required,
+          },
+          {
+            lable: "phone",
+            name: "phone",
+            type: "text",
+            validator: Validator().required,
+          },
+        ]}
       />
-      {
-        showList && <PrintList
+      {showList && (
+        <PrintList
           selected={customers}
           active={true}
           formation={activeFormation}
           program={activeProgram}
-          close={_ => setShowList(false)}
+          close={(_) => setShowList(false)}
         />
-      }
-      {
-        showDiploma && <Diploma
+      )}
+      {showDiploma && (
+        <Diploma
           active={true}
           actFormation={activeFormation}
           actProgram={activeProgram}
-          close={_ => setShowDiploma(false)}
+          close={(_) => setShowDiploma(false)}
         />
-      }
+      )}
     </div>
-  )
-}
-export default connect(Formation, ["formation", "program", 'payment'])
+  );
+};
+export default connect(Formation, ["formation", "program", "payment"]);

@@ -6,6 +6,7 @@ import { bulkSetter } from '../../../services/functions'
 import Button from '../Button'
 import ScrollBar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
+import {v4} from 'uuid'
 import { formationState } from '../../../recoil/atoms/formation'
 export const Validator = Input.validator
 
@@ -39,11 +40,11 @@ const Editor = (props) => {
       if (valid) {
         S.setWait(true)
         try {
-          // await props.save({
-          //   ...value,
-          //   ...I.get()
-          // })
-          _setformation([..._formation,{...value,...I.get()}])
+          await props.save({
+            ...value,
+            ...I.get()
+          })
+          
         } catch (err) {
           console.warn(
             "Error during saving. values:",
