@@ -384,21 +384,21 @@ const Formation = (props) => {
           // { label: "Id", name: "id" },
           { label: "Appelation Complète", name: "fullname" },
         ]}
-        // save={saveFormation}
-        save={async ({...data }) => {
-          // edited = data
-          function modif(user){
-            const f =[..._formationrecoil.map(u => ({...u}))];
-            f.forEach((u,i) => {
-              if(u.id === data.id){
-                f[i] = {...user}
-              }
-            })
-            return f
-          }
-         edited?.id ? _setformationrecoil(modif(data))  : await _setformationrecoil([..._formationrecoil,{...data,id: v4()}]);
+        save={saveFormation}
+        // save={async ({...data }) => {
+        //   
+        //   function modif(user){
+        //     const f =[..._formationrecoil.map(u => ({...u}))];
+        //     f.forEach((u,i) => {
+        //       if(u.id === data.id){
+        //         f[i] = {...user}
+        //       }
+        //     })
+        //     return f
+        //   }
+        //  edited?.id ? _setformationrecoil(modif(data))  : await _setformationrecoil([..._formationrecoil,{...data,id: v4()}]);
           
-        }}
+        // }}
         position="left"
       />
       <Editor
@@ -428,19 +428,23 @@ const Formation = (props) => {
           { label: "Nombre de place", type: "number", name: "place" },
         ]}
         save={async ({ formation, ...data }) => {
-          function modif(user){
-            const f =[..._programrecoil.map(u => ({...u}))];
-            f.forEach((u,i) => {
-              if(u.id === data.id){
-                f[i] = {...user}
-              }
-            })
-            return f
-          }
-          newProgram.id ? _setprogramrecoil(modif(data)) : await _setprogramrecoil([..._programrecoil,{...data,id: v4()}]);
-          
-          setActiveFormation(formations[data.formationId]);
+          await saveProgram(data)
+          setActiveFormation(formations[data.formationId])
         }}
+        // save={async ({ formation, ...data }) => {
+        //   function modif(user){
+        //     const f =[..._programrecoil.map(u => ({...u}))];
+        //     f.forEach((u,i) => {
+        //       if(u.id === data.id){
+        //         f[i] = {...user}
+        //       }
+        //     })
+        //     return f
+        //   }
+        //   newProgram.id ? _setprogramrecoil(modif(data)) : await _setprogramrecoil([..._programrecoil,{...data,id: v4()}]);
+          
+        //   setActiveFormation(formations[data.formationId]);
+        // }}
         position="left"
       />
       <ModalConfirm
