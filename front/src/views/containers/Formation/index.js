@@ -41,6 +41,7 @@ const Formation = (props) => {
   const [_formationrecoil, _setformationrecoil] =
     useRecoilState(formationState);
   const [_programrecoil, _setprogramrecoil] = useRecoilState(programState);
+  const [_fomrationstate, setformationstate] = useState()
   const {
     saveFormation,
     saveProgram,
@@ -124,6 +125,46 @@ const Formation = (props) => {
       .map(({ customerId }) => customerId);
   }, [get(activeProgram, "id"), _payments]);
 
+  //search
+  function tabsearch(array, recherche, properties) {
+    var resultat = array.filter(function (objet) {
+      var rechercheRegex = new RegExp(`.*${recherche.split('').join('.*')}.*`, 'i');
+      const values = properties.map(prop => (objet[prop]));
+      
+      return values.some(value => rechercheRegex.test(value));
+    });
+  
+    resultat.sort(function (a, b) {
+      var aIndex = getIndexOfMatchingSubstring(a,recherche);
+      var bIndex = getIndexOfMatchingSubstring(b,recherche);
+  
+      if (aIndex === -1) return 1; 
+      if (bIndex === -1) return -1; 
+  
+      return aIndex - bIndex; 
+    });
+  //   var resultats = [];
+  //   for (var i = 0; i < resultat.length; i++) {
+  //   if (resultat[i] === recherche) {
+  //     resultats.push(resultat[i]);
+  //   }
+  // }
+  // return resultats;
+
+  console.log(resultat)
+    return resultat;
+  }
+  function getIndexOfMatchingSubstring(objet, query){
+    var value = Object.values(objet).join(" ").toLowerCase();
+    var index = value.indexOf(query.toLowerCase());
+  
+    return index;
+  }
+  function onchange(event){
+    const val = event.target.value;
+    setformationstate(tabsearch(_formationrecoil, val, ['name']))
+  }
+
   return (
     <div className={clsx("Formation")}>
       <div className="formations-container">
@@ -135,7 +176,8 @@ const Formation = (props) => {
           <div className="text-header">{"Formations"}</div>
         </div>
         <div className="formation-search">
-          <input {...__input("searchFormation")} type="text" />
+          {/* <input {...__input("searchFormation")} type="text" /> */}
+          <input type="text" onChange={onchange} />
         </div>
         <div className="formations">
           <ScrollBar className="formations-content">
@@ -144,7 +186,7 @@ const Formation = (props) => {
               <div className={"formation-name"} onClick={_ => {
                       
               }}>
-                <div onClick={_ => setEdited(e.id)} className="menu" />
+                <div onClick={_ => setEdited(e)} className="menu" />
                 <div
                   className='name'
                   onClick={_ => setActiveFormation(get(activeFormation, 'id') === e.id ? null : e)}
@@ -155,7 +197,74 @@ const Formation = (props) => {
                 />
                 
               </div>
+              <div
+                      className={clsx("programs", get(activeFormation, 'id') === e.id && "active")}
+                    >
+                      <ScrollBar>
+                        {
+                          e.id === get(activeFormation, 'id') && _programrecoil.map((program) => {
+                            if(program.formationId === e.id){
+                              const { date, price, detail, id } = program
+                              return (
+                                <div
+                                  key={program.id}
+                                  data-position={id}
+                                  onDragOver={e => e.preventDefault()}
+                                  onDrop={e => {
+                                    const customer = JSON.parse(e.dataTransfer.getData("Text"))
+                                    const np = {
+                                      customerId: customer.id, targetId: id, type: FORMATION,
+                                      userId: Store.getCurrentState('auth.user.id'),
+                                      amount: program.price,
+                                      rest: program.price
+                                    }
+                                    const op = _payments.find((({ customerId, targetId, type }) => {
+                                      return customerId === customer.id && targetId === id && type === FORMATION
+                                    }))
+                                    setModalConfirm(
+                                      op ?
+                                        {
+                                          title: `Déjà inscrit${customer.sex === 'F' ? 'e' : ''}  `,
+                                          text: `${customer.firstname} est déjà inscrit${customer.sex === 'F' ? 'e' : ''} à la formation "${e.name}" du ${formatDate(date)}`,
+                                          error: true
+                                        } :
+                                        {
+                                          handler: _ => {
+                                            savePayment(np)
+                                            setActiveProgram(program)
+                                            setOpenedCustomer(Store.getCurrentState('customer.customers.' + customer.id))
+                                          },
+                                          title: 'Inscription',
+                                          text: `Inscrire ${customer.firstname} à la formation "${e.name}" du ${formatDate(date)}`
+                                        }
+                                    )
+                                  }}
+                                  className={clsx("program", activeProgram?.id === program.id && 'active')}
+                                >
+                                  <div
+                                    className="program-edit"
+                                    onClick={_ => setNewProgram(program)}
+                                  />
+                                  <div
+                                    className='program-detail'
+                                    onClick={_ => setActiveProgram({ ...program, formation: activeFormation })}
+                                  >
+                                    <span className="date">{formatDate(new Date(date))}</span>
+                                    <div className="down-one">
+                                      <span className="detail">{detail}</span>
+                                      <span className="price">{toAmount(price)}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              )
+                            }
+  
+                            })
+                        }
+                      </ScrollBar>
+                    </div>
               </div>
+              
               // <div
               //   className="name">
               //   {e.name}
@@ -283,9 +392,18 @@ const Formation = (props) => {
           { label: "Appelation Complète", name: "fullname" },
         ]}
         // save={saveFormation}
-        // save={_setformationrecoil([..._formationrecoil,{...value,...I.get(),id: v4()}])}
-        save={async (...data ) => {
-          await _setformationrecoil([..._formationrecoil,{data,id: v4()}]);
+        save={async ({...data }) => {
+          // edited = data
+          function modif(user){
+            const f =[..._formationrecoil.map(u => ({...u}))];
+            f.forEach((u,i) => {
+              if(u.id === data.id){
+                f[i] = {...user}
+              }
+            })
+            return f
+          }
+         edited?.id ? _setformationrecoil(modif(data))  : await _setformationrecoil([..._formationrecoil,{...data,id: v4()}]);
           
         }}
         position="left"
@@ -317,7 +435,17 @@ const Formation = (props) => {
           { label: "Nombre de place", type: "number", name: "place" },
         ]}
         save={async ({ formation, ...data }) => {
-          await saveProgram(data);
+          function modif(user){
+            const f =[..._programrecoil.map(u => ({...u}))];
+            f.forEach((u,i) => {
+              if(u.id === data.id){
+                f[i] = {...user}
+              }
+            })
+            return f
+          }
+          newProgram.id ? _setprogramrecoil(modif(data)) : await _setprogramrecoil([..._programrecoil,{...data,id: v4()}]);
+          
           setActiveFormation(formations[data.formationId]);
         }}
         position="left"

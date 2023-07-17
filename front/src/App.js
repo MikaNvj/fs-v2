@@ -10,6 +10,7 @@ import Header from './views/components/Header'
 import Recoil from './services/iDB/Recoil'
 import { useRecoilState } from 'recoil'
 import { formationState } from './recoil/atoms/formation'
+import { programState } from './recoil/atoms/program'
 const states = {
   popup: { message: "" },
   connected: true
@@ -17,7 +18,8 @@ const states = {
 
 function App(props) {
   const global = bulkSetter(...useState(states))
-  const [_f,_setf] = useRecoilState(formationState)
+  const [_f,_setf] = useRecoilState(formationState);
+  const [_programrecoil, _setprogramrecoil] = useRecoilState(programState);
   useEffect(()=>{
     console.log(_f)
   }, [_f])
@@ -26,7 +28,7 @@ function App(props) {
       <BrowserRouter>
         <div className="App">
           <Header connected={global.connected} />
-          <Recoil/>
+          {/* <Recoil/> */}
           <Popup {...global.popup} />
           <div className="AppBody">
             <Router connected={global.connected && props.auth.token} />
