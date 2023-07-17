@@ -15,8 +15,10 @@ import { subState } from '../../recoil/atoms/sub'
 import { userState } from '../../recoil/atoms/user'
 import DB from './db'
 import iDB from '.'
-import { getCerts, getConnexions, getCopies, 
-    getCustomers, getFormations, getPayments, getIncomes, getPrograms, getSubs, getUsers } from '../../redux/actions'
+import {
+    getCerts, getConnexions, getCopies,
+    getCustomers, getFormations, getPayments, getIncomes, getPrograms, getSubs, getUsers
+} from '../../redux/actions'
 
 export const triggerEvent = (evName) => {
     document.dispatchEvent(new CustomEvent(evName))
@@ -39,26 +41,40 @@ export default function Recoil() {
     const [sub, setSub] = useRecoilState(subState)
     const [user, setUser] = useRecoilState(userState)
 
-    // "setauth": setAuth,
-
-    // recoil_getter_from_listener('aaa', () => {
-    //     console.log('listener is called truthly')
-    // })
-
-    // useEffect(async () => {
-
-    //     setCert((await DB.dbTables()).includes('cert') ? getCerts() : [])
-    //     setConnection((await DB.dbTables()).includes('connection') ? getConnexions() : [])
-    //     setCopy((await DB.dbTables()).includes('copy') ? getCopies() : []) 
-    //     setPayement((await DB.dbTables()).includes('payment') ? getPayments() : [])
-    //     setCustomer((await DB.dbTables()).includes('customer') ? getCustomers() : [])
-    //     setFormation((await DB.dbTables()).includes('formation') ? getFormations() : [])
-    //     setIcomes((await DB.dbTables()).includes('icomes') ? getIncomes() : [])
-    //     setProgram((await DB.dbTables()).includes('program') ? getPrograms() : [])
-    //     setSub((await DB.dbTables()).includes('sub') ? getSubs() : [])
-    //     setUser((await DB.dbTables()).includes('user') ? getUsers() : [])
-
-    // }, [])
+    async function update_recoil(model) {
+        switch (model) {
+            case 'cert':
+                setCert(await iDB[model].get(model));
+                break;
+            case 'connexion':
+                setConnection(await iDB[model].get(model));
+                break;
+            case 'copy':
+                setCopy(await iDB[model].get(model));
+                break;
+            case 'customer':
+                setCustomer(await iDB[model].get(model));
+                break;
+            case 'formation':
+                setFormation(await iDB[model].get(model));
+                break;
+            case 'icomes':
+                setIcomes(await iDB[model].get(model));
+                break;
+            case 'payment':
+                setPayement(await iDB[model].get(model));
+                break;
+            case 'program':
+                setProgram(await iDB[model].get(model));
+                break;
+            case 'sub':
+                setSub(await iDB[model].get(model));
+                break;
+            case 'user':
+                setUser(await iDB[model].get(model));
+                break;
+        }
+    }
 
     useEffect(() => {
 
@@ -78,45 +94,15 @@ export default function Recoil() {
         DB.dbTables().then(async models => {
             for (const model of models) {
 
-                switch(model){
-                    case 'cert': 
-                        setCert(await iDB[model].get(model));
-                        break;
-                    case 'connexion': 
-                        setConnection(await iDB[model].get(model));
-                        break;
-                    case 'copy': 
-                        setCopy(await iDB[model].get(model));
-                        break;
-                    case 'customer': 
-                        setCustomer(await iDB[model].get(model));
-                        break;
-                    case 'formation': 
-                        setFormation(await iDB[model].get(model));
-                        break;
-                    case 'icomes': 
-                        setIcomes(await iDB[model].get(model));
-                        break;
-                    case 'payment': 
-                        setPayement(await iDB[model].get(model));
-                        break;
-                    case 'program': 
-                        setProgram(await iDB[model].get(model));
-                        break;
-                    case 'sub': 
-                        setSub(await iDB[model].get(model));
-                        break;
-                    case 'user': 
-                        setUser(await iDB[model].get(model));
-                        break;
-                }
+                update_recoil(model)
 
                 document.addEventListener(model, async (e) => {
-                    setters[`set${model}`](await iDB[model].get(model))
+                    // setters[`set${model}`](await iDB[model].get(model))
+                    update_recoil(model)
                 })
                 console.log(model + 'listeners called')
             }
-            
+
         })
     }, [])
 
