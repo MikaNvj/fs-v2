@@ -7,10 +7,11 @@ import Popup from './views/components/Popup'
 import Router from './Router'
 import './App.scss'
 import Header from './views/components/Header'
-import Recoil from './services/iDB/Recoil'
 import { useRecoilState } from 'recoil'
 import { formationState } from './recoil/atoms/formation'
 import { programState } from './recoil/atoms/program'
+import Recoil from './services/iDB/Recoil'
+
 const states = {
   popup: { message: "" },
   connected: true
@@ -27,8 +28,8 @@ function App(props) {
     <AppContext.Provider value={global}>
       <BrowserRouter>
         <div className="App">
+          <Recoil/>
           <Header connected={global.connected} />
-          {/* <Recoil/> */}
           <Popup {...global.popup} />
           <div className="AppBody">
             <Router connected={global.connected && props.auth.token} />

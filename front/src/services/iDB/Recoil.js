@@ -21,6 +21,9 @@ import { getCerts, getConnexions, getCopies,
 export const triggerEvent = (evName) => {
     document.dispatchEvent(new CustomEvent(evName))
 }
+const recoil_getter_from_listener = (eventName, listener) => {
+    document.addEventListener(eventName, listener)
+}
 
 export default function Recoil() {
 
@@ -37,46 +40,89 @@ export default function Recoil() {
     const [user, setUser] = useRecoilState(userState)
 
     // "setauth": setAuth,
-    const setters = {
-        "setcert": setCert,
-        "setconnection": setConnection,
-        "setcopy": setCopy,
-        "setcustomer": setCustomer,
-        "setformation": setFormation,
-        "seticomes": setIcomes,
-        "setpayment": setPayement,
-        "setProgram": setProgram,
-        "setsub": setSub,
-        "setuser": setUser
-    }
 
-    useEffect( async () => {
+    // recoil_getter_from_listener('aaa', () => {
+    //     console.log('listener is called truthly')
+    // })
 
-        // setAuth(au())  
-        setCert((await DB.dbTables()).includes('cert') ? getCerts() : [])   
-        setConnection((await DB.dbTables()).includes('connection') ? getConnexions() : [])
-        setCopy((await DB.dbTables()).includes('copy') ? getCopies() : [])   
-        setPayement((await DB.dbTables()).includes('payment') ? getPayments() : [])
-        setCustomer((await DB.dbTables()).includes('customer') ? getCustomers() : [])   
-        setFormation((await DB.dbTables()).includes('formation') ? getFormations() : [])
-        setIcomes((await DB.dbTables()).includes('icomes') ? getIncomes() : [])
-        setProgram((await DB.dbTables()).includes('program') ? getPrograms() : [])
-        setSub((await DB.dbTables()).includes('sub') ? getSubs() : [])
-        setUser((await DB.dbTables()).includes('user') ? getUsers() : [])
+    // useEffect(async () => {
 
-        DB.dbTables().then(models => {
+    //     setCert((await DB.dbTables()).includes('cert') ? getCerts() : [])
+    //     setConnection((await DB.dbTables()).includes('connection') ? getConnexions() : [])
+    //     setCopy((await DB.dbTables()).includes('copy') ? getCopies() : []) 
+    //     setPayement((await DB.dbTables()).includes('payment') ? getPayments() : [])
+    //     setCustomer((await DB.dbTables()).includes('customer') ? getCustomers() : [])
+    //     setFormation((await DB.dbTables()).includes('formation') ? getFormations() : [])
+    //     setIcomes((await DB.dbTables()).includes('icomes') ? getIncomes() : [])
+    //     setProgram((await DB.dbTables()).includes('program') ? getPrograms() : [])
+    //     setSub((await DB.dbTables()).includes('sub') ? getSubs() : [])
+    //     setUser((await DB.dbTables()).includes('user') ? getUsers() : [])
+
+    // }, [])
+
+    useEffect(() => {
+
+        const setters = {
+            "setcert": setCert,
+            "setconnection": setConnection,
+            "setcopy": setCopy,
+            "setcustomer": setCustomer,
+            "setformation": setFormation,
+            "seticomes": setIcomes,
+            "setpayment": setPayement,
+            "setProgram": setProgram,
+            "setsub": setSub,
+            "setuser": setUser
+        }
+
+        DB.dbTables().then(async models => {
             for (const model of models) {
+
+                switch(model){
+                    case 'cert': 
+                        setCert(await iDB[model].get(model));
+                        break;
+                    case 'connexion': 
+                        setConnection(await iDB[model].get(model));
+                        break;
+                    case 'copy': 
+                        setCopy(await iDB[model].get(model));
+                        break;
+                    case 'customer': 
+                        setCustomer(await iDB[model].get(model));
+                        break;
+                    case 'formation': 
+                        setFormation(await iDB[model].get(model));
+                        break;
+                    case 'icomes': 
+                        setIcomes(await iDB[model].get(model));
+                        break;
+                    case 'payment': 
+                        setPayement(await iDB[model].get(model));
+                        break;
+                    case 'program': 
+                        setProgram(await iDB[model].get(model));
+                        break;
+                    case 'sub': 
+                        setSub(await iDB[model].get(model));
+                        break;
+                    case 'user': 
+                        setUser(await iDB[model].get(model));
+                        break;
+                }
+
                 document.addEventListener(model, async (e) => {
                     setters[`set${model}`](await iDB[model].get(model))
                 })
+                console.log(model + 'listeners called')
             }
+            
         })
     }, [])
 
     return (
         <div>
-            <div onClick={() => console.lo}></div>
+            <div onClick={() => console.log('clg from recoil')}></div>
         </div>
     )
 }
-
