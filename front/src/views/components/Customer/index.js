@@ -1,15 +1,19 @@
 import clsx from 'clsx'
 import React, { useState, useEffect } from 'react'
 import { useMemo } from 'react'
-import { connect } from '../../../redux/store'
+// import { connect } from '../../../redux/store'
 import { Server } from '../../../services/api'
 import { addZero, computeAge, toPhone } from '../../../services/functions'
 import './Customer.scss'
+import { useRecoilState } from 'recoil'
+import { payementState } from '../../../recoil/atoms/payement'
 
 const Customer = function (props) {
+  const [payments, _setpaymentrecoil] = useRecoilState(payementState)
   const {
     customer, setIncomer, onSelect,
-    edit, payment:{_payments: payments}
+    edit, 
+    // payment:{_payments: payments}
   } = props
 
   const debt = useMemo(() => {
@@ -48,4 +52,5 @@ const Customer = function (props) {
   )
 }
 
-export default connect(Customer, ['payment'])
+// export default connect(Customer, ['payment'])
+export default Customer

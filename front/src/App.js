@@ -11,6 +11,7 @@ import { useRecoilState } from 'recoil'
 import { formationState } from './recoil/atoms/formation'
 import { programState } from './recoil/atoms/program'
 import Recoil from './services/iDB/Recoil'
+import { payementState } from './recoil/atoms/payement'
 
 const states = {
   popup: { message: "" },
@@ -19,7 +20,7 @@ const states = {
 
 function App(props) {
   const global = bulkSetter(...useState(states))
-  const [_f,_setf] = useRecoilState(formationState);
+  const [_f,_setf] = useRecoilState(payementState);
   const [_programrecoil, _setprogramrecoil] = useRecoilState(programState);
   useEffect(()=>{
     console.log(_f)

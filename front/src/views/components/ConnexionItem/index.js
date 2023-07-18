@@ -9,11 +9,12 @@ import './ConnexionItem.scss'
 import Hour from '../Hour'
 import { Server } from '../../../services/api'
 import {toAmount} from '../../../services/functions/index'
-import {connect} from '../../../redux/store/index'
+// import {connect} from '../../../redux/store/index'
 
 import {useRecoilState} from "recoil";
 import { payementState } from '../../../recoil/atoms/payement';
 import { customerState } from '../../../recoil/atoms/customer';
+import { connexionState } from '../../../recoil/atoms/connexion';
 
 const Times = {
   add: (date, min) => {
@@ -34,12 +35,12 @@ const Times = {
 
 const ConnexionItem = (props) => {
 
-  // const [_customers, _setCustomers] = useRecoilState()
+  const [payments, _setCustomers] = useRecoilState(payementState)
   const durRef = useRef('')
   const {
     value, customer, paymnt, saveIncome, showUser,
     saveConnexion, savePayment, setChosenPayment,
-    payment:{_payments: payments}
+    // payment:{_payments: payments}
   } = props
 
   const {
@@ -187,5 +188,5 @@ const ConnexionItem = (props) => {
   )
 }
 
-export default connect(ConnexionItem, ['payment'])
-// export default ConnexionItem
+// export default connect(ConnexionItem, ['payment'])
+export default ConnexionItem

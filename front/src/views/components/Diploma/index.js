@@ -8,9 +8,16 @@ import { CERT, FORMATION } from '../../../services/constants'
 import { bulkSetter, formatDate, toAmount } from '../../../services/functions/index'
 import Modal from '../../portals/Modal'
 import Input from '../Input'
+import { saveCert, savePayment } from '../../../recoil/controllers'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import './Diploma.scss'
 import { useCallback } from 'react'
+import { useRecoilState } from 'recoil'
+import { customerState } from '../../../recoil/atoms/customer'
+import { certState } from '../../../recoil/atoms/cert'
+import { formationState } from '../../../recoil/atoms/formation'
+import { payementState } from '../../../recoil/atoms/payement'
+import { programState } from '../../../recoil/atoms/program'
 
 const mentions = { AB: 'Assez bien', B: 'Bien', TB: 'Très bien' }
 const notes = { AB: 13.5, B: 15.5, TB: 17.5 }
@@ -25,13 +32,19 @@ const getMention = note => {
 }
 
 const Diploma = (props) => {
+  const [customers, setcustomers] = useRecoilState(customerState);
+  const [_certs, setcerts] = useRecoilState(certState);
+  const [formations, setformation] = useRecoilState(formationState)
+  const [_payments, setpayments] = useRecoilState(payementState);
+  const [program, setprogram] = useRecoilState(programState)
+
   const {
     active = true, close, actFormation, actProgram,
-    formation: {formations}, customer: {customers},
-    cert: {_certs}, payment: {_payments},
-    saveCert, savePayment
+    // formation: {formations}, customer: {customers},
+    // cert: {_certs}, payment: {_payments},
+    // saveCert, savePayment
   } = props
-  const program = actProgram
+   program = actProgram
   const { formation, students} = useMemo(_ => {
     return {
       formation: actFormation || formations[program.formationId],
@@ -221,4 +234,5 @@ const Diploma = (props) => {
   )
 }
 
-export default connect(Diploma, ['customer', 'program', 'formation', 'payment', 'cert'])
+// export default connect(Diploma, ['customer', 'program', 'formation', 'payment', 'cert'])
+export default Diploma;

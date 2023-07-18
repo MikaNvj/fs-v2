@@ -3,15 +3,16 @@ import clsx from 'clsx'
 import {ContextDisabled} from "../AutreAbonnement/index"
 import './Toggle.scss'
 import { connect } from '../../../redux/store'
+import { savePayment } from '../../../recoil/controllers'
 
 const Toggle = (props) => {
   const [isToggled, setIsToggled] = useState(false);
   const onToggle = () => setIsToggled(!isToggled);
   const {disabled, setDisabled, mount, type} = useContext(ContextDisabled)
 
-  const {
-    savePayment
-  } = props
+  // const {
+  //   //savePayment
+  // } = props
 
   const setPayment = () => {
     if (!isToggled) {
@@ -37,4 +38,5 @@ const Toggle = (props) => {
     </div>
   )
 }
-export default connect(Toggle, ["payment"])
+// export default connect(Toggle, ["payment"])
+export default Toggle;

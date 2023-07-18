@@ -4,6 +4,8 @@ import './PopupMoney.scss'
 import Input from '../Input'
 import { addZero, bulkSetter, toAmount, toCamelCase } from '../../../services/functions'
 import Store, { connect } from '../../../redux/store'
+import { useRecoilState } from 'recoil'
+import { icomeState } from '../../../recoil/atoms/income'
 
 const states = {
   visible: false,
@@ -12,9 +14,11 @@ const states = {
 }
 
 const PopupMoney = (props) => {
+  const [_income, _setincome] = useRecoilState(icomeState)
   const state = bulkSetter(...useState({ ...states }))
   const { input, ...State } = state
-  const { active, close, income: { _incomes } } = props
+  // const { active, close, income: { _incomes } } = props
+  const { active, close, } = props
 
   // Methods
   const pmRef = useRef(null)
@@ -26,7 +30,7 @@ const PopupMoney = (props) => {
   const total = useMemo(() => {
     const today = `${new Date().getFullYear()}-${addZero(new Date().getMonth() + 1)}-${addZero(new Date().getDate())}`
     const incs = {}
-    _incomes.forEach((one) => {
+    _income.forEach((one) => {
       const { date = "", paymentId } = one
       if (date.startsWith(today)) {
         const { type, inactive, amount, rest } = Store.getCurrentState(`payment.payments.${paymentId}`) || {}
@@ -37,7 +41,7 @@ const PopupMoney = (props) => {
       }
     })
     return incs
-  }, [_incomes])
+  }, [_income])
 
   useEffect(() => {
     if (state.password === 'rojo') {
@@ -84,4 +88,5 @@ const PopupMoney = (props) => {
     </div>
   )
 }
-export default connect(PopupMoney, ['income'])
+// export default connect(PopupMoney, ['income'])
+export default PopupMoney

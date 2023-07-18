@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react'
 import clsx from 'clsx'
 import './UserList.scss'
-import { connect } from '../../../redux/store'
 import PayComponent from '../PayComponent'
 import UserComponent from '../UserComponent'
 import { bulkSetter, fuzzyFilter } from '../../../services/functions'
@@ -10,13 +9,13 @@ import Customer from '../Customer'
 import { useCallback } from 'react'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
-import { customerState } from '../../../recoil/atoms/customer'
+import { customerState } from '../../../recoil/atoms/customer';
 
 const UserList = (props) => {
   const [_customer, _setcustomer] = useRecoilState(customerState)
   const {
     selected, onSelect, openedCustomer, setOpenedCustomer,
-    customer: { _customers, customers }
+    // customer: { _customers, customers }
   } = props
 
   const {
@@ -115,4 +114,5 @@ const UserList = (props) => {
     </React.Fragment>
   )
 }
-export default connect(UserList, ["customer"])
+// export default connect(UserList, ["customer"])
+export default UserList

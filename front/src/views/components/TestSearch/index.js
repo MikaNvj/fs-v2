@@ -4,6 +4,7 @@ import Store, { connect } from '../../../redux/store'
 
 import './index.scss'
 import { save } from '../../../services/iDB/db'
+import { savePayment } from '../../../recoil/controllers'
 
 
 const payement = [
@@ -63,7 +64,7 @@ const TestSearch = (props) => {
   const [show, setShow] = useState(false)
   const { 
     hide,
-    savePayment,
+    // savePayment,
    } = props
   useEffect(() => setShow(props.active === true))
   return (
@@ -91,4 +92,5 @@ const TestSearch = (props) => {
   )
 }
 
-export default connect(TestSearch, ["payment"])
+// export default connect(TestSearch, ["payment"])
+export default TestSearch

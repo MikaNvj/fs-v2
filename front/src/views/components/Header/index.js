@@ -5,7 +5,7 @@ import './Header.scss'
 import TitleBarActions from '../TitleBarActions'
 import { bulkSetter } from '../../../services/functions'
 import PopupMoney from '../PopupMoney'
-import { connect } from '../../../redux/store'
+// import { connect } from '../../../redux/store'
 import bridge from '../../../services/bridge/index'
 import UserSetting from '../UserSetting'
 import { useAppContext } from '../../../services/provider'
@@ -73,4 +73,5 @@ const Header = (props) => {
     </div>
   )
 }
-export default connect(Header)
+// export default connect(Header)
+export default Header

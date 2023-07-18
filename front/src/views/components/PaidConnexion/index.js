@@ -4,17 +4,25 @@ import './PaidConnexion.scss'
 import Hour from '../Hour'
 import { bulkSetter, fullFormatDate, toAmount, toPhone, toSimpleDate, toSQLDate } from '../../../services/functions'
 import ScrollBar from 'react-perfect-scrollbar'
-import { connect } from '../../../redux/store'
+// import { connect } from '../../../redux/store'
 import { CONNEXION } from '../../../services/constants'
+import { payementState } from '../../../recoil/atoms/payement'
+import { useRecoilState } from 'recoil'
+import { connexionState } from '../../../recoil/atoms/connexion'
+import { customerState } from '../../../recoil/atoms/customer'
 
 const states = {
   curDay: new Date()
 }
 
 const PaidConnexion = (props) => {
+  const [_paymentrecoil, _setpaymentrecoil] = useRecoilState(payementState)
+  const [_connexionrecoil, _setconnexionrecoil] = useRecoilState(connexionState)
+  const [_customer, _setcustomerrecoil] = useRecoilState(customerState)
   const {
-    payment: { _payments }, connexion: { connexions },
-    customer: { customers }, showCustomer
+    // payment: { _payments }, connexion: { connexions },
+    // customer: { customers }, 
+    showCustomer
   } = props
 
   const {
@@ -23,8 +31,8 @@ const PaidConnexion = (props) => {
 
   const allPaids = useMemo(_ => {
     const today = toSimpleDate(curDay)
-    return _payments.filter(({ type, createdAt, rest = null, targetId, inactive }) => {
-      const start = connexions[targetId] ? toSimpleDate(connexions[targetId].start) : ""
+    return _paymentrecoil.filter(({ type, createdAt, rest = null, targetId, inactive }) => {
+      const start = _connexionrecoil[targetId] ? toSimpleDate(_connexionrecoil[targetId].start) : ""
       return !inactive && type === CONNEXION && start && start.startsWith(today) && rest !== null
     })
   })
@@ -40,11 +48,11 @@ const PaidConnexion = (props) => {
             {
               allPaids.map((payment) => {
                 const { targetId, customerId, amount, rest, id } = payment
-                const { start, stop } = connexions[targetId]
-                const { facebook, lastname, firstname, sex, photo, phone } = customers[customerId]
+                const { start, stop } = _connexionrecoil[targetId]
+                const { facebook, lastname, firstname, sex, photo, phone } = _customer[customerId]
 
                 return <div className="connexion" key={id}>
-                  <div onDoubleClick={_ => showCustomer(customers[customerId])} className="customer-name">
+                  <div onDoubleClick={_ => showCustomer(_customer[customerId])} className="customer-name">
                     <span className='lastname'>{lastname}</span>
                     <span>{firstname}</span>
                     <span className='phone'>{toPhone(phone)}</span>
@@ -65,4 +73,5 @@ const PaidConnexion = (props) => {
   )
 }
 
-export default connect(PaidConnexion, ["connexion", 'payment', 'customer'])
+// export default connect(PaidConnexion, ["connexion", 'payment', 'customer'])
+export default PaidConnexion

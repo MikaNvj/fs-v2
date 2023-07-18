@@ -6,6 +6,12 @@ import Store, { connect } from '../../../redux/store'
 import ScrollBar from 'react-perfect-scrollbar'
 import { CONNEXION, FORMATION, CERT } from '../../../services/constants/index'
 import { Server } from '../../../services/api'
+import { useRecoilState } from 'recoil'
+import { payementState } from '../../../recoil/atoms/payement'
+import { icomeState } from '../../../recoil/atoms/income'
+import { formationState } from '../../../recoil/atoms/formation'
+import { programState } from '../../../recoil/atoms/program'
+import { savePayment, saveIncome } from '../../../recoil/controllers'
 const states = {
   customer: {},
   restEdited: null,
@@ -15,9 +21,14 @@ const states = {
 
 
 const CustomerActivity = (props) => {
+  const [_paymentrecoil, setpaymentrecoil] = useRecoilState(payementState);
+  const [incomerecoil,setincomerecoil] = useRecoilState(icomeState);
+  const [formationrecoil, setformationrecoil] = useRecoilState(formationState);
+  const [programrecoil, setprogramrecoil] = useRecoilState(programState)
   const {
-    close, incomer, saveIncome, savePayment,
-    income: { _incomes }, payment: { _payments },
+    close, incomer, 
+    // saveIncome, savePayment,
+    // income: { _incomes }, payment: { _payments },
     setActivity, activity
   } = props
 
@@ -34,9 +45,9 @@ const CustomerActivity = (props) => {
   }, [restEdited])
 
   const allPayments = useMemo(_ => {
-    return _payments.filter(({ customerId, inactive, rest }) => !inactive && customerId === get(incomer, 'id') && rest != null)
+    return _paymentrecoil.filter(({ customerId, inactive, rest }) => !inactive && customerId === get(incomer, 'id') && rest != null)
       .sort(({ updatedAt: a }, { updatedAt: b }) => a < b ? 1 : -1)
-  }, [_payments, incomer.id])
+  }, [_paymentrecoil, incomer.id])
 
   return (
     <div className="CustomerActivity">
@@ -105,7 +116,7 @@ const CustomerActivity = (props) => {
                           onKeyDown={e => {
                             if (e.key === 'Enter') {
                               const today = toSimpleDate()
-                              const income = _incomes.find(({ date, paymentId }) => date === today && paymentId === payment.id) || {
+                              const income = incomerecoil.find(({ date, paymentId }) => date === today && paymentId === payment.id) || {
                                 date: today,
                                 paymentId: payment.id,
                                 amount: 0
@@ -123,7 +134,7 @@ const CustomerActivity = (props) => {
                   {
                     State.openedPayment === payment.id && <div className={'incomes'}>
                       {
-                        _incomes.filter(({ paymentId }) => paymentId === payment.id)
+                        incomerecoil.filter(({ paymentId }) => paymentId === payment.id)
                           .map(({ date, amount, id }) => {
                             return (
                               <div key={id} className="income">
@@ -185,4 +196,5 @@ const formatConnexion = (payment) => {
   )
 }
 
-export default connect(CustomerActivity, ["payment", 'income', 'formation', 'program'])
+// export default connect(CustomerActivity, ["payment", 'income', 'formation', 'program'])
+export default CustomerActivity
