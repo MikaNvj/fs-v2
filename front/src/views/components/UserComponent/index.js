@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import './UserComponent.scss'
 import Input from '../Input'
 import { bulkSetter, get, toCamelCase } from '../../../services/functions'
-import { connect } from '../../../redux/store'
+// import { connect } from '../../../redux/store'
 import Button from '../Button'
 import bridge, { attach, detach } from '../../../services/bridge/index'
 import qs from 'query-string'
@@ -19,6 +19,7 @@ import { customerState } from '../../../recoil/atoms/customer'
 import { payementState } from '../../../recoil/atoms/payement'
 import {useRecoilState} from 'recoil'
 import { triggerEvent } from '../../../services/iDB/Recoil'
+import { saveCustomer } from '../../../recoil/controllers'
 
 export const Validator = Input.validator
 
@@ -45,9 +46,11 @@ let UserComponent = (props) => {
   const [payments, _setPayment] = useRecoilState(payementState)
 
   const {
-    saveCustomer, close, edited,
+    // saveCustomer, 
+    close, edited,
     setActivity, activity
   } = props
+
   const State = bulkSetter(...useState({ ...states }))
 
   const quit = useMemo(() => async () => {
@@ -275,7 +278,7 @@ let UserComponent = (props) => {
   )
 }
 
-UserComponent = connect(UserComponent, ["customer", "payment"])
+// UserComponent = connect(UserComponent, ["customer", "payment"])
 
 const Splitter = props => {
   return (

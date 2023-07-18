@@ -24,6 +24,9 @@ import { formationState } from "../../../recoil/atoms/formation";
 import { programState } from "../../../recoil/atoms/program";
 import {v4} from 'uuid'
 
+import { saveFormation, saveProgram, savePayment } from "../../../recoil/controllers";
+import { payementState } from "../../../recoil/atoms/payement";
+
 const states = {
   edited: null,
   newProgram: false,
@@ -39,21 +42,20 @@ const states = {
 };
 
 const Formation = (props) => {
-  const [_formationrecoil, _setformationrecoil] =
-    useRecoilState(formationState);
+  const [_formationrecoil, _setformationrecoil] = useRecoilState(formationState);
   const [_programrecoil, _setprogramrecoil] = useRecoilState(programState);
   const [tab, settab] =useState(undefined)
+  
+  const [_payments, setPayment] = useRecoilState(payementState)
 
- 
- 
-  const {
-    saveFormation,
-    saveProgram,
-    savePayment,
-    formation: { _formations, formations },
-    program: { _programs },
-    payment: { _payments },
-  } = props;
+  // const {
+  //   // saveFormation,
+  //   // saveProgram,
+  //   // savePayment,
+  //   formation: { _formations, formations },
+  //   program: { _programs },
+  //   payment: { _payments },
+  // } = props;
 
   // States
   const {
@@ -86,10 +88,11 @@ const Formation = (props) => {
 
   const allFormations = useMemo(
     (_) => {
-      const allPrograms = _programs.sort((a, b) =>
+      // const allPrograms = _programs.sort((a, b) =>
+      const allPrograms = _programrecoil.sort((a, b) =>
         new Date(a.date) < new Date(b.date) ? 1 : -1
       );
-      return _formations
+      return _formationrecoil
         .map((formation) => {
           const programs = allPrograms.filter(
             ({ formationId: fid }) => fid === formation.id
@@ -105,7 +108,7 @@ const Formation = (props) => {
         })
         .sort(({ filter: fa }, { filter: fb }) => (fa > fb ? -1 : 1));
     },
-    [_formations, _programs]
+    [_formationrecoil, _programrecoil]
   );
   // const allFormations = useMemo(_ => {
   //   const allPrograms = _programrecoil.sort((a, b) => new Date(a.date) < new Date(b.date) ? 1 : -1)
@@ -436,7 +439,7 @@ const Formation = (props) => {
         ]}
         save={async ({ formation, ...data }) => {
           await saveProgram(data)
-          setActiveFormation(formations[data.formationId])
+          setActiveFormation(_formationrecoil[data.formationId])
         }}
         // save={async ({ formation, ...data }) => {
         //   function modif(user){
@@ -530,4 +533,6 @@ const Formation = (props) => {
     </div>
   );
 };
-export default connect(Formation, ["formation", "program", "payment"]);
+// export default connect(Formation, ["formation", "program", "payment"]);
+
+export default Formation
