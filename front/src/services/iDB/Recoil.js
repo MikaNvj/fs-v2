@@ -47,7 +47,11 @@ export default function Recoil() {
                 setCert(await iDB[model].get(model));
                 break;
             case 'connexion':
-                setConnection(await iDB[model].get(model));
+                let obj = {};
+                (await iDB[model].get(model)).map(connexion => {
+                    obj[connexion.id] = {...connexion}
+                });
+                setConnection(obj);
                 break;
             case 'copy':
                 setCopy(await iDB[model].get(model));

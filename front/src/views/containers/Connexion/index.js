@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react'
+import React, { useMemo, useState, useCallback, useEffect } from 'react'
 import clsx from 'clsx'
 import './Connexion.scss'
 import ConnexionItem from '../../components/ConnexionItem/index'
@@ -14,6 +14,9 @@ import PaidConnexion from '../../components/PaidConnexion'
 import { useRecoilState } from 'recoil'
 import { connexionState } from '../../../recoil/atoms/connexion'
 import { payementState } from '../../../recoil/atoms/payement'
+import { customerState } from '../../../recoil/atoms/customer'
+
+import { saveConnexion, savePayment, saveIncome } from '../../../recoil/controllers'
 
 const states = {
   chosenPayment: null, activity: false,
@@ -21,38 +24,49 @@ const states = {
 }
 
 const Connexion = (props) => {
-  const {
-    payment: { _payments }, connexion: { connexions },
-    customer: { customers },
-    saveConnexion, savePayment, saveIncome
-  } = props
+
+  const [connexions, _setconnex] = useRecoilState(connexionState)
+  const [_paymentrecoil, _setpayment] = useRecoilState(payementState)
+  const [customers, setCustomer] = useRecoilState(customerState)
+
+  // const {
+    // payment: { _payments },
+    // connexion: { connexions },
+    // customer: { customers },
+    // saveConnexion, savePayment, saveIncome
+  // } = props
 
   const {
     chosenPayment, setChosenPayment, curUser,
     showPaid, setShowPaid, activity, setActivity, ...State
   } = bulkSetter(...useState({ ...states }))
 
+  // const allConnexions = useMemo(_ => {
+  //   return _payments.filter(({ type, rest = null, targetId, inactive }) => {
+  //     return !inactive && type === CONNEXION && connexions[targetId] && rest === null
+  //   })
+  // }, [_payments])
   const allConnexions = useMemo(_ => {
-    return _payments.filter(({ type, rest = null, targetId, inactive }) => {
+    return _paymentrecoil.filter(({ type, rest = null, targetId, inactive }) => {
       return !inactive && type === CONNEXION && connexions[targetId] && rest === null
     })
-  }, [_payments])
+  }, [_paymentrecoil])
 
   const showCustomer = useCallback((customer, activity) => {
     State.set({
       curUser: customer, activity
     })
   })
-  const [_connexionrecoil, _setconnex] = useRecoilState(connexionState)
-  const [_paymentrecoil, _setpayment] = useRecoilState(payementState)
-  
   
   const _allConnexion = useMemo(_ => {
+
+    console.log('all connexion', connexions)
     return _paymentrecoil.filter(({ type, rest = null, targetId, inactive }) => {
       return !inactive && type === CONNEXION 
     })
+
   }, [_paymentrecoil])
-  // console.log(allConnexions, _allConnexion)
+
   return (
     <div className={clsx('Connexion')}>
       <div className='c-options'>
@@ -129,5 +143,5 @@ const Connexion = (props) => {
   )
 }
 
-export default connect(Connexion, ["connexion", 'payment', 'customer'])
-// export default Connexion;
+// export default connect(Connexion, ["connexion", 'payment', 'customer'])
+export default Connexion;
