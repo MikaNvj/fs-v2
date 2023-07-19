@@ -6,7 +6,7 @@ import { authState } from '../../recoil/atoms'
 import { certState } from '../../recoil/atoms/cert'
 import { connexionState } from '../../recoil/atoms/connexion'
 import { copyState } from '../../recoil/atoms/copy'
-import { customerState } from '../../recoil/atoms/customer'
+import { customerState, _customerState } from '../../recoil/atoms/customer'
 import { formationState } from '../../recoil/atoms/formation'
 import { icomeState } from '../../recoil/atoms/income'
 import { payementState } from '../../recoil/atoms/payement'
@@ -38,55 +38,58 @@ export default function Recoil() {
     const [sub, setSub] = useRecoilState(subState)
     const [user, setUser] = useRecoilState(userState)
     const [dbTablesHadlers, setHendler] = useState(1)
+    const [_customer, _setCustomer] = useRecoilState(_customerState)
 
     const models = ['cert', 'connexion', 'copy', 'customer', 'formation', 
     'icomes', 'payment', 'program', 'sub', 'user']
     async function update_recoil(model) {
         switch (model) {
             case 'cert':
-                setCert(await iDB[model].get(model));
+                setCert(await get_into_local_storage(model));
                 break;
             case 'connexion':
-                let obj = {};
-                (await iDB[model].get(model)).map(connexion => {
-                    obj[connexion.id] = {...connexion}
-                });
-                setConnection(obj);
+                setConnection(transform_to_object(await get_into_local_storage(model)))
                 break;
             case 'copy':
-                setCopy(await iDB[model].get(model));
+                setCopy(await get_into_local_storage(model));
                 break;
             case 'customer':
-                setCustomer(await iDB[model].get(model));
+                _setCustomer(transform_to_object(await get_into_local_storage(model)))
+                setCustomer(await get_into_local_storage(model))
                 break;
             case 'formation':
-                setFormation(await iDB[model].get(model));
+                setFormation(await get_into_local_storage(model));
                 break;
             case 'icomes':
-                setIcomes(await iDB[model].get(model));
+                setIcomes(await get_into_local_storage(model));
                 break;
             case 'payment':
-                setPayement(await iDB[model].get(model));
+                setPayement(await get_into_local_storage(model));
                 break;
             case 'program':
-                setProgram(await iDB[model].get(model));
+
+                setProgram(await get_into_local_storage(model));
                 break;
             case 'sub':
-                setSub(await iDB[model].get(model));
+                setSub(await get_into_local_storage(model));
                 break;
             case 'user':
-                setUser(await iDB[model].get(model));
+                setUser(await get_into_local_storage(model));
                 break;
         }
     }
+    async function get_into_local_storage(model){
+        return await iDB[model].get(model)
+    }
+    function transform_to_object(data){
+        let result= {}
 
-    // useEffect(() => {
+        for(const datum of data){
+            result[datum.id] = {...datum}
+        }
 
-    //     document.addEventListener('db_tables_change', () => {
-    //         setHendler(dbTablesHadlers + 1)
-    //     })
-
-    // }, [])
+        return result
+    }
 
     useEffect(() => {
 

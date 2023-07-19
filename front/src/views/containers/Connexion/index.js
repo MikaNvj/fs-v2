@@ -14,7 +14,7 @@ import PaidConnexion from '../../components/PaidConnexion'
 import { useRecoilState } from 'recoil'
 import { connexionState } from '../../../recoil/atoms/connexion'
 import { payementState } from '../../../recoil/atoms/payement'
-import { customerState } from '../../../recoil/atoms/customer'
+import { customerState, _customerState } from '../../../recoil/atoms/customer'
 
 import { saveConnexion, savePayment, saveIncome } from '../../../recoil/controllers'
 
@@ -28,12 +28,13 @@ const Connexion = (props) => {
   const [connexions, _setconnex] = useRecoilState(connexionState)
   const [_paymentrecoil, _setpayment] = useRecoilState(payementState)
   const [customers, setCustomer] = useRecoilState(customerState)
+  const [_customers, _setCustomer] = useRecoilState(_customerState)
 
   // const {
-    // payment: { _payments },
-    // connexion: { connexions },
-    // customer: { customers },
-    // saveConnexion, savePayment, saveIncome
+  //   payment: { _payments },
+  //   connexion: { connexions },
+  //   customer: { customers },
+  //   saveConnexion, savePayment, saveIncome
   // } = props
 
   const {
@@ -92,7 +93,7 @@ const Connexion = (props) => {
             return <ConnexionItem
               key={payment.id}
               value={connexions[payment.targetId]}
-              customer={customers[payment.customerId]}
+              customer={_customers[payment.customerId]}
               paymnt={payment}
               setChosenPayment={setChosenPayment}
               showUser={_ => showCustomer(customers[payment.customerId], false)}
