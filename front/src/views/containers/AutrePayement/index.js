@@ -10,10 +10,10 @@ import { bulkSetter } from '../../../services/functions'
 import CopyItem from '../../components/CopyItem'
 import { useRecoilState } from 'recoil'
 
-import { subState } from '../../../recoil/atoms/sub'
+import { _subState } from '../../../recoil/atoms/sub'
 import { payementState } from '../../../recoil/atoms/payement'
-import  { customerState } from '../../../recoil/atoms/customer'
-import { copyState } from '../../../recoil/atoms/copy'
+import  { _customerState } from '../../../recoil/atoms/customer'
+import { _copyState } from '../../../recoil/atoms/copy'
 
 import {savePayment, saveSub, saveIncome, saveCopy} from '../../../recoil/controllers'
 
@@ -25,9 +25,9 @@ const states = {
 
 const AutrePayement = (props) => {
   const [_paymentrecoil, _setpaymentrecoil ] = useRecoilState(payementState)
-  const [subs, setSubs] = useRecoilState(subState)
-  const [customers, setCustomers] = useRecoilState(customerState)
-  const [copies, setCopies] = useRecoilState(copyState)
+  const [subs, setSubs] = useRecoilState(_subState)
+  const [customers, setCustomers] = useRecoilState(_customerState)
+  const [copies, setCopies] = useRecoilState(_copyState)
 
   // const {
   //   savePayment, saveSub, saveIncome, saveCopy,
