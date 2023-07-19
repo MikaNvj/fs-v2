@@ -2,16 +2,17 @@ import React, { useState, useEffect, useMemo } from 'react'
 import clsx from 'clsx'
 import './CustomerActivity.scss'
 import { bulkSetter, formatDate, get, toAmount, toPhone, toSimpleDate } from '../../../services/functions'
-import Store, { connect } from '../../../redux/store'
+// import Store, { connect } from '../../../redux/store'
 import ScrollBar from 'react-perfect-scrollbar'
 import { CONNEXION, FORMATION, CERT } from '../../../services/constants/index'
 import { Server } from '../../../services/api'
-import { useRecoilState } from 'recoil'
-import { payementState } from '../../../recoil/atoms/payement'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { payementState, selectedpayment } from '../../../recoil/atoms/payement'
 import { icomeState } from '../../../recoil/atoms/income'
-import { formationState } from '../../../recoil/atoms/formation'
-import { programState } from '../../../recoil/atoms/program'
+import { formationState, selecteformation } from '../../../recoil/atoms/formation'
+import { programState, selectedprogram } from '../../../recoil/atoms/program'
 import { savePayment, saveIncome } from '../../../recoil/controllers'
+import { selectedcert } from '../../../recoil/atoms/cert'
 const states = {
   customer: {},
   restEdited: null,
@@ -21,10 +22,12 @@ const states = {
 
 
 const CustomerActivity = (props) => {
+
   const [_paymentrecoil, setpaymentrecoil] = useRecoilState(payementState);
   const [incomerecoil,setincomerecoil] = useRecoilState(icomeState);
   const [formationrecoil, setformationrecoil] = useRecoilState(formationState);
-  const [programrecoil, setprogramrecoil] = useRecoilState(programState)
+  const [programrecoil, setprogramrecoil] = useRecoilState(programState);
+  
   const {
     close, incomer, 
     // saveIncome, savePayment,
@@ -48,6 +51,7 @@ const CustomerActivity = (props) => {
     return _paymentrecoil.filter(({ customerId, inactive, rest }) => !inactive && customerId === get(incomer, 'id') && rest != null)
       .sort(({ updatedAt: a }, { updatedAt: b }) => a < b ? 1 : -1)
   }, [_paymentrecoil, incomer.id])
+
 
   return (
     <div className="CustomerActivity">
@@ -159,26 +163,36 @@ const CustomerActivity = (props) => {
 const format = payment => {
   return <React.Fragment>
     {payment.type === CONNEXION && formatConnexion(payment)}
-    {payment.type === FORMATION && formatFormation(payment)}
-    {payment.type === CERT && formatCert(payment)}
+    {payment.type === FORMATION && FormatFormation(payment)}
+    {payment.type === CERT && FormatCert(payment)}
   </React.Fragment>
 }
 
-const formatCert = payment => {
-  const {formationId: fpid} = Store.getCurrentState(`cert.certs.${payment.targetId}`) || {}
-  const fpayment = Store.getCurrentState(`payment.payments.${fpid}`) || {}
+const FormatCert = payment => {
+  
+  const paymentselected = useRecoilValue(selectedpayment)
+  
+  const certdetails = useRecoilValue(selectedcert)
+  // const {formationId: fpid} = Store.getCurrentState(`cert.certs.${payment.targetId}`) || {}
+  const {formationId: fpid} = certdetails({id: `${payment.targetId}`})  || {}
+  // const fpayment = Store.getCurrentState(`payment.payments.${fpid}`) || {}
+  const fpayment = paymentselected({id: `${fpid}`}) || {}
   return (
     <span>
       <span className='pn-type'>Certificat -</span>
-      {formatFormation(fpayment, false)}
+      {FormatFormation(fpayment, false)}
     </span>
   )
 }
 
-const formatFormation = (payment, ftion = true) => {
-  const all = Store.getCurrentState(`program.programs.${payment.targetId}`) || {}
+const FormatFormation = (payment, ftion = true) => {
+  const formationdetails = useRecoilValue(selecteformation)
+  const programdetails = useRecoilValue(selectedprogram)
+  // const all = Store.getCurrentState(`program.programs.${payment.targetId}`) || {}
+  const all = programdetails({id: `${payment.targetId}`}) || {}
   const { date, formationId } = all
-  const fname = Store.getCurrentState(`formation.formations.${formationId}.name`)
+  // const fname = Store.getCurrentState(`formation.formations.${formationId}.name`)
+  const fname = formationdetails({id: `${formationId}`}.name)
   return (
     <span>
       <span className='pn-type'>{ftion && "Formation - "}{fname}</span>

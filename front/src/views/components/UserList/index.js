@@ -8,14 +8,16 @@ import ScrollBar from 'react-perfect-scrollbar'
 import Customer from '../Customer'
 import { useCallback } from 'react'
 import { useEffect } from 'react'
-import { useRecoilState } from 'recoil'
-import { customerState, _customerState } from '../../../recoil/atoms/customer';
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { customerState, _customerState, selectedCustomer } from '../../../recoil/atoms/customer';
 
 const UserList = (props) => {
   
   const [customer, setcustomer] = useRecoilState(customerState)
   const [_customer, _setcustomer] = useRecoilState(_customerState)
-
+  
+  // const customerselected = useRecoilValue(selectedCustomer)
+  // console.log('hazalah : ',customerselected({id: '21d847b4-d86c-4bbf-aad1-1876101b5571'}))
   const {
     selected, onSelect, openedCustomer, setOpenedCustomer,
     // customer: { _customers, customers }

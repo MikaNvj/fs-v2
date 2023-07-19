@@ -3,9 +3,10 @@ import clsx from 'clsx'
 import './PopupMoney.scss'
 import Input from '../Input'
 import { addZero, bulkSetter, toAmount, toCamelCase } from '../../../services/functions'
-import Store, { connect } from '../../../redux/store'
-import { useRecoilState } from 'recoil'
+// import Store, { connect } from '../../../redux/store'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { icomeState } from '../../../recoil/atoms/income'
+import { selectedpayment } from '../../../recoil/atoms/payement'
 
 const states = {
   visible: false,
@@ -14,6 +15,8 @@ const states = {
 }
 
 const PopupMoney = (props) => {
+  const paymentselected = useRecoilValue(selectedpayment)
+  // console.log('hazalah : ',customerselected({id: '21d847b4-d86c-4bbf-aad1-1876101b5571'}))
   const [_income, _setincome] = useRecoilState(icomeState)
   const state = bulkSetter(...useState({ ...states }))
   const { input, ...State } = state
@@ -33,7 +36,8 @@ const PopupMoney = (props) => {
     _income.forEach((one) => {
       const { date = "", paymentId } = one
       if (date.startsWith(today)) {
-        const { type, inactive, amount, rest } = Store.getCurrentState(`payment.payments.${paymentId}`) || {}
+        // const { type, inactive, amount, rest } = Store.getCurrentState(`payment.payments.${paymentId}`) || {}
+        const { type, inactive, amount, rest } = paymentselected({id: `${paymentId}`}) || {}
         if (type && !inactive) {
           if (!incs[type]) incs[type] = 0
           incs[type] += amount - rest
