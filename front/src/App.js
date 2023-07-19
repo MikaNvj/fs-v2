@@ -7,12 +7,12 @@ import Popup from './views/components/Popup'
 import Router from './Router'
 import './App.scss'
 import Header from './views/components/Header'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { formationState } from './recoil/atoms/formation'
 import { programState } from './recoil/atoms/program'
 import Recoil from './services/iDB/Recoil'
 import { payementState } from './recoil/atoms/payement'
-import { customerState } from './recoil/atoms/customer'
+import { customerState, selectedCustomer } from './recoil/atoms/customer'
 
 const states = {
   popup: { message: "" },
@@ -23,9 +23,10 @@ function App(props) {
   const global = bulkSetter(...useState(states))
   const [_f,_setf] = useRecoilState(payementState);
   const [_programrecoil, _setprogramrecoil] = useRecoilState(customerState);
+
   
   useEffect(()=>{
-    console.log(' program recoil into app',_programrecoil)
+    console.log('customerselected',_programrecoil)
   }, [_programrecoil])
 
   return (
