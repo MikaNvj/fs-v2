@@ -18,6 +18,7 @@ import { certState } from '../../../recoil/atoms/cert'
 import { formationState } from '../../../recoil/atoms/formation'
 import { payementState } from '../../../recoil/atoms/payement'
 import { programState } from '../../../recoil/atoms/program'
+import { authObject } from '../../../services/iDB/Recoil'
 
 const mentions = { AB: 'Assez bien', B: 'Bien', TB: 'Très bien' }
 const notes = { AB: 13.5, B: 15.5, TB: 17.5 }
@@ -111,7 +112,8 @@ const Diploma = (props) => {
           targetId: id, type: CERT,
           customerId: customer.id,
           amount: program.certprice || 0, rest: program.certprice || 0,
-          userId: Store.getCurrentState('auth.user.id')
+          // userId: Store.getCurrentState('auth.user.id')
+          userId: authObject.user.id
         })
       }
     })

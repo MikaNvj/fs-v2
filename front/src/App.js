@@ -13,6 +13,7 @@ import { programState } from './recoil/atoms/program'
 import Recoil from './services/iDB/Recoil'
 import { payementState } from './recoil/atoms/payement'
 import { customerState } from './recoil/atoms/customer'
+import { customerObj } from './services/iDB/Recoil'
 
 const states = {
   popup: { message: "" },

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 // import * as Atoms from "../../recoil/atoms"
 import { useRecoilState } from 'recoil'
-import { authState } from '../../recoil/atoms'
+import { authState } from '../../recoil/atoms/auth'
 import { certState } from '../../recoil/atoms/cert'
 import { connexionState } from '../../recoil/atoms/connexion'
 import { _copyState, copyState } from '../../recoil/atoms/copy'
@@ -15,14 +15,17 @@ import { _subState, subState } from '../../recoil/atoms/sub'
 import { userState } from '../../recoil/atoms/user'
 import DB from './db'
 import iDB from '.'
+
 import {
     getCerts, getConnexions, getCopies,
     getCustomers, getFormations, getPayments, getIncomes, getPrograms, getSubs, getUsers
 } from '../../redux/actions'
 
-export const triggerEvent = (evName) => {
-    document.dispatchEvent(new CustomEvent(evName))
+export const triggerEvent = (evName, data) => {
+    document.dispatchEvent(new CustomEvent(evName, { detail: data }))
 }
+
+export let authObject = null
 
 export default function Recoil() {
 
@@ -42,9 +45,21 @@ export default function Recoil() {
     const [_copy, _setCopy] = useRecoilState(_copyState)
     const [_sub, _setSub] = useRecoilState(_subState)
     const [_formation, _setformation] = useRecoilState(_formationState)
+    const [auth, setAuth] = useRecoilState(authState)
 
-    const models = ['cert', 'connexion', 'copy', 'customer', 'formation', 
-    'icomes', 'payment', 'program', 'sub', 'user']
+    useEffect(() => {
+
+        authObject = { ...auth }
+    
+    }, [auth])
+
+    const models = ['cert', 'connexion', 'copy', 'customer', 'formation',
+        'icomes', 'payment', 'program', 'sub', 'user']
+
+    document.addEventListener('set-auth', (e) => {
+        const { detail } = e
+        setAuth(detail)
+    })
 
     async function update_recoil(model) {
 
@@ -95,14 +110,14 @@ export default function Recoil() {
                 break;
         }
     }
-    async function get_into_local_storage(model){
+    async function get_into_local_storage(model) {
         return await iDB[model].get(model)
     }
-    function transform_to_object(data){
-        let result= {}
+    function transform_to_object(data) {
+        let result = {}
 
-        for(const datum of data){
-            result[datum.id] = {...datum}
+        for (const datum of data) {
+            result[datum.id] = { ...datum }
         }
 
         return result
@@ -121,7 +136,7 @@ export default function Recoil() {
             }
 
         })
-        
+
     }, [])
     // }, [dbTablesHadlers])
 
