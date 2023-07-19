@@ -4,11 +4,15 @@ import './HeaderProgramm.scss'
 import { connect } from '../../../redux/store'
 import { addZero, formatDate, get, toAmount } from '../../../services/functions'
 import { FORMATION } from '../../../services/constants'
+import { useRecoilState } from 'recoil'
+import { payementState } from '../../../recoil/atoms/payement'
 
 const HeaderProgramm = (props) => {
+
+  const [_payments, setPayments] = useRecoilState(payementState)
   const {
     curProgram, close, printList, showList, showDiploma,
-    payment: {_payments}
+    // payment: {_payments}
   } = props
 
   const count = useMemo(() => {
@@ -43,4 +47,5 @@ const HeaderProgramm = (props) => {
     </div>
   )
 }
-export default connect(HeaderProgramm, ["payment"])
+// export default connect(HeaderProgramm, ["payment"])
+export default HeaderProgramm

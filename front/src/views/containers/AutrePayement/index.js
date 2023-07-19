@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import clsx from 'clsx'
 import './AutrePayement.scss'
 import SubscriptionItem from '../../components/SubscriptionItem'
-import Store, { connect } from '../../../redux/store'
+// import Store, { connect } from '../../../redux/store'
 import { COPY, EMAIL, PRINT, REPAIR, SCAN, SUB } from '../../../services/constants'
 import ScrollBar from 'react-perfect-scrollbar'
 import UserList from '../../components/UserList'
@@ -14,6 +14,8 @@ import { _subState } from '../../../recoil/atoms/sub'
 import { payementState } from '../../../recoil/atoms/payement'
 import  { _customerState } from '../../../recoil/atoms/customer'
 import { _copyState } from '../../../recoil/atoms/copy'
+
+import { authObject } from '../../../services/iDB/Recoil'
 
 import {savePayment, saveSub, saveIncome, saveCopy} from '../../../recoil/controllers'
 
@@ -48,7 +50,8 @@ const AutrePayement = (props) => {
     await savePayment({
       targetId: id, type,
       // customerId: customer.id,
-      userId: Store.getCurrentState('auth.user.id')
+      // userId: Store.getCurrentState('auth.user.id')
+      userId: authObject.user.id
     })
   }, [])
 

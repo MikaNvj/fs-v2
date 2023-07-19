@@ -8,6 +8,7 @@ import Store, { connect } from '../../../redux/store'
 import { useAppContext } from '../../../services/provider/index'
 import { useMemo } from 'react'
 import LocalData from '../../../services/LocalData'
+import { authObject } from '../../../services/iDB/Recoil'
 
 const defState = {
   login: '',
@@ -17,7 +18,9 @@ const defState = {
 }
 
 const Login = ({ signin }) => {
-  const State = bulkSetter(...useState({ ...defState, login: Store.getCurrentState('auth.user.username') || '' }))
+  // const State = bulkSetter(...useState({ ...defState, login: Store.getCurrentState('auth.user.username') || '' }))
+  const State = bulkSetter(...useState({ ...defState, login: authObject.user.username || '' }))
+
   const { setConnected } = useAppContext()
   const {
     input, password, login, setWait, wait,
@@ -41,7 +44,8 @@ const Login = ({ signin }) => {
 
   const connectOnFly = useCallback(password => {
     if(LocalData.passlength === password.length){
-      const { user: { email, username }, token } = Store.getCurrentState('auth')
+      // const { user: { email, username }, token } = Store.getCurrentState('auth')
+      const { user: { email, username }, token } = authObject
       if (token && [email, username].includes(login)) {
         try {
           signin({ password, login }).then(_ => setConnected(true))
@@ -79,4 +83,5 @@ const Login = ({ signin }) => {
     </div>
   )
 }
-export default connect(Login, ['auth'])
+// export default connect(Login, ['auth'])
+export default Login

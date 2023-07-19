@@ -5,6 +5,8 @@ import './Dashboard.scss'
 import colors from './colors';
 import { addZero, basicFormatDate, bulkSetter, get, toAmount } from '../../../services/functions/index'
 import Store, { connect } from '../../../redux/store/index'
+import { icomeState } from '../../../recoil/atoms/income';
+import { _customerState } from '../../../recoil/atoms/customer';
 
 const _data = {
   labels: Array.from(new Array(31).keys()).map(val => addZero(val + 1)),
@@ -34,9 +36,11 @@ const options = {
 };
 
 const Dashboard = (props) => {
-  const {
-    income: { _incomes }
-  } = props
+  const [_incomes, setIcomes] = useRecoilState(icomeState)
+  const [customer, setCustomer] = useRecoilState(_customerState)
+  // const {
+  //   income: { _incomes }
+  // } = props
   const {
     month, setMonthIncomes, data, ...S
   } = bulkSetter(...useState({
@@ -99,7 +103,8 @@ const Dashboard = (props) => {
           <div className="outcome">{toAmount(Math.floor(data.datasets[0].data.reduce((t, o) => t + o, 0) / 900 * 7) * 100, '')}<span>Ar</span></div>
         </div>
         <div className="view customers">
-          <div className="new-customer">{toAmount(Object.keys(Store.getCurrentState('customer.customers')).length, '')} <span>Clients</span></div>
+          {/* <div className="new-customer">{toAmount(Object.keys(Store.getCurrentState('customer.customers')).length, '')} <span>Clients</span></div> */}
+          <div className="new-customer">{toAmount(Object.keys(customer).length, '')} <span>Clients</span></div>
           <div className="new-customer news">22 <span>Clients</span></div>
         </div>
       </div>
@@ -109,4 +114,5 @@ const Dashboard = (props) => {
     </div>
   )
 }
-export default connect(Dashboard, ['income'])
+// export default connect(Dashboard, ['income'])
+export default Dashboard

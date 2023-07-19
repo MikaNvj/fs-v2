@@ -17,6 +17,7 @@ import { payementState } from '../../../recoil/atoms/payement'
 import { customerState, _customerState } from '../../../recoil/atoms/customer'
 
 import { saveConnexion, savePayment, saveIncome } from '../../../recoil/controllers'
+import { authObject } from '../../../services/iDB/Recoil'
 
 const states = {
   chosenPayment: null, activity: false,
@@ -83,7 +84,8 @@ const Connexion = (props) => {
               targetId: id,
               customerId: null,
               type: CONNEXION,
-              userId: Store.getCurrentState('auth.user.id')
+              // userId: Store.getCurrentState('auth.user.id')
+              userId: authObject.user.id
             })
           }}>Nouvelle connexion</Button>
       </div>

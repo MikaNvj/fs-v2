@@ -12,11 +12,13 @@ import UserList from '../../components/UserList'
 import { FORMATION } from '../../../services/constants/index'
 import PrintList from '../../components/PrintList'
 import Diploma from '../../components/Diploma'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { _formationState, formationState } from '../../../recoil/atoms/formation'
 import { programState } from '../../../recoil/atoms/program'
 import { payementState } from '../../../recoil/atoms/payement'
 import { saveFormation, saveProgram, savePayment } from '../../../recoil/controllers'
+import { authObject } from '../../../services/iDB/Recoil'
+import { selectedCustomer } from '../../../recoil/atoms/customer' 
 
 const states = {
   edited: null, newProgram: false, showList: false,
@@ -29,6 +31,8 @@ const Formation = (props) => {
   const [formations, _setFormation] = useRecoilState(_formationState)
   const [_programs, setProgram] = useRecoilState(programState)
   const [_payments, setPayement] = useRecoilState(payementState)
+  const _customer = useRecoilValue(selectedCustomer)
+
   const {
     // saveFormation, saveProgram, savePayment,
     // formation: { _formations, formations }, program: { _programs },
@@ -118,7 +122,8 @@ const Formation = (props) => {
                                     const customer = JSON.parse(e.dataTransfer.getData("Text"))
                                     const np = {
                                       customerId: customer.id, targetId: id, type: FORMATION,
-                                      userId: Store.getCurrentState('auth.user.id'),
+                                      // userId: Store.getCurrentState('auth.user.id'),
+                                      userId: authObject.user.id,
                                       amount: program.price,
                                       rest: program.price
                                     }
@@ -136,7 +141,8 @@ const Formation = (props) => {
                                           handler: _ => {
                                             savePayment(np)
                                             setActiveProgram(program)
-                                            setOpenedCustomer(Store.getCurrentState('customer.customers.' + customer.id))
+                                            // setOpenedCustomer(Store.getCurrentState('customer.customers.' + customer.id))
+                                            setOpenedCustomer(_customer({id: customer.id}))
                                           },
                                           title: 'Inscription',
                                           text: `Inscrire ${customer.firstname} à la formation "${name}" du ${formatDate(date)}`
