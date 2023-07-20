@@ -15,17 +15,13 @@ import { _subState, subState } from '../../recoil/atoms/sub'
 import { userState } from '../../recoil/atoms/user'
 import DB from './db'
 import iDB from '.'
+import { Auth, Data, Obj } from '../../types'
 
-import {
-    getCerts, getConnexions, getCopies,
-    getCustomers, getFormations, getPayments, getIncomes, getPrograms, getSubs, getUsers
-} from '../../redux/actions'
-
-export const triggerEvent = (evName, data) => {
+export const triggerEvent = (evName: string, data?: Auth) => {
     document.dispatchEvent(new CustomEvent(evName, { detail: data }))
 }
 
-export let authObject = null
+export let authObject: Auth | undefined = undefined
 
 export default function Recoil() {
 
@@ -49,19 +45,20 @@ export default function Recoil() {
 
     useEffect(() => {
 
-        authObject = { ...auth }
+        authObject = { user: {...auth.user}, token: auth.token }
     
     }, [auth])
 
     const models = ['cert', 'connexion', 'copy', 'customer', 'formation',
         'icomes', 'payment', 'program', 'sub', 'user']
 
-    document.addEventListener('set-auth', (e) => {
-        const { detail } = e
+    document.addEventListener('set-auth', (e: Event) => {
+
+        const { detail }  = e as CustomEvent
         setAuth(detail)
     })
 
-    async function update_recoil(model) {
+    async function update_recoil(model: string) {
 
         switch (model) {
             case 'cert':
@@ -110,11 +107,11 @@ export default function Recoil() {
                 break;
         }
     }
-    async function get_into_local_storage(model) {
+    async function get_into_local_storage(model: string) {
         return await iDB[model].get(model)
     }
-    function transform_to_object(data) {
-        let result = {}
+    function transform_to_object(data: Data[]) {
+        let result: Obj<any> = {}
 
         for (const datum of data) {
             result[datum.id] = { ...datum }
@@ -134,7 +131,6 @@ export default function Recoil() {
                     update_recoil(model)
                 })
             }
-
         })
 
     }, [])
