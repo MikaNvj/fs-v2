@@ -6,7 +6,7 @@ export const authState = atom< Auth>({
     key: 'auth',
     default: {
         user: {
-            id: undefined,
+            id: '',
         },
         token: ''
     }
