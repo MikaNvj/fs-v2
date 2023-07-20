@@ -6,7 +6,7 @@ import { bulkSetter, get, toCamelCase } from '../../../services/functions'
 // import { connect } from '../../../redux/store'
 import Button from '../Button'
 import bridge, { attach, detach } from '../../../services/bridge/index'
-import qs from 'query-string'
+// import qs from 'query-string'
 import QRCode from 'react-qr-code'
 import axios from 'axios'
 import { baseUrl, Server } from '../../../services/api'
@@ -30,7 +30,7 @@ const states = {
   photo: '', potentialPhotos: [], server: null
 }
 
-const getPhotoFile = async url => {
+const getPhotoFile = async (url: any) => {
   if (url && !url.startsWith(Server.imageUrl())) {
     const response = await fetch(url)
     return {
@@ -40,7 +40,7 @@ const getPhotoFile = async url => {
   }
 }
 
-let UserComponent = (props) => {
+let UserComponent = (props: any) => {
 
   const [_customers, _setCustomers] = useRecoilState(customerState)
   const [payments, _setPayment] = useRecoilState(payementState)
@@ -62,7 +62,7 @@ let UserComponent = (props) => {
     })
   }, [close])
 
-  const onPaste = useMemo(_ => e => {
+  const onPaste = useMemo(()=> (e: any)=> {
     if (e.clipboardData) {
       const { items } = e.clipboardData  || e.originalEvent.clipboardData
       for (var i = 0; i < items.length; i++) {
@@ -95,12 +95,12 @@ let UserComponent = (props) => {
     })
   }, [State.facebook])
 
-  useEffect(_ => {
+  useEffect(()=> {
     bridge(`fileServer:${State.server ? 'stop' : 'start'}`).then(server => {
       if (server) {
         axios.get(`http://localhost:${server.port}`).then(({ data: potentialPhotos }) => {
           State.set({ server, potentialPhotos })
-          attach('update:images', async (e, potentialPhotos) => {
+          attach('update:images', async (e: any, potentialPhotos: any) => {
             State.set({ potentialPhotos })
           })
         })
@@ -116,8 +116,8 @@ let UserComponent = (props) => {
     <div className={clsx('UserComponent on-center', edited && 'active')}>
       <PhotoCropper
         url={State.toCrop}
-        close={_ => State.setToCrop(false)}
-        onChange={({ url }) => {
+        close={()=> State.setToCrop(false)}
+        onChange={({ url }: any) => {
           State.setPhoto(url)
         }}
       />
@@ -144,7 +144,7 @@ let UserComponent = (props) => {
               />
             }
             {
-              State.server && State.potentialPhotos.slice(0, State.facebook ? 7 : 8).map(name => {
+              State.server && State.potentialPhotos.slice(0, State.facebook ? 7 : 8).map((name: any)=> {
                 const url = `http://localhost:${State.server.port}/image/${name}`
                 return <div
                   key={name}
@@ -202,7 +202,7 @@ let UserComponent = (props) => {
               <div className="top-input">
                 <Input
                   value={State.lastname}
-                  onChange={val => State.setLastname(val && val.toUpperCase())}
+                  onChange={(val: any) => State.setLastname(val && val.toUpperCase())}
                   type="text"
                   required
                   label="Nom"
@@ -211,14 +211,14 @@ let UserComponent = (props) => {
               <div className="top-input">
                 <Input
                   value={State.firstname}
-                  onChange={val => State.setFirstname(toCamelCase(val))}
+                  onChange={(val: any) => State.setFirstname(toCamelCase(val))}
                   type="text"
                   label="Prenoms" />
               </div>
               <div className="top-input">
                 <Input
                   value={toPhone(State.phone)}
-                  onChange={val => State.setPhone(toPhone(val, false))}
+                  onChange={(val: any) => State.setPhone(toPhone(val, false))}
                   type="text"
                   label="Téléphone" />
               </div>
@@ -280,7 +280,7 @@ let UserComponent = (props) => {
 
 // UserComponent = connect(UserComponent, ["customer", "payment"])
 
-const Splitter = props => {
+const Splitter = (props: any) => {
   return (
     <Modal active={!!props.edited} parentSelector='.App > .AppBody'>
       {props.activity ? <CustomerActivity {...props} incomer={props.edited}/> : <UserComponent {...props}/>}

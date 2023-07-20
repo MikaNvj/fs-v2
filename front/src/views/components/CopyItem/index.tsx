@@ -12,13 +12,13 @@ const states = {
   amount: 0
 }
 
-const CopyItem = (props) => {
+const CopyItem = (props: any) => {
   const {
     value, setSelectedPayment,
     customer: {
       facebook, lastname, firstname,
       sex, photo, phone, id
-    } = {}, customer, payment, saveIncome,
+    } = {} as any, customer, payment, saveIncome,
     savePayment, saveCopy
   } = props
 
@@ -30,7 +30,7 @@ const CopyItem = (props) => {
     wasted: value.wasted, amount: payment.amount
   }))
   
-  const [rest, setRest] = useState(null)
+  const [rest, setRest] = useState< any>(null)
   const [canceled, setCanceled] = useState(false)
 
   useEffect(() => {
@@ -52,10 +52,10 @@ const CopyItem = (props) => {
   }, [black, colored, wasted])
 
 
-  useEffect(_ => {
-    let tmt
-    if (canceled) tmt = setTimeout(_ => setCanceled(false), 3500)
-    return _ => clearTimeout(tmt)
+  useEffect(()=> {
+    let tmt: any
+    if (canceled) tmt = setTimeout(() => setCanceled(false), 3500)
+    return ()=> clearTimeout(tmt)
   }, [canceled])
 
   return (

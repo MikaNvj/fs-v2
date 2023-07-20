@@ -11,7 +11,7 @@ ReactDOM.render(
     <Store.StoreProvider>
       <RecoilRoot>
         <App />
-      </ RecoilRoot>
+      </RecoilRoot>
     </Store.StoreProvider>
   </React.StrictMode>,
   document.getElementById('root')

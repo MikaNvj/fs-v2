@@ -15,7 +15,7 @@ const states = {
   money: false
 }
 
-const Header = (props) => {
+const Header = (props: any) => {
   const state = bulkSetter(...useState({ ...states }))
   const { money, setMoney } = state
   const location = useLocation()
@@ -65,7 +65,7 @@ const Header = (props) => {
         </div>
       }
 
-      <PopupMoney close={_ => setMoney(false)} active={money} />
+      <PopupMoney close={() => setMoney(false)} active={money} />
       <div className='rightest-one'>
         { connected && <UserSetting/> }
         <TitleBarActions />

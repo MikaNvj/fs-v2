@@ -7,7 +7,7 @@ import { FORMATION } from '../../../services/constants'
 import { useRecoilState } from 'recoil'
 import { payementState } from '../../../recoil/atoms/payement'
 
-const HeaderProgramm = (props) => {
+const HeaderProgramm = (props: any) => {
 
   const [_payments, setPayments] = useRecoilState(payementState)
   const {

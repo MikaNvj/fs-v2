@@ -15,9 +15,9 @@ const states = {
   curDay: new Date()
 }
 
-const PaidConnexion = (props) => {
+const PaidConnexion = (props: any) => {
   const [_paymentrecoil, _setpaymentrecoil] = useRecoilState(payementState)
-  const [_connexionrecoil, _setconnexionrecoil] = useRecoilState(connexionState)
+  const [_connexionrecoil, _setconnexionrecoil] = useRecoilState<any>(connexionState)
   const [_customer, _setcustomerrecoil] = useRecoilState(customerState)
   const {
     // payment: { _payments }, connexion: { connexions },
@@ -29,13 +29,13 @@ const PaidConnexion = (props) => {
     curDay, setCurDay
   } = bulkSetter(...useState({ ...states }))
 
-  const allPaids = useMemo(_ => {
-    const today = toSimpleDate(curDay)
+  const allPaids = useMemo(() => {
+    const today: any = toSimpleDate(curDay)
     return _paymentrecoil.filter(({ type, createdAt, rest = null, targetId, inactive }) => {
       const start = _connexionrecoil[targetId] ? toSimpleDate(_connexionrecoil[targetId].start) : ""
       return !inactive && type === CONNEXION && start && start.startsWith(today) && rest !== null
     })
-  })
+  }, [])
 
   return (
     <div className={clsx('PaidConnexion')}>

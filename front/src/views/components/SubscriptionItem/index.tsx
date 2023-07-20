@@ -20,17 +20,17 @@ const states = {
   price: 0
 }
 
-const SubscriptionItem = (props) => {
+const SubscriptionItem = (props: any) => {
   const {
     value, setSelectedPayment, customer: {
       facebook, lastname, firstname,
       sex, photo, phone
-    } = {}, customer, payment, saveIncome,
+    } = {} as any, customer, payment, saveIncome,
     savePayment, saveSub
   } = props
 
   const state = bulkSetter(...useState({...states}))
-  const [rest, setRest] = useState(null)
+  const [rest, setRest] = useState< any>(null)
   const [canceled, setCanceled] = useState(false)
   
   useEffect(() => {
@@ -53,7 +53,7 @@ const SubscriptionItem = (props) => {
   }, [state.price])
 
   useEffect(() => {
-    const sub = subs.find(({value}) => value === state.offer)
+    const sub: any = subs.find(({value}) => value === state.offer)
     if(state.start && sub){
       const date = new Date(state.start)
       date.setMonth(date.getMonth() + (sub.dm || 0))
@@ -69,10 +69,10 @@ const SubscriptionItem = (props) => {
     }
   }, [state.offer, state.start])
 
-  useEffect(_ => {
-    let tmt
-    if(canceled) tmt = setTimeout(_ => setCanceled(false), 3500)
-    return _ => clearTimeout(tmt)
+  useEffect(() => {
+    let tmt: any
+    if(canceled) tmt = setTimeout(() => setCanceled(false), 3500)
+    return () => clearTimeout(tmt)
   }, [canceled])
   
   return (
@@ -109,13 +109,13 @@ const SubscriptionItem = (props) => {
         className="offer"
         placeholder="Abonnement"
         value={state.offer}
-        onChange={val => state.setOffer(val)}
+        onChange={(val: any) => state.setOffer(val)}
         options= {subs}
       />
       {rest === null && <div className="date-sep">Du</div>}
-      {rest === null && <Hour className='start' time={false} value={state.start} onChange={val => state.setStart(val)} />}
+      {rest === null && <Hour className='start' time={false} value={state.start} onChange={(val: any)=> state.setStart(val)} />}
       <div className="date-sep">{rest == null ? 'au' : 'Prendra fin le'}</div>
-      <Hour className='stop' time={false} value={state.end} onChange={val => val}/>
+      <Hour className='stop' time={false} value={state.end} onChange={(val: any) => val}/>
       <input className="price"
         type="text"
         readOnly

@@ -11,7 +11,7 @@ import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { customerState, _customerState, selectedCustomer } from '../../../recoil/atoms/customer';
 
-const UserList = (props) => {
+const UserList = (props: any) => {
   
   const [customer, setcustomer] = useRecoilState(customerState)
   const [_customer, _setcustomer] = useRecoilState(_customerState)
@@ -32,7 +32,7 @@ const UserList = (props) => {
     incomer: null, showPay: false
   }))
 
-  const searchRef = useRef(null)
+  const searchRef: any = useRef(null)
 
   const ref = useRef();
 
@@ -40,13 +40,13 @@ const UserList = (props) => {
     if (showPay) setShowPay(false);
   })
 
-  const showCustomer = useCallback((customer, activity) => {
+  const showCustomer: any = useCallback((customer: any, activity: any) => {
     State.set({
       edited: customer, activity
     })
-  })
+  }, [])
 
-  useEffect(_ => {
+  useEffect(() => {
     if(openedCustomer){
       showCustomer(openedCustomer, true)
       setOpenedCustomer(null)
@@ -71,7 +71,7 @@ const UserList = (props) => {
             <input type="text"
               onChange={(e) => {
                 clearTimeout(searchRef.current)
-                searchRef.current = setTimeout(_ => {
+                searchRef.current = setTimeout(() => {
                   setSearch(e.target.value)
                 }, 600)
               }}
@@ -89,21 +89,21 @@ const UserList = (props) => {
                 //   if (search) return fuzzyFilter(cust, search, ({ firstname, lastname }) => `${firstname} ${lastname}`).slice(0, 50)
                 //   else return cust.sort(({ updatedAt: a }, { updatedAt: b }) => a < b ? 1 : -1).slice(0, 50)
                 // })()
-                const cust = (selected ? selected.map(id => customer[id]) : customer).filter(({inactive}) => !inactive)
+                const cust = (selected ? selected.map((id: any) => customer[id]) : customer).filter(({inactive}: any) => !inactive)
                   if (search) return fuzzyFilter(cust, search, ({ firstname, lastname }) => `${firstname} ${lastname}`).slice(0, 50)
-                  else return cust.sort(({ updatedAt: a }, { updatedAt: b }) => a < b ? 1 : -1).slice(0, 50)
-                })().map(customer => (
+                  else return cust.sort(({ updatedAt: a }: any, { updatedAt: b }: any) => a < b ? 1 : -1).slice(0, 50)
+                })().map((customer: any) => (
                   <Customer
                     key={customer.id}
                     customer={customer}
                     onSelect={onSelect}
-                    setIncomer={incomer => {
+                    setIncomer={(incomer: any) => {
                       State.set({
                         edited: incomer,
                         activity: true
                       })
                     }}
-                    edit={_ => State.set({
+                    edit={() => State.set({
                       edited: customer,
                       activity: false
                     })}

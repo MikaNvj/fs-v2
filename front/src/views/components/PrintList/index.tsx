@@ -1,15 +1,18 @@
 import React, {useState, useRef} from 'react'
-import { connect } from '../../../redux/store'
+// import { connect } from '../../../redux/store'
 import bridge from '../../../services/bridge'
 import Modal from '../../portals/Modal'
 import  './PrintList.scss'
 import {formatDate} from '../../../services/functions/index'
+import { useRecoilState } from 'recoil'
+import { customerState } from '../../../recoil/atoms/customer'
 
 function PrintList(props: any) {
+  const [_customerrecoil,_setcustomerrecoil] = useRecoilState(customerState)
   const {
     active, selected, close,
     formation, program,
-    customer: {customers}
+    //customer: {customers}
   } = props
   const ref = useRef(null)
 
@@ -46,7 +49,8 @@ function PrintList(props: any) {
             <tbody>
               {
                 selected.map((id: any, i: any) => {
-                  const customer = customers[id]
+                  // const customer = customers[id]
+                  const customer: any = _customerrecoil[id]
                   return (
                     <tr key={i}>
                       <td>{customer.lastname}</td>
@@ -66,4 +70,4 @@ function PrintList(props: any) {
 }
 
 // export default connect(PrintList, ['customer'])
-export default PrintList
+export default PrintList;

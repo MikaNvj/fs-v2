@@ -7,15 +7,15 @@ import "cropperjs/dist/cropper.css";
 
 let lastUrl = ""
 
-const PhotoCropper = (props) => {
+const PhotoCropper = (props: any) => {
   const { url, close, onChange } = props
 
-  const [cropper, setCropper] = useState()
+  const [cropper, setCropper] = useState< any>()
   const [src, setSrc] = useState('')
-  useEffect(_ => {
+  useEffect(()=> {
     const nurl = url instanceof File ? URL.createObjectURL(url) : url
     setSrc(nurl)
-    return _ => URL.revokeObjectURL(nurl)
+    return () => URL.revokeObjectURL(nurl)
   }, [url])
 
   return (
@@ -24,7 +24,7 @@ const PhotoCropper = (props) => {
         <div
           className="preview"
           onClick={_ => {
-            cropper.getCroppedCanvas().toBlob(blob => {
+            cropper.getCroppedCanvas().toBlob((blob: any) => {
               const file = new File([blob], "image.jpg")
               const url = URL.createObjectURL(file)
               onChange({ file, url })

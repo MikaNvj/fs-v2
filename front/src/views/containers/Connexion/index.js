@@ -11,13 +11,14 @@ import { CONNEXION } from '../../../services/constants'
 import Modal from '../../portals/Modal'
 import UserComponent from '../../components/UserComponent'
 import PaidConnexion from '../../components/PaidConnexion'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { connexionState } from '../../../recoil/atoms/connexion'
 import { payementState } from '../../../recoil/atoms/payement'
 import { customerState, _customerState } from '../../../recoil/atoms/customer'
 
 import { saveConnexion, savePayment, saveIncome } from '../../../recoil/controllers'
 import { authObject } from '../../../services/iDB/Recoil'
+import { authState } from '../../../recoil/atoms/auth'
 
 const states = {
   chosenPayment: null, activity: false,
@@ -25,7 +26,7 @@ const states = {
 }
 
 const Connexion = (props) => {
-
+  const auth = useRecoilValue(authState)
   const [connexions, _setconnex] = useRecoilState(connexionState)
   const [_paymentrecoil, _setpayment] = useRecoilState(payementState)
   const [customers, setCustomer] = useRecoilState(customerState)
@@ -85,7 +86,7 @@ const Connexion = (props) => {
               customerId: null,
               type: CONNEXION,
               // userId: Store.getCurrentState('auth.user.id')
-              userId: authObject.user.id
+              userId: auth.user.id || undefined
             })
           }}>Nouvelle connexion</Button>
       </div>

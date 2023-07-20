@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import clsx from 'clsx'
 import './Popup.scss'
 import { useAppContext } from '../../../services/provider'
-const Popup = (props) => {
+const Popup: any = (props: any) => {
   const {setPopup} = useAppContext()
   const {message, duration = 4000, type = 'info'} = props
   const [text, setText] = useState("")

@@ -20,24 +20,24 @@ import { payementState } from '../../../recoil/atoms/payement'
 import { programState } from '../../../recoil/atoms/program'
 import { authObject } from '../../../services/iDB/Recoil'
 
-const mentions = { AB: 'Assez bien', B: 'Bien', TB: 'Très bien' }
-const notes = { AB: 13.5, B: 15.5, TB: 17.5 }
+const mentions: any = { AB: 'Assez bien', B: 'Bien', TB: 'Très bien' }
+const notes: any = { AB: 13.5, B: 15.5, TB: 17.5 }
 
 const states = { certificate: '', cdate: new Date() }
 
-const getMention = note => {
+const getMention: any = (note: any) => {
   if(!note) note = 17
   else if(note < 14) return 'AB'
   else if(note < 16) return 'B'
   else if(note >= 16) return 'TB'
 }
 
-const Diploma = (props) => {
+const Diploma = (props: any) => {
   const [customers, setcustomers] = useRecoilState(customerState);
   const [_certs, setcerts] = useRecoilState(certState);
   const [formations, setformation] = useRecoilState(formationState)
   const [_payments, setpayments] = useRecoilState(payementState);
-  const [program, setprogram] = useRecoilState(programState)
+  const [programs, setprogram] = useRecoilState(programState)
 
   const {
     active = true, close, actFormation, actProgram,
@@ -45,17 +45,17 @@ const Diploma = (props) => {
     // cert: {_certs}, payment: {_payments},
     // saveCert, savePayment
   } = props
-   program = actProgram
-  const { formation, students} = useMemo(_ => {
+  let program = actProgram
+  const { formation, students} = useMemo(() => {
     return {
       formation: actFormation || formations[program.formationId],
       students: _payments.filter(({type, targetId}) => {
         return type === FORMATION && targetId === program.id
-      }).map(p => {
+      }).map((p: any) => {
         return {
           ...p,
           customer: customers[p.customerId],
-          cert: _certs.find(c => c.formationId === p.id)
+          cert: _certs.find((c: any) => c.formationId === p.id)
         }
       })
     }
@@ -77,7 +77,7 @@ const Diploma = (props) => {
   }, [students, cur])
 
   // PRINT HANDLERS
-  const printAll = useMemo(_ => async e => {
+  const printAll = useMemo(() => async (e: any) => {
     e.target.closest('.Diploma').classList.remove('single')
     await bridge('print', {opts: {
       printBackground: true, color: false,
@@ -90,7 +90,7 @@ const Diploma = (props) => {
       }
     }})
   }, [program])
-  const printCurrent = useMemo(_ => async e => {
+  const printCurrent = useMemo(() => async (e: any) => {
     e.target.closest('.Diploma').classList.add('single')
     const {firstname, lastname} = students.find(({id}) => id === cur).customer
     await bridge('print', {opts: {
@@ -103,8 +103,8 @@ const Diploma = (props) => {
       },
       margins: { marginType : 'printableArea' }
     }})
-  })
-  const prepareCertificates = useCallback(_ => {
+  },[])
+  const prepareCertificates = useCallback(() => {
     students.forEach(async ({id: formationId, customer, cert}) => {
       if(!cert){
         const {id} = await saveCert({ mention: 15, formationId })
@@ -113,7 +113,7 @@ const Diploma = (props) => {
           customerId: customer.id,
           amount: program.certprice || 0, rest: program.certprice || 0,
           // userId: Store.getCurrentState('auth.user.id')
-          userId: authObject.user.id
+          userId: (authObject as any).user.id
         })
       }
     })

@@ -8,7 +8,7 @@ import './Customer.scss'
 import { useRecoilState } from 'recoil'
 import { payementState } from '../../../recoil/atoms/payement'
 
-const Customer = function (props) {
+const Customer = function (props: any) {
   const [payments, _setpaymentrecoil] = useRecoilState(payementState)
   const {
     customer, setIncomer, onSelect,

@@ -14,7 +14,7 @@ const states = {
   isLogin: true
 }
 
-const PopupMoney = (props) => {
+const PopupMoney = (props: any) => {
   const paymentselected = useRecoilValue(selectedpayment)
   // console.log('hazalah : ',customerselected({id: '21d847b4-d86c-4bbf-aad1-1876101b5571'}))
   const [_income, _setincome] = useRecoilState(icomeState)
@@ -24,7 +24,7 @@ const PopupMoney = (props) => {
   const { active, close, } = props
 
   // Methods
-  const pmRef = useRef(null)
+  const pmRef: any = useRef(null)
 
   useEffect(() => {
     active && pmRef.current && pmRef.current.focus()
@@ -32,7 +32,7 @@ const PopupMoney = (props) => {
 
   const total = useMemo(() => {
     const today = `${new Date().getFullYear()}-${addZero(new Date().getMonth() + 1)}-${addZero(new Date().getDate())}`
-    const incs = {}
+    const incs: any = {}
     _income.forEach((one) => {
       const { date = "", paymentId } = one
       if (date.startsWith(today)) {
@@ -59,8 +59,8 @@ const PopupMoney = (props) => {
 
   return (
     <div onBlur={e => {
-      setTimeout(_ => {
-        if (!document.activeElement.closest('.PopupMoney')) {
+      setTimeout(() => {
+        if (!document.activeElement?.closest('.PopupMoney')) {
           state.setIsLogin(true)
           close()
         }
