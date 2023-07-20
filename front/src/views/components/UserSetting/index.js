@@ -18,4 +18,6 @@ const UserSetting = (props) => {
     </div>
   )
 }
-export default connect(UserSetting, ['auth'])
+
+// export default connect(UserSetting, ['auth'])
+export default UserSetting

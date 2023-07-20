@@ -1,4 +1,5 @@
 import {atom} from "recoil";
+
 import { Auth } from '../../types'
 
 export const authState = atom< Auth>({
@@ -9,4 +10,4 @@ export const authState = atom< Auth>({
         },
         token: ''
     }
-});
+})
