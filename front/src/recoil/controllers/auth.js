@@ -11,7 +11,7 @@ export const logout = () => {
   triggerEvent('logout')
 }
 
-export const signin = async (creds: any) => {
+export const signin = async (creds) => {
 
   const {user: {email, username}, token} = authObject
 
@@ -37,7 +37,7 @@ export const signin = async (creds: any) => {
   }
 }
 
-export const check = () => async (dispatch: any) => {
+export const check = () => async (dispatch) => {
   try{
     const { user } = await Service.check()
     
