@@ -25,7 +25,7 @@ const states = {
   selectedPayment: null
 }
 
-const AutrePayement = (props) => {
+const AutrePayement = () => {
   const [_paymentrecoil, _setpaymentrecoil ] = useRecoilState(payementState)
   const [subs, setSubs] = useRecoilState(_subState)
   const [customers, setCustomers] = useRecoilState(_customerState)

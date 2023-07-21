@@ -19,13 +19,14 @@ import { customerState, _customerState } from '../../../recoil/atoms/customer'
 import { saveConnexion, savePayment, saveIncome } from '../../../recoil/controllers'
 import { authObject } from '../../../services/iDB/Recoil'
 import { authState } from '../../../recoil/atoms/auth'
+import { CustomerTypes } from '../../../types'
 
 const states = {
   chosenPayment: null, activity: false,
   curUser: null, showPaid: false
 }
 
-const Connexion = (props) => {
+const Connexion = () => {
   const auth = useRecoilValue(authState)
   const [connexions, _setconnex] = useRecoilState(connexionState)
   const [_paymentrecoil, _setpayment] = useRecoilState(payementState)
@@ -49,19 +50,19 @@ const Connexion = (props) => {
   //     return !inactive && type === CONNEXION && connexions[targetId] && rest === null
   //   })
   // }, [_payments])
-  const allConnexions = useMemo(_ => {
+  const allConnexions = useMemo(() => {
     return _paymentrecoil.filter(({ type, rest = null, targetId, inactive }) => {
       return !inactive && type === CONNEXION && connexions[targetId] && rest === null
     })
   }, [_paymentrecoil])
 
-  const showCustomer = useCallback((customer, activity) => {
+  const showCustomer = useCallback((activity: boolean, customer?: CustomerTypes ) => {
     State.set({
       curUser: customer, activity
     })
-  })
+  },[])
   
-  const _allConnexion = useMemo(_ => {
+  const _allConnexion = useMemo(()=> {
 
     console.log('all connexion', connexions)
     return _paymentrecoil.filter(({ type, rest = null, targetId, inactive }) => {
@@ -76,10 +77,10 @@ const Connexion = (props) => {
         <Button
           rounded
           className="validated"
-          onClick={_ => setShowPaid(true)}>Validés</Button>
+          onClick={() => setShowPaid(true)}>Validés</Button>
         <Button
           rounded
-          onClick={async _ => {
+          onClick={async () => {
             const { id } = await saveConnexion({})
             await savePayment({
               targetId: id,
@@ -99,7 +100,7 @@ const Connexion = (props) => {
               customer={_customers[payment.customerId]}
               paymnt={payment}
               setChosenPayment={setChosenPayment}
-              showUser={_ => showCustomer(customers[payment.customerId], false)}
+              showUser={() => showCustomer(false, customers[payment.customerId as any])}
               saveConnexion={saveConnexion}
               savePayment={savePayment}
               saveIncome={saveIncome}
@@ -115,7 +116,7 @@ const Connexion = (props) => {
           <div className="customer-choose">
             <div onClick={_ => setChosenPayment(null)} className="close-chooser" />
             <UserList
-              onSelect={async customer => {
+              onSelect={async (customer: CustomerTypes) => {
                 savePayment({
                   ...chosenPayment,
                   customerId: customer.id

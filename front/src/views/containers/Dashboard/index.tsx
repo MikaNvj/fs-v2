@@ -4,9 +4,12 @@ import { Bar } from 'react-chartjs-2';
 import './Dashboard.scss'
 import colors from './colors';
 import { addZero, basicFormatDate, bulkSetter, get, toAmount } from '../../../services/functions/index'
-import Store, { connect } from '../../../redux/store/index'
+// import Store, { connect } from '../../../redux/store/index'
 import { icomeState } from '../../../recoil/atoms/income';
 import { _customerState } from '../../../recoil/atoms/customer';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { payementState } from '../../../recoil/atoms/payement';
+import { selectedpayment } from '../../../recoil/atoms/payement';
 
 const _data = {
   labels: Array.from(new Array(31).keys()).map(val => addZero(val + 1)),
@@ -22,7 +25,7 @@ const _data = {
   ],
 };
 
-const options = {
+const options: any = {
   maintainAspectRatio: false,
   scales: {
     yAxes: [
@@ -35,9 +38,10 @@ const options = {
   },
 };
 
-const Dashboard = (props) => {
+const Dashboard = () => {
   const [_incomes, setIcomes] = useRecoilState(icomeState)
   const [customer, setCustomer] = useRecoilState(_customerState)
+  const _payments = useRecoilValue(selectedpayment)
   // const {
   //   income: { _incomes }
   // } = props
@@ -50,13 +54,14 @@ const Dashboard = (props) => {
   }))
 
   useEffect(() => {
-    const [y, m] = month.split('-').map(n => parseInt(n))
+    const [y, m] = month.split('-').map((n: string) => parseInt(n))
     let incs = _incomes.filter(({ date }) => date && date.startsWith(month))
-    const total = {}
+    const total: any = {}
     incs.forEach(({ date, amount, paymentId }) => {
       date = parseInt(date.split('-').slice(-1)[0])
       if (!total[date]) total[date] = { total: 0 }
-      const { type } = Store.getCurrentState(`payment.payments.${paymentId}`) || {}
+      // const { type } = Store.getCurrentState(`payment.payments.${paymentId}`) || {}
+      const { type } = _payments({id: `${paymentId}`}) || {}
       total[date].total += amount
       if (type) total[date][type] = (total[date][type] || 0) + amount
     }, {})
@@ -99,8 +104,8 @@ const Dashboard = (props) => {
           </div>
         </div>
         <div className="view movements">
-          <div className="income">{toAmount(data.datasets[0].data.reduce((t, o) => t + o, 0), '')} <span>Ar</span></div>
-          <div className="outcome">{toAmount(Math.floor(data.datasets[0].data.reduce((t, o) => t + o, 0) / 900 * 7) * 100, '')}<span>Ar</span></div>
+          <div className="income">{toAmount(data.datasets[0].data.reduce((t: any, o: any) => t + o, 0), '')} <span>Ar</span></div>
+          <div className="outcome">{toAmount(Math.floor(data.datasets[0].data.reduce((t: any, o: any) => t + o, 0) / 900 * 7) * 100, '')}<span>Ar</span></div>
         </div>
         <div className="view customers">
           {/* <div className="new-customer">{toAmount(Object.keys(Store.getCurrentState('customer.customers')).length, '')} <span>Clients</span></div> */}

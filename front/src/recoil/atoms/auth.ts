@@ -7,6 +7,7 @@ export const authState = atom< AuthTypes>({
     default: {
         user: {
             id: '',
+            formationId: ''
         },
         token: ''
     }

@@ -13,7 +13,7 @@ import { formationState, selecteformation } from '../../../recoil/atoms/formatio
 import { programState, selectedprogram } from '../../../recoil/atoms/program'
 import { savePayment, saveIncome } from '../../../recoil/controllers'
 import { selectedcert } from '../../../recoil/atoms/cert'
-import { FormationTypes, IncomeTypes, PaymentTypes } from '../../../types'
+import { ConnexionTypes, Data, FormationTypes, IncomeTypes, PaymentTypes, ProgramTypes } from '../../../types'
 const states = {
   customer: {},
   restEdited: null,
@@ -180,9 +180,9 @@ const FormatCert =( payment: PaymentTypes) => {
   
   const certdetails = useRecoilValue(selectedcert)
   // const {formationId: fpid} = Store.getCurrentState(`cert.certs.${payment.targetId}`) || {}
-  const {formationId: fpid}: any = certdetails({id: `${payment.targetId}`})  || {}
+  const {formationId: fpid} = certdetails({id: `${payment.targetId}`})  || {}
   // const fpayment = Store.getCurrentState(`payment.payments.${fpid}`) || {}
-  const fpayment = paymentselected({id: `${fpid}`}) || {}
+  const fpayment: PaymentTypes | any = paymentselected({id: `${fpid}`}) || {}
   return (
     <span>
       <span className='pn-type'>Certificat -</span>
@@ -191,7 +191,7 @@ const FormatCert =( payment: PaymentTypes) => {
   )
 }
 
-const FormatFormation = (payment: any, ftion = true) => {
+const FormatFormation = (payment: PaymentTypes, ftion = true) => {
   const formationdetails = useRecoilValue(selecteformation)
   const programdetails = useRecoilValue(selectedprogram)
   // const all = Store.getCurrentState(`program.programs.${payment.targetId}`) || {}
@@ -208,7 +208,7 @@ const FormatFormation = (payment: any, ftion = true) => {
   )
 }
 
-const formatConnexion = (payment: any) => {
+const formatConnexion = (payment: ConnexionTypes) => {
   return (
     <span>
       <span className='pn-type'>Connexion</span>
