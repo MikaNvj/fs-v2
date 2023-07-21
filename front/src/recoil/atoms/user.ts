@@ -1,7 +1,7 @@
 import {atom, selector} from "recoil";
-import {User} from "../../types";
+import { UserTypes} from "../../types";
 
-export const userState = atom<User[]>({
+export const userState = atom<UserTypes[]>({
     key: 'user',
     default: []
 });

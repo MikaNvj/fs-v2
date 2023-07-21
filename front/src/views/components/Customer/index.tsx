@@ -17,7 +17,7 @@ const Customer = function (props: any) {
   } = props
 
   const debt = useMemo(() => {
-    return !!payments.find(({ customerId, rest }) => customerId === customer.id && rest)
+    return !!payments.find(({ customerId, rest }: any) => customerId === customer.id && rest)
   }, [customer.id, payments])
 
   return (

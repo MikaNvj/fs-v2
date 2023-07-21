@@ -7,6 +7,7 @@ import './SubscriptionItem.scss'
 import Hour from '../Hour'
 import { baseUrl, Server } from '../../../services/api'
 import Input from '../Input'
+import { SubTypes } from '../../../types';
 const subs = [
   {label: 'Jour 1 Mois', amount: 40000, dd: 31, value: 1},
   {label: 'Soir 1 Mois', amount: 50000, dd: 31, value: 2},
@@ -30,7 +31,7 @@ const SubscriptionItem = (props: any) => {
   } = props
 
   const state = bulkSetter(...useState({...states}))
-  const [rest, setRest] = useState< any>(null)
+  const [rest, setRest] = useState< number | null>(null)
   const [canceled, setCanceled] = useState(false)
   
   useEffect(() => {
@@ -109,13 +110,13 @@ const SubscriptionItem = (props: any) => {
         className="offer"
         placeholder="Abonnement"
         value={state.offer}
-        onChange={(val: any) => state.setOffer(val)}
+        onChange={(val: string) => state.setOffer(val)}
         options= {subs}
       />
       {rest === null && <div className="date-sep">Du</div>}
-      {rest === null && <Hour className='start' time={false} value={state.start} onChange={(val: any)=> state.setStart(val)} />}
+      {rest === null && <Hour className='start' time={false} value={state.start} onChange={(val: string)=> state.setStart(val)} />}
       <div className="date-sep">{rest == null ? 'au' : 'Prendra fin le'}</div>
-      <Hour className='stop' time={false} value={state.end} onChange={(val: any) => val}/>
+      <Hour className='stop' time={false} value={state.end} onChange={(val: string) => val}/>
       <input className="price"
         type="text"
         readOnly

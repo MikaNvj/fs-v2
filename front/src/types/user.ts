@@ -1,3 +1,3 @@
 import { Data } from "./data";
 
-export type User = Data
+export type UserTypes = Data

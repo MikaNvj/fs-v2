@@ -6,36 +6,41 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
 let lastUrl = ""
+interface propsPhotocropper{
+  url: any,
+  close: any,
+  onChange: any
+}
 
-const PhotoCropper = (props: any) => {
-  const { url, close, onChange } = props
+const PhotoCropper = (props: propsPhotocropper) => {
+  // const { url, close, onChange } = props
 
   const [cropper, setCropper] = useState< any>()
   const [src, setSrc] = useState('')
   useEffect(()=> {
-    const nurl = url instanceof File ? URL.createObjectURL(url) : url
+    const nurl = props.url instanceof File ? URL.createObjectURL(props.url) : props.url
     setSrc(nurl)
     return () => URL.revokeObjectURL(nurl)
-  }, [url])
+  }, [props.url])
 
   return (
-    <Modal active={!!url} className='PhotoCropperParent' parentSelector='.App>.AppBody'>
+    <Modal active={!!props.url} className='PhotoCropperParent' parentSelector='.App>.AppBody'>
       <div className={clsx('PhotoCropper')}>
         <div
           className="preview"
           onClick={_ => {
-            cropper.getCroppedCanvas().toBlob((blob: any) => {
+            cropper.getCroppedCanvas().toBlob((blob: Blob) => {
               const file = new File([blob], "image.jpg")
               const url = URL.createObjectURL(file)
-              onChange({ file, url })
-              close()
+              props.onChange({ file, url })
+              props.close()
               lastUrl && URL.revokeObjectURL(lastUrl)
               lastUrl = url
             }, 'image/jpeg', 1)
           }}
         />
         <div className="the-cropper-parent">
-          <div onClick={close} className="close-cropper"/>
+          <div onClick={props.close} className="close-cropper"/>
           <Cropper
             className='the-cropper'
             zoomTo={.5}

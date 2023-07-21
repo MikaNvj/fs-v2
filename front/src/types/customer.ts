@@ -1,4 +1,4 @@
-export type Customer = {
+export type CustomerTypes = {
     adress: string,
     birthdate: string,
     birthplace: string

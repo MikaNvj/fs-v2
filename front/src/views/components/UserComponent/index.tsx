@@ -20,6 +20,7 @@ import { payementState } from '../../../recoil/atoms/payement'
 import {useRecoilState} from 'recoil'
 import { triggerEvent } from '../../../services/iDB/Recoil'
 import { saveCustomer } from '../../../recoil/controllers'
+import { CustomerTypes, PaymentTypes } from '../../../types'
 
 export const Validator = Input.validator
 
@@ -30,7 +31,7 @@ const states = {
   photo: '', potentialPhotos: [], server: null
 }
 
-const getPhotoFile = async (url: any) => {
+const getPhotoFile = async (url: string) => {
   if (url && !url.startsWith(Server.imageUrl())) {
     const response = await fetch(url)
     return {
@@ -39,28 +40,34 @@ const getPhotoFile = async (url: any) => {
     }
   }
 }
+interface propsusercomponent{
+  close: any,
+  edited: any,
+  setActivity: any,
+  activity: any
+}
 
-let UserComponent = (props: any) => {
+let UserComponent = (props: propsusercomponent) => {
 
   const [_customers, _setCustomers] = useRecoilState(customerState)
   const [payments, _setPayment] = useRecoilState(payementState)
 
-  const {
-    // saveCustomer, 
-    close, edited,
-    setActivity, activity
-  } = props
+  // const {
+  //   // saveCustomer, 
+  //   close, edited,
+  //   setActivity, activity
+  // } = props
 
   const State = bulkSetter(...useState({ ...states }))
 
   const quit = useMemo(() => async () => {
     detach('update:images')
-    close()
+    props.close()
     State.set({
       ...states,
       server: await bridge(`fileServer:stop`)
     })
-  }, [close])
+  }, [props.close])
 
   const onPaste = useMemo(()=> (e: any)=> {
     if (e.clipboardData) {
@@ -76,18 +83,18 @@ let UserComponent = (props: any) => {
 
   // Effects
   useEffect(() => {
-    if(edited) document.addEventListener('paste', onPaste, false)
+    if(props.edited) document.addEventListener('paste', onPaste, false)
     else document.removeEventListener('paste', onPaste)
 
-    if (edited && edited.id) {
+    if (props.edited && props.edited.id) {
       State.set({
-        ...edited,
-        photo: edited.photo ? `${Server.imageUrl(edited.photo)}` : null,
-        facebook: JSON.parse(edited.facebook)
+        ...props.edited,
+        photo: props.edited.photo ? `${Server.imageUrl(props.edited.photo)}` : null,
+        facebook: JSON.parse(props.edited.facebook)
       })
     }
     else State.set({ id: undefined, ...states })
-  }, [edited])
+  }, [props.edited])
   useEffect(() => {
     if (get(State, 'facebook.id')) State.set({
       firstname: State.firstname || get(State, 'facebook.firstname') || '',
@@ -100,7 +107,7 @@ let UserComponent = (props: any) => {
       if (server) {
         axios.get(`http://localhost:${server.port}`).then(({ data: potentialPhotos }) => {
           State.set({ server, potentialPhotos })
-          attach('update:images', async (e: any, potentialPhotos: any) => {
+          attach('update:images', async (e: any, potentialPhotos: string) => {
             State.set({ potentialPhotos })
           })
         })
@@ -109,11 +116,11 @@ let UserComponent = (props: any) => {
   })
 
   const debt = useMemo(() => {
-    return !!payments.find(({ customerId, rest }) => customerId === edited.id && rest)
-  }, [edited.id, payments])
+    return !!payments.find(({ customerId, rest }: any) => customerId === props.edited.id && rest)
+  }, [props.edited.id, payments])
 
   return (
-    <div className={clsx('UserComponent on-center', edited && 'active')}>
+    <div className={clsx('UserComponent on-center', props.edited && 'active')}>
       <PhotoCropper
         url={State.toCrop}
         close={()=> State.setToCrop(false)}
@@ -124,10 +131,10 @@ let UserComponent = (props: any) => {
       <div className="e-content">
         <div className="e-left">
           {
-            !edited.id ? <div className="e-title">
+            !props.edited.id ? <div className="e-title">
               Nouvel Utilisateur
             </div> : <div onClick={_ => {
-              setActivity && setActivity(!activity)
+              props.setActivity && props.setActivity(!props.activity)
             }} className={clsx('e-payements', debt && 'error')}>Payements</div>
           }
           <div
@@ -144,7 +151,7 @@ let UserComponent = (props: any) => {
               />
             }
             {
-              State.server && State.potentialPhotos.slice(0, State.facebook ? 7 : 8).map((name: any)=> {
+              State.server && State.potentialPhotos.slice(0, State.facebook ? 7 : 8).map((name: string)=> {
                 const url = `http://localhost:${State.server.port}/image/${name}`
                 return <div
                   key={name}
@@ -202,7 +209,7 @@ let UserComponent = (props: any) => {
               <div className="top-input">
                 <Input
                   value={State.lastname}
-                  onChange={(val: any) => State.setLastname(val && val.toUpperCase())}
+                  onChange={(val: string) => State.setLastname(val && val.toUpperCase())}
                   type="text"
                   required
                   label="Nom"
@@ -211,14 +218,14 @@ let UserComponent = (props: any) => {
               <div className="top-input">
                 <Input
                   value={State.firstname}
-                  onChange={(val: any) => State.setFirstname(toCamelCase(val))}
+                  onChange={(val: string) => State.setFirstname(toCamelCase(val))}
                   type="text"
                   label="Prenoms" />
               </div>
               <div className="top-input">
                 <Input
                   value={toPhone(State.phone)}
-                  onChange={(val: any) => State.setPhone(toPhone(val, false))}
+                  onChange={(val: string) => State.setPhone(toPhone(val, false))}
                   type="text"
                   label="Téléphone" />
               </div>

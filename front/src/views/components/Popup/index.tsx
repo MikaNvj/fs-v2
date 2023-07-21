@@ -2,24 +2,29 @@ import React, {useState, useEffect} from 'react'
 import clsx from 'clsx'
 import './Popup.scss'
 import { useAppContext } from '../../../services/provider'
-const Popup: any = (props: any) => {
+interface propsPopup{
+  message: string,
+  duration: 4000,
+  type: 'info'
+}
+const Popup: any = (props: propsPopup) => {
   const {setPopup} = useAppContext()
-  const {message, duration = 4000, type = 'info'} = props
+  // const {message, duration = 4000, type = 'info'} = props
   const [text, setText] = useState("")
   const [active, setActive] = useState(false)
   useEffect(() => {
     clearTimeout(Popup.tmt)
-    if(message) {
-      setText(message)
+    if(props.message) {
+      setText(props.message)
       setActive(true)
-      Popup.tmt = setTimeout(_ => {
+      Popup.tmt = setTimeout(() => {
         setPopup({message: ''})
-      }, duration)
+      }, props.duration)
     }
     else setActive(false)
-  }, [message])
+  }, [props.message])
   return (
-    <div className={clsx('Popup', active && 'active', type)}>
+    <div className={clsx('Popup', active && 'active', props.type)}>
       <span>{text}</span>
     </div>
   )

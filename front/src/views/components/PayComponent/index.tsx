@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import './PayComponent.scss'
 
-const PayComponent = (ref: any, handler: any) => {
+const PayComponent = (ref: any, handler: (e: Event) => void) => {
 
   useEffect(
     () => {
-      const listener = (event: any) => {
+      const listener = (event: Event) => {
         if (!ref.current || ref.current.contains(event.target)) {
           return;
         }

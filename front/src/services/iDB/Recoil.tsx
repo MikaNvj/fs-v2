@@ -15,13 +15,13 @@ import { _subState, subState } from '../../recoil/atoms/sub'
 import { userState } from '../../recoil/atoms/user'
 import DB from './db'
 import iDB from '.'
-import { Auth, Data, Obj } from '../../types'
+import { AuthTypes, Data, Obj } from '../../types'
 
-export const triggerEvent = (evName: string, data?: Auth) => {
+export const triggerEvent = (evName: string, data?: AuthTypes) => {
     document.dispatchEvent(new CustomEvent(evName, { detail: data }))
 }
 
-export let authObject: Auth | undefined = undefined
+export let authObject: AuthTypes
 
 export default function Recoil() {
 

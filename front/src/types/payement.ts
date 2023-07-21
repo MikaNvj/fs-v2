@@ -1,7 +1,10 @@
-export type Payment = {
+export type PaymentTypes = {
     amount: number,
     id: string,
     targetId: string,
     type: string,
-    userId: string | undefined
+    userId: string | undefined,
+    inactive: string | boolean,
+    customerId: string,
+    rest: any
 }

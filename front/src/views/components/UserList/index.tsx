@@ -10,18 +10,24 @@ import { useCallback } from 'react'
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { customerState, _customerState, selectedCustomer } from '../../../recoil/atoms/customer';
+import { CustomerTypes, IncomeTypes } from '../../../types'
 
-const UserList = (props: any) => {
-  
+interface propsUserlist {
+  selected: any, 
+  onSelect: any,
+   openedCustomer: CustomerTypes,
+    setOpenedCustomer: CustomerTypes | any,
+}
+
+const UserList = (props: propsUserlist) => {
+
   const [customer, setcustomer] = useRecoilState(customerState)
   const [_customer, _setcustomer] = useRecoilState(_customerState)
-  
-  // const customerselected = useRecoilValue(selectedCustomer)
-  // console.log('hazalah : ',customerselected({id: '21d847b4-d86c-4bbf-aad1-1876101b5571'}))
-  const {
-    selected, onSelect, openedCustomer, setOpenedCustomer,
-    // customer: { _customers, customers }
-  } = props
+
+  // const {
+  //   selected, onSelect, openedCustomer, setOpenedCustomer,
+  //   // customer: { _customers, customers }
+  // } = props
 
   const {
     showPay, setShowPay, edited, activity, setActivity,
@@ -40,18 +46,18 @@ const UserList = (props: any) => {
     if (showPay) setShowPay(false);
   })
 
-  const showCustomer: any = useCallback((customer: any, activity: any) => {
+  const showCustomer: any = useCallback((customer: CustomerTypes, activity: boolean) => {
     State.set({
       edited: customer, activity
     })
   }, [])
 
   useEffect(() => {
-    if(openedCustomer){
-      showCustomer(openedCustomer, true)
-      setOpenedCustomer(null)
-    } 
-  }, [openedCustomer])
+    if (props.openedCustomer) {
+      showCustomer(props.openedCustomer, true)
+      props.setOpenedCustomer(null)
+    }
+  }, [props.openedCustomer])
 
   return (
     <React.Fragment>
@@ -85,19 +91,19 @@ const UserList = (props: any) => {
             <div className="users">
               {
                 (_ => {
-                //   const cust = (selected ? selected.map(id => customers[id]) : _customers).filter(({inactive}) => !inactive)
-                //   if (search) return fuzzyFilter(cust, search, ({ firstname, lastname }) => `${firstname} ${lastname}`).slice(0, 50)
-                //   else return cust.sort(({ updatedAt: a }, { updatedAt: b }) => a < b ? 1 : -1).slice(0, 50)
-                // })()
-                const cust = (selected ? selected.map((id: any) => customer[id]) : customer).filter(({inactive}: any) => !inactive)
+                  //   const cust = (selected ? selected.map(id => customers[id]) : _customers).filter(({inactive}) => !inactive)
+                  //   if (search) return fuzzyFilter(cust, search, ({ firstname, lastname }) => `${firstname} ${lastname}`).slice(0, 50)
+                  //   else return cust.sort(({ updatedAt: a }, { updatedAt: b }) => a < b ? 1 : -1).slice(0, 50)
+                  // })()
+                  const cust = (props.selected ? props.selected.map((id: string) => _customer[id]) : customer).filter(({ inactive }: any) => !inactive)
                   if (search) return fuzzyFilter(cust, search, ({ firstname, lastname }) => `${firstname} ${lastname}`).slice(0, 50)
                   else return cust.sort(({ updatedAt: a }: any, { updatedAt: b }: any) => a < b ? 1 : -1).slice(0, 50)
-                })().map((customer: any) => (
+                })().map((customer: CustomerTypes) => (
                   <Customer
                     key={customer.id}
                     customer={customer}
-                    onSelect={onSelect}
-                    setIncomer={(incomer: any) => {
+                    onSelect={props.onSelect}
+                    setIncomer={(incomer: IncomeTypes) => {
                       State.set({
                         edited: incomer,
                         activity: true

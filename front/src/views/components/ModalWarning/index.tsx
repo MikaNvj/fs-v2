@@ -12,22 +12,26 @@ const states = {
   show: false
 }
 
+interface propsModalWarning{
+  active: boolean,
+  close: () =>void
+}
 
 
-const ModalWarning = (props: any) => {
+const ModalWarning = (props: propsModalWarning) => {
   // Props & states
-  const { active, close } = props
+  // const { active, close } = props
   const S = bulkSetter(...useState(states))
 
   // Save
 
   // Effects
-  useEffect(() => active ? S.setShow(true) : setTimeout(_ => S.setShow(false), 300), [active])
+  useEffect(() => props.active ? S.setShow(true) : setTimeout(() => S.setShow(false), 300), [props.active])
 
   return (
-    <div className={clsx('ModalWarning on-center', active && 'active', S.show && 'show')}>
+    <div className={clsx('ModalWarning on-center', props.active && 'active', S.show && 'show')}>
       <div className="e-content">
-        <div onClick={close} className="e-close" />
+        <div onClick={props.close} className="e-close" />
         <div className="e-contenu">
           <div className="e-warning">
             <FiAlertOctagon size="4em" />

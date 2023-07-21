@@ -1,12 +1,12 @@
 import {atom, selector} from "recoil";
-import { Formation, Obj } from "../../types";
+import { FormationTypes, Obj } from "../../types";
 
-export const formationState = atom<Formation[]>({
+export const formationState = atom<FormationTypes[]>({
     key: 'formation',
     default: []
 });
 
-export const _formationState = atom<Obj<Formation>>({
+export const _formationState = atom<Obj<FormationTypes>>({
     key: '_formation',
     default: {}
 })

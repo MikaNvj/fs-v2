@@ -4,25 +4,34 @@ import bridge from '../../../services/bridge'
 import Modal from '../../portals/Modal'
 import  './PrintList.scss'
 import {formatDate} from '../../../services/functions/index'
-import { useRecoilState } from 'recoil'
-import { customerState } from '../../../recoil/atoms/customer'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { customerState, selectedCustomer } from '../../../recoil/atoms/customer'
+import { CustomerTypes, FormationTypes, ProgramTypes } from '../../../types'
 
-function PrintList(props: any) {
-  const [_customerrecoil,_setcustomerrecoil] = useRecoilState(customerState)
-  const {
-    active, selected, close,
-    formation, program,
-    //customer: {customers}
-  } = props
+interface propsPrintList{
+  active: boolean,
+  selected: any,
+  close: any,
+  formation: FormationTypes,
+  program: ProgramTypes
+}
+function PrintList(props: propsPrintList) {
+  // const [_customerrecoil,_setcustomerrecoil] = useRecoilState(customerState)
+  const _customerrecoil = useRecoilValue(selectedCustomer)
+  // const {
+  //   active, selected, close,
+  //   formation, program,
+  //   //customer: {customers}
+  // } = props
   const ref = useRef(null)
 
   return (
-    <Modal className='PrintListParent' active={active} parentSelector="#root" >
+    <Modal className='PrintListParent' active={props.active} parentSelector="#root" >
       <div className='PrintList' ref={ref}>
         <div className="to-print">
           <div className="tp-header">
             <div className='title'>Liste de présence</div>
-            <div className='subtitle'>{formation.name} - {formatDate(program.date, {precise: true})}</div>
+            <div className='subtitle'>{props.formation.name} - {formatDate(props.program.date, {precise: true})}</div>
             <div className="print-button" onClick={async _ => {
               await bridge('print', {opts: {
                 printBackground: true,
@@ -33,7 +42,7 @@ function PrintList(props: any) {
                 }
               }})
             }}>Imprimer</div>
-            <div className="close-button" onClick={close}>Fermer</div>
+            <div className="close-button" onClick={props.close}>Fermer</div>
           </div>
           <table>
             <thead>
@@ -48,9 +57,9 @@ function PrintList(props: any) {
             </thead>
             <tbody>
               {
-                selected.map((id: any, i: any) => {
+                props.selected.map((id: string, i: number) => {
                   // const customer = customers[id]
-                  const customer: any = _customerrecoil[id]
+                  const customer: CustomerTypes = _customerrecoil({id: `${id}`})
                   return (
                     <tr key={i}>
                       <td>{customer.lastname}</td>

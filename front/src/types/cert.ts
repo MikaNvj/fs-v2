@@ -1,3 +1,3 @@
 import {Data} from './data'
 
-export type Cert = Data
+export type CertTypes = Data

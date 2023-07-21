@@ -1,7 +1,7 @@
 import {atom, selector} from "recoil";
-import { Program } from "../../types";
+import { ProgramTypes } from "../../types";
 
-export const programState = atom<Program[]>({
+export const programState = atom<ProgramTypes[]>({
     key: 'program',
     default: []
 });

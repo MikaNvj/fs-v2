@@ -13,51 +13,57 @@ import { formationState, selecteformation } from '../../../recoil/atoms/formatio
 import { programState, selectedprogram } from '../../../recoil/atoms/program'
 import { savePayment, saveIncome } from '../../../recoil/controllers'
 import { selectedcert } from '../../../recoil/atoms/cert'
+import { FormationTypes, IncomeTypes, PaymentTypes } from '../../../types'
 const states = {
   customer: {},
   restEdited: null,
   openedPayment: null,
   restValue: 0
 }
+interface propsCustomerActivity{
+  close: () => void,
+  incomer: IncomeTypes,
+  setActivity: any,
+  activity: boolean
+}
 
-
-const CustomerActivity = (props: any) => {
+const CustomerActivity = (props: propsCustomerActivity) => {
 
   const [_paymentrecoil, setpaymentrecoil] = useRecoilState(payementState);
   const [incomerecoil,setincomerecoil] = useRecoilState(icomeState);
   const [formationrecoil, setformationrecoil] = useRecoilState(formationState);
   const [programrecoil, setprogramrecoil] = useRecoilState(programState);
   
-  const {
-    close, incomer, 
-    // saveIncome, savePayment,
-    // income: { _incomes }, payment: { _payments },
-    setActivity, activity
-  } = props
+  // const {
+  //   close, incomer, 
+  //   // saveIncome, savePayment,
+  //   // income: { _incomes }, payment: { _payments },
+  //   setActivity, activity
+  // } = props
 
   const {
     customer, restEdited, ...State
   } = bulkSetter(...useState({ ...states }))
 
   useEffect(() => {
-    incomer && State.setCustomer(incomer)
-  }, [incomer])
+    props.incomer && State.setCustomer(props.incomer)
+  }, [props.incomer])
 
   useEffect(() => {
     !restEdited && State.setRestValue(0)
   }, [restEdited])
 
   const allPayments = useMemo(()=> {
-    return _paymentrecoil.filter(({ customerId, inactive, rest }) => !inactive && customerId === get(incomer, 'id') && rest != null)
-      .sort(({ updatedAt: a }, { updatedAt: b }) => a < b ? 1 : -1)
-  }, [_paymentrecoil, incomer.id])
+    return _paymentrecoil.filter(({ customerId, inactive, rest }) => !inactive && customerId === get(props.incomer, 'id') && rest != null)
+      .sort(({ updatedAt: a }: any, { updatedAt: b }: any) => a < b ? 1 : -1)
+  }, [_paymentrecoil, props.incomer.id])
 
 
   return (
     <div className="CustomerActivity">
       <div className="e-left">
         <div onClick={_ => {
-          setActivity && setActivity(!activity)
+          props.setActivity && props.setActivity(!props.activity)
         }} className='e-details'>Détails</div>
         <div
           className={clsx("e-avatar", customer.sex)}
@@ -70,11 +76,11 @@ const CustomerActivity = (props: any) => {
           {`${toPhone(customer.phone)}`}
         </div>
       </div>
-      <div onClick={close} className="e-close" />
+      <div onClick={props.close} className="e-close" />
       <div className="e-right">
         <ScrollBar className='payments'>
           {
-            !!incomer && allPayments.map((payment: any) => {
+            !!props.incomer && allPayments.map((payment: PaymentTypes) => {
               return (
                 <React.Fragment key={payment.id}>
                   {
@@ -160,7 +166,7 @@ const CustomerActivity = (props: any) => {
   )
 }
 
-const format = (payment: any) => {
+const format = (payment: PaymentTypes) => {
   return <React.Fragment>
     {payment.type === CONNEXION && formatConnexion(payment)}
     {payment.type === FORMATION && FormatFormation(payment)}
@@ -168,13 +174,13 @@ const format = (payment: any) => {
   </React.Fragment>
 }
 
-const FormatCert =( payment: any) => {
+const FormatCert =( payment: PaymentTypes) => {
   
   const paymentselected = useRecoilValue(selectedpayment)
   
   const certdetails = useRecoilValue(selectedcert)
   // const {formationId: fpid} = Store.getCurrentState(`cert.certs.${payment.targetId}`) || {}
-  const {formationId: fpid} = certdetails({id: `${payment.targetId}`})  || {}
+  const {formationId: fpid}: any = certdetails({id: `${payment.targetId}`})  || {}
   // const fpayment = Store.getCurrentState(`payment.payments.${fpid}`) || {}
   const fpayment = paymentselected({id: `${fpid}`}) || {}
   return (
@@ -186,13 +192,14 @@ const FormatCert =( payment: any) => {
 }
 
 const FormatFormation = (payment: any, ftion = true) => {
-  const formationdetails = useRecoilValue< any>(selecteformation)
+  const formationdetails = useRecoilValue(selecteformation)
   const programdetails = useRecoilValue(selectedprogram)
   // const all = Store.getCurrentState(`program.programs.${payment.targetId}`) || {}
   const all = programdetails({id: `${payment.targetId}`}) || {}
-  const { date, formationId } = all
+  const { date, formationId }: any = all
   // const fname = Store.getCurrentState(`formation.formations.${formationId}.name`)
-  const fname = formationdetails(({id: `${formationId}`} as any).name)
+  const fname = (formationdetails(({id: `${formationId}`})) as FormationTypes).name
+
   return (
     <span>
       <span className='pn-type'>{ftion && "Formation - "}{fname}</span>

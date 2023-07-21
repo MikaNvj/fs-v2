@@ -1,12 +1,12 @@
 import {atom, selector} from "recoil";
-import { Obj, Sub } from "../../types";
+import { Obj, SubTypes } from "../../types";
 
-export const subState = atom<Sub[]>({
+export const subState = atom<SubTypes[]>({
     key: 'sub',
     default: []
 });
 
-export const _subState = atom<Obj<Sub>>({
+export const _subState = atom<Obj<SubTypes>>({
     key: '_sub',
     default: {}
 });

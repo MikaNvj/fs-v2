@@ -1,3 +1,3 @@
-export type Sub = {
+export type SubTypes = {
     id: string
 }

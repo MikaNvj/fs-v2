@@ -1,7 +1,7 @@
 import {atom, selector} from "recoil";
-import { Copy } from "../../types";
+import { CopyTypes } from "../../types";
 
-export const copyState = atom<Copy[]>({
+export const copyState = atom<CopyTypes[]>({
     key: 'copy',
     default: []
 });

@@ -1,3 +1,3 @@
 import { Data } from "./data";
 
-export type Income = Data
+export type IncomeTypes = Data

@@ -1,7 +1,7 @@
 import {atom, selector} from "recoil";
-import { Payment } from "../../types";
+import { PaymentTypes } from "../../types";
 
-export const payementState = atom<Payment[]>({
+export const payementState = atom<PaymentTypes[]>({
     key: 'payement',
     default: []
 });

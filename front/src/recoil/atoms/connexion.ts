@@ -1,7 +1,7 @@
 import {atom, selector} from "recoil";
-import { Connection, Obj } from "../../types";
+import { ConnexionTypes, Obj } from "../../types";
 
-export const connexionState = atom<Obj<Connection>>({
+export const connexionState = atom<Obj<ConnexionTypes>>({
     key: 'connextion',
     default: {}
 });

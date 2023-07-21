@@ -1,4 +1,4 @@
-export type Program = {
+export type ProgramTypes = {
     certprice: number,
     date: Date,
     detail: string,

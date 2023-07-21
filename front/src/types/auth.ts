@@ -1,6 +1,6 @@
 import { Data } from "./data"
 
-export type Auth = {
+export type AuthTypes = {
     user: Data
     token: string
 }

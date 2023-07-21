@@ -1,7 +1,7 @@
 import {atom, selector} from "recoil";
-import { Cert } from "../../types";
+import { CertTypes } from "../../types";
 
-export const certState = atom<Cert[]>({
+export const certState = atom<CertTypes[]>({
     key: 'cert',
     default: []
 });

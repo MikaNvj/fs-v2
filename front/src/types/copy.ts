@@ -1,4 +1,4 @@
-export type Copy = {
+export type CopyTypes = {
     id: string, 
     black: number,
     colored: number,

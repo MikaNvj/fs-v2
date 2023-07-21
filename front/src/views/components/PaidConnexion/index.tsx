@@ -14,16 +14,19 @@ import { customerState } from '../../../recoil/atoms/customer'
 const states = {
   curDay: new Date()
 }
+interface propsPaidconnexion{
+  showCustomer: any
+}
 
-const PaidConnexion = (props: any) => {
+const PaidConnexion = (props: propsPaidconnexion) => {
   const [_paymentrecoil, _setpaymentrecoil] = useRecoilState(payementState)
   const [_connexionrecoil, _setconnexionrecoil] = useRecoilState<any>(connexionState)
   const [_customer, _setcustomerrecoil] = useRecoilState(customerState)
-  const {
-    // payment: { _payments }, connexion: { connexions },
-    // customer: { customers }, 
-    showCustomer
-  } = props
+  // const {
+  //   // payment: { _payments }, connexion: { connexions },
+  //   // customer: { customers }, 
+  //   showCustomer
+  // } = props
 
   const {
     curDay, setCurDay
@@ -31,7 +34,7 @@ const PaidConnexion = (props: any) => {
 
   const allPaids = useMemo(() => {
     const today: any = toSimpleDate(curDay)
-    return _paymentrecoil.filter(({ type, createdAt, rest = null, targetId, inactive }) => {
+    return _paymentrecoil.filter(({ type, createdAt, rest = null, targetId, inactive }: any) => {
       const start = _connexionrecoil[targetId] ? toSimpleDate(_connexionrecoil[targetId].start) : ""
       return !inactive && type === CONNEXION && start && start.startsWith(today) && rest !== null
     })
@@ -47,12 +50,12 @@ const PaidConnexion = (props: any) => {
           <div className="paid-list">
             {
               allPaids.map((payment) => {
-                const { targetId, customerId, amount, rest, id } = payment
+                const { targetId, customerId, amount, rest, id }: any = payment
                 const { start, stop } = _connexionrecoil[targetId]
                 const { facebook, lastname, firstname, sex, photo, phone } = _customer[customerId]
 
                 return <div className="connexion" key={id}>
-                  <div onDoubleClick={_ => showCustomer(_customer[customerId])} className="customer-name">
+                  <div onDoubleClick={_ => props.showCustomer(_customer[customerId])} className="customer-name">
                     <span className='lastname'>{lastname}</span>
                     <span>{firstname}</span>
                     <span className='phone'>{toPhone(phone)}</span>

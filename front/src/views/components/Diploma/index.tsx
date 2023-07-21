@@ -20,16 +20,22 @@ import { payementState } from '../../../recoil/atoms/payement'
 import { programState } from '../../../recoil/atoms/program'
 import { authObject } from '../../../services/iDB/Recoil'
 
-const mentions: any = { AB: 'Assez bien', B: 'Bien', TB: 'Très bien' }
-const notes: any = { AB: 13.5, B: 15.5, TB: 17.5 }
+const mentions: {"AB": string,"B": string, "TB": string} = { AB: 'Assez bien', B: 'Bien', TB: 'Très bien' }
+const notes: {"AB": number, "B": number, "TB": number} = { AB: 13.5, B: 15.5, TB: 17.5 }
 
 const states = { certificate: '', cdate: new Date() }
 
-const getMention: any = (note: any) => {
-  if(!note) note = 17
-  else if(note < 14) return 'AB'
-  else if(note < 16) return 'B'
-  else if(note >= 16) return 'TB'
+// const getMention = (note: number | undefined) => ("AB" | "B" | "TB" | undefined) => {
+//   if(!note) note = 17
+//   else if(note < 14) return 'AB'
+//   else if(note < 16) return 'B'
+//   else if(note >= 16) return 'TB'
+// }
+function getMention(note: number){
+    if(!note) note = 17
+    else if(note < 14) return 'AB'
+    else if(note < 16) return 'B'
+    else if(note >= 16) return 'TB'
 }
 
 const Diploma = (props: any) => {
@@ -173,7 +179,7 @@ const Diploma = (props: any) => {
             <Input value={cdate} onChange={setCdate} type="date" label="Date de délivrance"/>
             <div className="mentions">
               {
-                Object.keys(mentions).map((key, i) => {
+                (Object.keys(mentions) as ["AB","B","TB"]).map((key, i) => {
                   return (
                     <div
                       key={i}
@@ -210,7 +216,7 @@ const Diploma = (props: any) => {
                         </div>
                         <div className="mention">
                           <span>Mention : </span>
-                          <span className="val">{(mentions[getMention(cert?.mention)] || "").toUpperCase()}</span>
+                          <span className="val">{(mentions[getMention(cert?.mention ) || "AB" ] || "").toUpperCase()}</span>
                         </div>
                         <div className="date">{formatDate(cdate, {precise: true, preciseYear: true})}</div> 
                       </div>

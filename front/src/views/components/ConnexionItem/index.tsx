@@ -101,7 +101,7 @@ const ConnexionItem = (props: any) => {
   }, [canceled])
 
   const debt = useMemo(() => {
-    return customer ? !!payments.find(({ customerId, rest }) => customerId === customer.id && rest) : false
+    return customer ? !!payments.find(({ customerId, rest }: any) => customerId === customer.id && rest) : false
   }, [customer, payments])
 
   return (

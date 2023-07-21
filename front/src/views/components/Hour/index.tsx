@@ -118,7 +118,7 @@ const Hour = (props: any) => {
         time && <input ref={hRef}
           onChange={({ target, target: { value } }) => {
             const p = (p => p > 2 ? ++p : p)(hourFormat(value, true).length)
-            setTimeout(_ => target.setSelectionRange(p, p))
+            setTimeout(() => target.setSelectionRange(p, p))
             setHourStr(hourFormat(value))
           }}
           value={hourStr || ''} type="text" className='hour'

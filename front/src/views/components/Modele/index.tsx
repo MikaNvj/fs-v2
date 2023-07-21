@@ -4,7 +4,7 @@ import './modele.scss';
 
 const parameter = require('./parameter.json')
 
-const zoomIt = (type: any) => {
+const zoomIt = (type: string) => {
   let element: any = document.querySelector("#name")
   let fontSize = parseFloat(window.getComputedStyle(element, null).getPropertyValue("font-size"))
 
