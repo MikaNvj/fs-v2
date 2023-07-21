@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import './Formation.scss'
 import Editor, { Validator } from '../../components/Editor'
 import { bulkSetter, formatDate, fuzzyFilter, get, toAmount } from '../../../services/functions'
-import Store, { connect } from '../../../redux/store'
+// import Store, { connect } from '../../../redux/store'
 import HeaderProgramm from '../../components/HeaderProgramm';
 import ScrollBar from 'react-perfect-scrollbar'
 import ModalConfirm from '../../components/ModalConfirm'
@@ -19,6 +19,7 @@ import { payementState } from '../../../recoil/atoms/payement'
 import { saveFormation, saveProgram, savePayment } from '../../../recoil/controllers'
 import { authObject } from '../../../services/iDB/Recoil'
 import { selectedCustomer } from '../../../recoil/atoms/customer' 
+import { FormationTypes, ProgramTypes } from '../../../types'
 
 const states = {
   edited: null, newProgram: false, showList: false,
@@ -26,18 +27,18 @@ const states = {
   modalConfirm: 0, modalWarning: 0, showDiploma: false,  openedCustomer: null
 }
 
-const Formation = (props) => {
+const Formation = () => {
   const [_formations,setFormation] = useRecoilState(formationState)
   const [formations, _setFormation] = useRecoilState(_formationState)
   const [_programs, setProgram] = useRecoilState(programState)
   const [_payments, setPayement] = useRecoilState(payementState)
   const _customer = useRecoilValue(selectedCustomer)
 
-  const {
-    // saveFormation, saveProgram, savePayment,
-    // formation: { _formations, formations }, program: { _programs },
-    // payment: { _payments }
-  } = props
+  // const {
+  //   // saveFormation, saveProgram, savePayment,
+  //   // formation: { _formations, formations }, program: { _programs },
+  //   // payment: { _payments }
+  // } = props
 
   // States
   const {
@@ -50,11 +51,11 @@ const Formation = (props) => {
   } = bulkSetter(...useState({...states}))
 
   // Memos
-  const allPrograms = useMemo(_ => {
+  const allPrograms = useMemo(() => {
     return 
   }, [_programs])
 
-  const allFormations = useMemo(_ => {  
+  const allFormations = useMemo(() => {  
     const allPrograms = [..._programs].map(program => ({...program})).sort((a, b) => new Date(a.date) < new Date(b.date) ? 1 : -1)
     return _formations.map(formation => {
       const programs = allPrograms.filter(({formationId: fid}) => fid === formation.id)
@@ -63,7 +64,7 @@ const Formation = (props) => {
         ...formation,
         programs, filter
       }
-    }).sort(({filter: fa}, {filter: fb}) => fa > fb ? -1 : 1)
+    }).sort(({filter: fa}: any, {filter: fb}: any) => fa > fb ? -1 : 1)
   }, [_formations, _programs])
 
   
@@ -87,7 +88,7 @@ const Formation = (props) => {
           <ScrollBar className='formations-content'>
             {
               fuzzyFilter(allFormations, searchFormation, ({ name }) => name || '')
-              .map(({id, filter, programs: myprograms}) => {
+              .map(({id, filter, programs: myprograms}: any) => {
                 const formation = formations[id]
                 const { name } = formation
                 return (
@@ -111,7 +112,7 @@ const Formation = (props) => {
                     >
                       <ScrollBar>
                         {
-                          id === get(activeFormation, 'id') && myprograms.map((program) => {
+                          id === get(activeFormation, 'id') && myprograms.map((program: ProgramTypes) => {
                               const { date, price, detail, id } = program
                               return (
                                 <div
@@ -138,7 +139,7 @@ const Formation = (props) => {
                                           error: true
                                         } :
                                         {
-                                          handler: _ => {
+                                          handler: () => {
                                             savePayment(np)
                                             setActiveProgram(program)
                                             // setOpenedCustomer(Store.getCurrentState('customer.customers.' + customer.id))
@@ -180,7 +181,7 @@ const Formation = (props) => {
       </div>
       <div className="right-container">
         <HeaderProgramm
-          close={_ => setActiveProgram(null)}
+          close={() => setActiveProgram(null)}
           curProgram={activeProgram}
           showList={setShowList}
           showDiploma={setShowDiploma}
@@ -216,7 +217,7 @@ const Formation = (props) => {
           { label: 'Frais de Certificat', name: "certprice"},
           { label: 'Nombre de place', type: 'number', name: "place" },
         ]}
-        save={async ({ formation, ...data }) => {
+        save={async ({ formation, ...data }: any) => {
           await saveProgram(data)
           setActiveFormation(formations[data.formationId])
         }}
@@ -251,7 +252,7 @@ const Formation = (props) => {
           active={true}
           formation={activeFormation}
           program={activeProgram}
-          close={_ => setShowList(false)}
+          close={() => setShowList(false)}
         />
       }
       {
@@ -259,7 +260,7 @@ const Formation = (props) => {
           active={true}
           actFormation={activeFormation}
           actProgram={activeProgram}
-          close={_ => setShowDiploma(false)}
+          close={() => setShowDiploma(false)}
         />
       }
     </div>

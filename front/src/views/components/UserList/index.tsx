@@ -13,10 +13,11 @@ import { customerState, _customerState, selectedCustomer } from '../../../recoil
 import { CustomerTypes, IncomeTypes } from '../../../types'
 
 interface propsUserlist {
-  selected: any, 
-  onSelect: any,
-   openedCustomer: CustomerTypes,
-    setOpenedCustomer: CustomerTypes | any,
+  selected?: any, 
+  onSelect?: any,
+   openedCustomer?: CustomerTypes,
+    setOpenedCustomer?: CustomerTypes | any,
+    programm?: any
 }
 
 const UserList = (props: propsUserlist) => {
@@ -103,7 +104,7 @@ const UserList = (props: propsUserlist) => {
                     key={customer.id}
                     customer={customer}
                     onSelect={props.onSelect}
-                    setIncomer={(incomer: IncomeTypes) => {
+                    setIncomer={(incomer: IncomeTypes | CustomerTypes) => {
                       State.set({
                         edited: incomer,
                         activity: true

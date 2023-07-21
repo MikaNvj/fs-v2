@@ -18,120 +18,130 @@ import { connexionState } from '../../../recoil/atoms/connexion';
 import { saveIncome } from '../../../recoil/controllers';
 import { savePayment } from '../../../recoil/controllers';
 import { saveConnexion } from '../../../recoil/controllers';
+import { CustomerTypes, PaymentTypes } from '../../../types';
 
 const Times = {
-  add: (date: any, min: any) => {
+  add: (date: Date, min: number) => {
     const d = new Date(date)
     d.setTime(d.getTime() + 1000 * 60 * min)
     return d
   },
-  reduce: (date: any, min: any) => {
+  reduce: (date: Date, min: number) => {
     const d = new Date(date)
     d.setTime(d.getTime() - 1000 * 60 * min)
     return d
   },
-  duration: (d1: any, d2: any) => {
+  duration: (d1: Date, d2: Date) => {
     if (!d1 || !d2) return 0
     return Math.abs(new Date(d1).getTime() - new Date(d2).getTime()) / (1000 * 60)
   }
 }
-
-const ConnexionItem = (props: any) => {
+interface propsConnexionItem{
+  value: any,
+  customer: CustomerTypes,
+  paymnt: PaymentTypes,
+  showUser: () => void,
+  setChosenPayment: (a: PaymentTypes) => void
+  saveConnexion?: any,
+  savePayment?: any,
+  saveIncome?: any,
+}
+const ConnexionItem = (props: propsConnexionItem) => {
 
   const [payments, _setCustomers] = useRecoilState(payementState)
 
   const durRef = useRef('')
-  const {
-    value, customer, paymnt, 
-    // saveIncome,
-     showUser,
-    // saveConnexion, savePayment,
-     setChosenPayment,
-    // payment:{_payments: payments}
-  } = props
+  // const {
+  //   value, customer, paymnt, 
+  //   // saveIncome,
+  //    showUser,
+  //   // saveConnexion, savePayment,
+  //    setChosenPayment,
+  //   // payment:{_payments: payments}
+  // } = props
 
   const {
     facebook, lastname, firstname,
     sex, photo, phone, id
-  } = customer || {}
+  } = props.customer || {}
 
   const state = bulkSetter(...useState({
-      start: value.start && new Date(value.start),
-      stop: paymnt.amount ? value.stop && new Date(value.stop) : null
+      start: props.value.start && new Date(props.value.start),
+      stop: props.paymnt.amount ? props.value.stop && new Date(props.value.stop) : null
   }))
   const [rest, setRest] = useState< any>(null)
   const [canceled, setCanceled] = useState(false)
 
   useEffect(() => {
-    let {start, stop} = value
+    let {start, stop} = props.value
     state.set({
       start: start && new Date(start),
       stop: stop && new Date(stop)
     })
-  }, [toSQLDate(value.start), toSQLDate(value.stop)])
+  }, [toSQLDate(props.value.start), toSQLDate(props.value.stop)])
 
   useEffect(() => {
     const {start, stop} = state
-    let price = paymnt.amount
+    let price = props.paymnt.amount
     if (start && stop) {
       let prixExact = determinerPrix(new Date(start), new Date(stop))
       price = Math.round(prixExact / 100) * 100
     }
     else price = 0
 
-    if((start && !value.start) || (stop && !value.stop) || (stop && start)){
-      const extra = extractNews({ start, stop }, value)
+    if((start && !props.value.start) || (stop && !props.value.stop) || (stop && start)){
+      const extra = extractNews({ start, stop }, props.value)
       if (extra) {
         saveConnexion({
-          ...value,
+          ...props.value,
           start: start && start.toISOString(),
           stop: stop && stop.toISOString()
         })
       }
     }
-    if (paymnt.amount !== price) {
-      savePayment({ ...paymnt, amount: price })
+    if (props.paymnt.amount !== price) {
+      savePayment({ ...props.paymnt, amount: price })
     }
   }, [state.start, state.stop])
 
   useEffect( () => {
-    let tmt: any;
+    let tmt: number | any;
     if (canceled) tmt = setTimeout(() => setCanceled(false), 3500)
     return ()=> clearTimeout(tmt)
   }, [canceled])
 
   const debt = useMemo(() => {
-    return customer ? !!payments.find(({ customerId, rest }: any) => customerId === customer.id && rest) : false
-  }, [customer, payments])
+    return props.customer ? !!payments.find(({ customerId, rest }) => customerId === props.customer.id && rest) : false
+  }, [props.customer, payments])
 
   return (
-    <div onClick={_ => console.log(paymnt)} className={clsx('ConnexionItem')}>
+    <div onClick={_ => console.log(props.paymnt)} className={clsx('ConnexionItem')}>
       
       <div className={clsx("cx-customer", sex)}
         style={photo ? { backgroundImage: `url(${Server.imageUrl(photo)})` } : {}}
       >
         <div
-          className={clsx("canceler", !customer && 'set-customer', canceled && 'active white')}
+          className={clsx("canceler", !props.customer && 'set-customer', canceled && 'active white')}
           onClick={_ => {
-            if(!paymnt.customerId) setChosenPayment(paymnt)
+            if(!props.paymnt.customerId) props.setChosenPayment(props.paymnt)
             else if (!canceled) setCanceled(true)
-            else savePayment({ ...paymnt, inactive: true })
+            else savePayment({ ...props.paymnt, inactive: true })
           }}
         />
       </div>
       {
-          customer ? <div onDoubleClick={showUser} className={clsx("customer-name", debt && 'debt')}>
+          props.customer ? <div onDoubleClick={props.showUser} className={clsx("customer-name", debt && 'debt')}>
               <span className='lastname'>{lastname}</span>
               <span>{firstname}</span>
               <span className='phone'>{toPhone(phone)}</span>
           </div> : <div onClick={(e: any) => {
             const cl = e.target.closest('.customer-name').classList
             if(cl.contains('act')){
-              savePayment({ ...paymnt, inactive: true })
+              savePayment({ ...props.paymnt, inactive: true })
             }
             else {
               cl.add('act')
-              setTimeout(_ => cl.remove('act'), 2500)
+              setTimeout(()=> cl.remove('act'), 2500)
             }
           }} className="customer-name">
             <span className='cancel'>Supprimer</span>
@@ -159,7 +169,7 @@ const ConnexionItem = (props: any) => {
         className="price"
         type="text"
         readOnly
-        value={paymnt.amount || ''}
+        value={props.paymnt.amount || ''}
         onChange={e => state.setPrice(parseInt(e.target.value) || 0)}
         placeholder="prix"
       />
@@ -171,7 +181,7 @@ const ConnexionItem = (props: any) => {
         { " " + toAmount(Math.abs(rest)) }
       </span>}
       {
-        (!!paymnt.amount && rest !== null) && <input
+        (!!props.paymnt.amount && rest !== null) && <input
           className="rest"
           onDoubleClick={_ => setRest(null)}
           type="text"
@@ -184,13 +194,13 @@ const ConnexionItem = (props: any) => {
         />
       }
       </div>
-      {!!paymnt.amount && <div onClick={_ => {
+      {!!props.paymnt.amount && <div onClick={_ => {
         if (rest === null) setRest(0)
         else {
-          saveIncome({ paymentId: paymnt.id, amount: paymnt.amount - rest, date: toSimpleDate(new Date()) })
-          savePayment({ ...paymnt, rest })
+          saveIncome({ paymentId: props.paymnt.id, amount: props.paymnt.amount - rest, date: toSimpleDate(new Date()) })
+          savePayment({ ...props.paymnt, rest })
         }
-      }} className={clsx("validate", !customer && 'anonym', rest !== null && 'ready')} />}
+      }} className={clsx("validate", !props.customer && 'anonym', rest !== null && 'ready')} />}
     </div>
   )
 }

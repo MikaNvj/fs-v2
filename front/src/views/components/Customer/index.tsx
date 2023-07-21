@@ -7,44 +7,53 @@ import { addZero, computeAge, toPhone } from '../../../services/functions'
 import './Customer.scss'
 import { useRecoilState } from 'recoil'
 import { payementState } from '../../../recoil/atoms/payement'
+import { CustomerTypes, IncomeTypes } from '../../../types'
 
-const Customer = function (props: any) {
+interface propsCustomer{
+  customer: CustomerTypes,
+  setIncomer: (a: CustomerTypes | IncomeTypes) => void,
+  onSelect: (a: CustomerTypes) => void,
+  edit: () => void, 
+
+}
+
+const Customer = function (props: propsCustomer) {
   const [payments, _setpaymentrecoil] = useRecoilState(payementState)
-  const {
-    customer, setIncomer, onSelect,
-    edit, 
-    // payment:{_payments: payments}
-  } = props
+  // const {
+  //   customer, setIncomer, onSelect,
+  //   edit, 
+  //   // payment:{_payments: payments}
+  // } = props
 
   const debt = useMemo(() => {
-    return !!payments.find(({ customerId, rest }: any) => customerId === customer.id && rest)
-  }, [customer.id, payments])
+    return !!payments.find(({ customerId, rest }) => customerId === props.customer.id && rest)
+  }, [props.customer.id, payments])
 
   return (
     <div
       className={clsx('Customer')}
       draggable="true"
-      onDragStart={e => e.dataTransfer.setData("Text", JSON.stringify(customer))}
+      onDragStart={e => e.dataTransfer.setData("Text", JSON.stringify(props.customer))}
       onDragOver={e => e.preventDefault()}
-      onClick={_ => onSelect && onSelect(customer)}
+      onClick={_ => props.onSelect && props.onSelect(props.customer)}
     >
       <div
-        className={clsx("c-pdp", customer.sex)}
-        style={customer.photo ? { backgroundImage: `url(${Server.imageUrl(customer.photo)})` } : {}}
-        onDoubleClick={edit}
+        className={clsx("c-pdp", props.customer.sex)}
+        style={props.customer.photo ? { backgroundImage: `url(${Server.imageUrl(props.customer.photo)})` } : {}}
+        onDoubleClick={props.edit}
       />
       <div className="c-detail">
         <div className="c-name">
-          <span className='lastname'>{customer.lastname} </span>
-          <span>{customer.firstname} </span>
+          <span className='lastname'>{props.customer.lastname} </span>
+          <span>{props.customer.firstname} </span>
         </div>
-        <div className="c-mail">{toPhone(customer.phone)}</div>
-        <div className="c-mail">{addZero(computeAge(customer.birthdate))} ans</div>
+        <div className="c-mail">{toPhone(props.customer.phone)}</div>
+        <div className="c-mail">{addZero(computeAge(props.customer.birthdate))} ans</div>
         <div
           className={clsx("activity", debt && 'debt')}
           onClick={e => {
             e.stopPropagation()
-            setIncomer && setIncomer(customer)
+            props.setIncomer && props.setIncomer(props.customer)
           }}
         >Payements</div>
       </div>

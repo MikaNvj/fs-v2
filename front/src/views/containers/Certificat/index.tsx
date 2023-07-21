@@ -11,20 +11,20 @@ const stateCordonee = {
 
 
 
-const Certificat = (props) => {
+const Certificat = () => {
   const [imageDropped, setImageDropped] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
   const [idModele, setIdModele] = useState(0)
 
-  const openNewModele = (event) => {
+  const openNewModele = () => {
     setIsOpen(true)
     setIdModele(1)
   }
   
   return (
     <div>
-      <div class="outils">
-        <button onClick={(event) => openNewModele(event)}>New modele</button>
+      <div className="outils">
+        <button onClick={openNewModele}>New modele</button>
         <Modele id={idModele} open={isOpen} />
       </div>
     </div>
