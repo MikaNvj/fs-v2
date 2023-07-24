@@ -12,7 +12,7 @@ import { CustomerTypes, IncomeTypes } from '../../../types'
 interface propsCustomer{
   customer: CustomerTypes,
   setIncomer: (a: CustomerTypes | IncomeTypes) => void,
-  onSelect: (a: CustomerTypes) => void,
+  onSelect: (a?: CustomerTypes) => void,
   edit: () => void, 
 
 }
