@@ -18,7 +18,7 @@ import { connexionState } from '../../../recoil/atoms/connexion';
 import { saveIncome } from '../../../recoil/controllers';
 import { savePayment } from '../../../recoil/controllers';
 import { saveConnexion } from '../../../recoil/controllers';
-import { CustomerTypes, PaymentTypes } from '../../../types';
+import { ConnexionTypes, CustomerTypes, PaymentTypes } from '../../../types';
 
 const Times = {
   add: (date: Date, min: number) => {
@@ -37,15 +37,17 @@ const Times = {
   }
 }
 interface propsConnexionItem{
-  value: {start: string, stop: string},
+  // value: {start: string, stop: string},
+  value: ConnexionTypes,
   customer: CustomerTypes,
   paymnt: PaymentTypes,
   showUser: () => void,
   setChosenPayment: (a: PaymentTypes) => void
-  saveConnexion?: () => void,
-  savePayment?: () => void,
-  saveIncome?: () => void,
+  saveConnexion?: (data: any) => Promise<any>,
+  savePayment?: (data: any) => Promise<any>,
+  saveIncome?: (data: any) => Promise<any>,
 }
+
 const ConnexionItem = (props: propsConnexionItem) => {
 
   const [payments, _setCustomers] = useRecoilState(payementState)

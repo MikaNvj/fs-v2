@@ -37,7 +37,8 @@ export default function App(){
       <BrowserRouter>
         <div className="App">
           <Recoil/>
-          <Header connected={global.connected} />
+          {/* <Header connected={global.connected} /> */}
+          <Header />
           <Popup {...global.popup} />
           <div className="AppBody">
             {/* <Router connected={global.connected && props.auth.token} /> */}
