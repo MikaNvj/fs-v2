@@ -16,7 +16,8 @@ const states = {
   curDay: new Date()
 }
 interface propsPaidconnexion{
-  showCustomer: (e: CustomerTypes) => void;
+  // showCustomer: (e: CustomerTypes) => void;
+  showCustomer: (activity?: boolean, customer?: CustomerTypes) => void
 }
 
 const PaidConnexion = (props: propsPaidconnexion) => {
@@ -56,7 +57,7 @@ const PaidConnexion = (props: propsPaidconnexion) => {
                 const { facebook, lastname, firstname, sex, photo, phone } = _customer[parseInt(customerId)]
 
                 return <div className="connexion" key={id}>
-                  <div onDoubleClick={_ => props.showCustomer(_customer[parseInt(customerId)])} className="customer-name">
+                  <div onDoubleClick={_ => props.showCustomer(undefined,_customer[parseInt(customerId)])} className="customer-name">
                     <span className='lastname'>{lastname}</span>
                     <span>{firstname}</span>
                     <span className='phone'>{toPhone(phone)}</span>

@@ -56,7 +56,7 @@ const Connexion = () => {
     })
   }, [_paymentrecoil])
 
-  const showCustomer = useCallback((activity: boolean, customer?: CustomerTypes ) => {
+  const showCustomer = useCallback((activity?: boolean, customer?: CustomerTypes ) => {
     State.set({
       curUser: customer, activity
     })
