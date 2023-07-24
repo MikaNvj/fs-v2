@@ -7,7 +7,8 @@ import './SubscriptionItem.scss'
 import Hour from '../Hour'
 import { baseUrl, Server } from '../../../services/api'
 import Input from '../Input'
-import { SubTypes } from '../../../types';
+import { CustomerTypes, PaymentTypes, SubTypes } from '../../../types';
+import { savePayment,saveSub, saveIncome } from '../../../redux/actions';
 const subs = [
   {label: 'Jour 1 Mois', amount: 40000, dd: 31, value: 1},
   {label: 'Soir 1 Mois', amount: 50000, dd: 31, value: 2},
@@ -20,14 +21,22 @@ const states = {
   end: null,
   price: 0
 }
+interface propsSubItem{
+  value: {[key: string]: string},
+  setSelectedPayment: (e: PaymentTypes) => void,
+  customer: CustomerTypes,
+  payment: PaymentTypes,
 
-const SubscriptionItem = (props: any) => {
+}
+
+const SubscriptionItem = (props: propsSubItem) => {
   const {
     value, setSelectedPayment, customer: {
       facebook, lastname, firstname,
       sex, photo, phone
-    } = {} as any, customer, payment, saveIncome,
-    savePayment, saveSub
+    } = {}, customer, payment, 
+    // saveIncome,
+    // savePayment, saveSub
   } = props
 
   const state = bulkSetter(...useState({...states}))
@@ -54,10 +63,10 @@ const SubscriptionItem = (props: any) => {
   }, [state.price])
 
   useEffect(() => {
-    const sub: any = subs.find(({value}) => value === state.offer)
+    const sub= subs.find(({value}) => value === state.offer)
     if(state.start && sub){
       const date = new Date(state.start)
-      date.setMonth(date.getMonth() + (sub.dm || 0))
+      date.setMonth(date.getMonth() + (sub.dd || 0))
       date.setDate(date.getDate() + (sub.dd || 0))
       state.setEnd(date)
 
@@ -71,7 +80,7 @@ const SubscriptionItem = (props: any) => {
   }, [state.offer, state.start])
 
   useEffect(() => {
-    let tmt: any
+    let tmt: NodeJS.Timeout
     if(canceled) tmt = setTimeout(() => setCanceled(false), 3500)
     return () => clearTimeout(tmt)
   }, [canceled])
@@ -93,7 +102,7 @@ const SubscriptionItem = (props: any) => {
           !!customer && <div className="cx-detail">
           {
             (() => {
-              const id = get(JSON.parse(facebook), 'id')
+              const id = get(JSON.parse(facebook as string), 'id')
               return id ? <div className="cx-facebook">{ }</div> : null
             })()
           }

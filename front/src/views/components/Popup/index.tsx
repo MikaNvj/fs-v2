@@ -9,20 +9,20 @@ interface propsPopup{
 }
 const Popup: any = (props: propsPopup) => {
   const {setPopup} = useAppContext()
-  // const {message, duration = 4000, type = 'info'} = props
+  const {message, duration = 4000, type = 'info'} = props
   const [text, setText] = useState("")
   const [active, setActive] = useState(false)
   useEffect(() => {
     clearTimeout(Popup.tmt)
-    if(props.message) {
-      setText(props.message)
+    if(message) {
+      setText(message)
       setActive(true)
       Popup.tmt = setTimeout(() => {
         setPopup({message: ''})
-      }, props.duration)
+      }, duration)
     }
     else setActive(false)
-  }, [props.message])
+  }, [message])
   return (
     <div className={clsx('Popup', active && 'active', props.type)}>
       <span>{text}</span>

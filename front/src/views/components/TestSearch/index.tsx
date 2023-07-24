@@ -58,9 +58,13 @@ const customer = [
   },
 ]
 
+interface propsTestsearch{
+  hide: () =>void,
+  active: boolean,
+  data: {[key: string]: string} 
+}
 
-
-const TestSearch = (props: any) => {
+const TestSearch = (props: propsTestsearch) => {
   const [show, setShow] = useState(false)
   const { 
     hide,

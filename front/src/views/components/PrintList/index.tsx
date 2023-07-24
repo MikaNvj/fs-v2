@@ -10,28 +10,28 @@ import { CustomerTypes, FormationTypes, ProgramTypes } from '../../../types'
 
 interface propsPrintList{
   active: boolean,
-  selected: any,
-  close: any,
+  selected: [],
+  close: () => void,
   formation: FormationTypes,
   program: ProgramTypes
 }
 function PrintList(props: propsPrintList) {
   // const [_customerrecoil,_setcustomerrecoil] = useRecoilState(customerState)
   const _customerrecoil = useRecoilValue(selectedCustomer)
-  // const {
-  //   active, selected, close,
-  //   formation, program,
-  //   //customer: {customers}
-  // } = props
+  const {
+    active, selected, close,
+    formation, program,
+    //customer: {customers}
+  } = props
   const ref = useRef(null)
 
   return (
-    <Modal className='PrintListParent' active={props.active} parentSelector="#root" >
+    <Modal className='PrintListParent' active={active} parentSelector="#root" >
       <div className='PrintList' ref={ref}>
         <div className="to-print">
           <div className="tp-header">
             <div className='title'>Liste de présence</div>
-            <div className='subtitle'>{props.formation.name} - {formatDate(props.program.date, {precise: true})}</div>
+            <div className='subtitle'>{formation.name} - {formatDate(program.date, {precise: true})}</div>
             <div className="print-button" onClick={async _ => {
               await bridge('print', {opts: {
                 printBackground: true,
@@ -42,7 +42,7 @@ function PrintList(props: propsPrintList) {
                 }
               }})
             }}>Imprimer</div>
-            <div className="close-button" onClick={props.close}>Fermer</div>
+            <div className="close-button" onClick={close}>Fermer</div>
           </div>
           <table>
             <thead>
@@ -57,7 +57,7 @@ function PrintList(props: propsPrintList) {
             </thead>
             <tbody>
               {
-                props.selected.map((id: string, i: number) => {
+                selected.map((id: string, i: number) => {
                   // const customer = customers[id]
                   const customer: CustomerTypes = _customerrecoil({id: `${id}`})
                   return (

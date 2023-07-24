@@ -41,10 +41,10 @@ const getPhotoFile = async (url: string) => {
   }
 }
 interface propsusercomponent{
-  close: any,
-  edited: any,
-  setActivity: any,
-  activity: any
+  close: () => void,
+  edited: {[key: string]: string},
+  setActivity: (e: boolean) => void,
+  activity: boolean
 }
 
 let UserComponent = (props: propsusercomponent) => {
@@ -52,26 +52,26 @@ let UserComponent = (props: propsusercomponent) => {
   const [_customers, _setCustomers] = useRecoilState(customerState)
   const [payments, _setPayment] = useRecoilState(payementState)
 
-  // const {
-  //   // saveCustomer, 
-  //   close, edited,
-  //   setActivity, activity
-  // } = props
+  const {
+    // saveCustomer, 
+    close, edited,
+    setActivity, activity
+  } = props
 
   const State = bulkSetter(...useState({ ...states }))
 
   const quit = useMemo(() => async () => {
     detach('update:images')
-    props.close()
+    close()
     State.set({
       ...states,
       server: await bridge(`fileServer:stop`)
     })
-  }, [props.close])
+  }, [close])
 
-  const onPaste = useMemo(()=> (e: any)=> {
+  const onPaste = useMemo(()=> (e: ClipboardEvent )=> {
     if (e.clipboardData) {
-      const { items } = e.clipboardData  || e.originalEvent.clipboardData
+      const { items } = e.clipboardData  || (e as any).originalEvent.clipboardData
       for (var i = 0; i < items.length; i++) {
 				if (items[i].type.indexOf("image") === 0) {
 				  const file = items[i].getAsFile()
@@ -83,18 +83,18 @@ let UserComponent = (props: propsusercomponent) => {
 
   // Effects
   useEffect(() => {
-    if(props.edited) document.addEventListener('paste', onPaste, false)
+    if(edited) document.addEventListener('paste', onPaste, false)
     else document.removeEventListener('paste', onPaste)
 
-    if (props.edited && props.edited.id) {
+    if (edited && edited.id) {
       State.set({
-        ...props.edited,
-        photo: props.edited.photo ? `${Server.imageUrl(props.edited.photo)}` : null,
-        facebook: JSON.parse(props.edited.facebook)
+        ...edited,
+        photo: edited.photo ? `${Server.imageUrl(edited.photo)}` : null,
+        facebook: JSON.parse(edited.facebook)
       })
     }
     else State.set({ id: undefined, ...states })
-  }, [props.edited])
+  }, [edited])
   useEffect(() => {
     if (get(State, 'facebook.id')) State.set({
       firstname: State.firstname || get(State, 'facebook.firstname') || '',
@@ -107,7 +107,7 @@ let UserComponent = (props: propsusercomponent) => {
       if (server) {
         axios.get(`http://localhost:${server.port}`).then(({ data: potentialPhotos }) => {
           State.set({ server, potentialPhotos })
-          attach('update:images', async (e: any, potentialPhotos: string) => {
+          attach('update:images', async ( potentialPhotos: string) => {
             State.set({ potentialPhotos })
           })
         })
@@ -116,11 +116,11 @@ let UserComponent = (props: propsusercomponent) => {
   })
 
   const debt = useMemo(() => {
-    return !!payments.find(({ customerId, rest }: any) => customerId === props.edited.id && rest)
-  }, [props.edited.id, payments])
+    return !!payments.find(({ customerId, rest }) => customerId === edited.id && rest)
+  }, [edited.id, payments])
 
   return (
-    <div className={clsx('UserComponent on-center', props.edited && 'active')}>
+    <div className={clsx('UserComponent on-center', edited && 'active')}>
       <PhotoCropper
         url={State.toCrop}
         close={()=> State.setToCrop(false)}
@@ -131,10 +131,10 @@ let UserComponent = (props: propsusercomponent) => {
       <div className="e-content">
         <div className="e-left">
           {
-            !props.edited.id ? <div className="e-title">
+            !edited.id ? <div className="e-title">
               Nouvel Utilisateur
             </div> : <div onClick={_ => {
-              props.setActivity && props.setActivity(!props.activity)
+              setActivity && setActivity(!activity)
             }} className={clsx('e-payements', debt && 'error')}>Payements</div>
           }
           <div
@@ -286,6 +286,7 @@ let UserComponent = (props: propsusercomponent) => {
 }
 
 // UserComponent = connect(UserComponent, ["customer", "payment"])
+
 
 const Splitter = (props: any) => {
   return (

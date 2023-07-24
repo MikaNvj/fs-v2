@@ -17,7 +17,7 @@ interface propsUserlist {
   onSelect?: any,
    openedCustomer?: CustomerTypes,
     setOpenedCustomer?: CustomerTypes | any,
-    programm?: any
+    
 }
 
 const UserList = (props: propsUserlist) => {
@@ -25,10 +25,10 @@ const UserList = (props: propsUserlist) => {
   const [customer, setcustomer] = useRecoilState(customerState)
   const [_customer, _setcustomer] = useRecoilState(_customerState)
 
-  // const {
-  //   selected, onSelect, openedCustomer, setOpenedCustomer,
-  //   // customer: { _customers, customers }
-  // } = props
+  const {
+    selected, onSelect, openedCustomer, setOpenedCustomer,
+    // customer: { _customers, customers }
+  } = props
 
   const {
     showPay, setShowPay, edited, activity, setActivity,
@@ -39,7 +39,7 @@ const UserList = (props: propsUserlist) => {
     incomer: null, showPay: false
   }))
 
-  const searchRef: any = useRef(null)
+  const searchRef: any= useRef(null)
 
   const ref = useRef();
 
@@ -47,18 +47,18 @@ const UserList = (props: propsUserlist) => {
     if (showPay) setShowPay(false);
   })
 
-  const showCustomer: any = useCallback((customer: CustomerTypes, activity: boolean) => {
+  const showCustomer= useCallback(( activity?: boolean, customer?: CustomerTypes) => {
     State.set({
       edited: customer, activity
     })
   }, [])
 
   useEffect(() => {
-    if (props.openedCustomer) {
-      showCustomer(props.openedCustomer, true)
-      props.setOpenedCustomer(null)
+    if (openedCustomer) {
+      showCustomer(true, openedCustomer)
+      setOpenedCustomer(null)
     }
-  }, [props.openedCustomer])
+  }, [openedCustomer])
 
   return (
     <React.Fragment>
@@ -96,14 +96,14 @@ const UserList = (props: propsUserlist) => {
                   //   if (search) return fuzzyFilter(cust, search, ({ firstname, lastname }) => `${firstname} ${lastname}`).slice(0, 50)
                   //   else return cust.sort(({ updatedAt: a }, { updatedAt: b }) => a < b ? 1 : -1).slice(0, 50)
                   // })()
-                  const cust = (props.selected ? props.selected.map((id: string) => _customer[id]) : customer).filter(({ inactive }: any) => !inactive)
+                  const cust = (selected ? selected.map((id: string) => _customer[id]) : customer).filter(({ inactive }: any) => !inactive)
                   if (search) return fuzzyFilter(cust, search, ({ firstname, lastname }) => `${firstname} ${lastname}`).slice(0, 50)
                   else return cust.sort(({ updatedAt: a }: any, { updatedAt: b }: any) => a < b ? 1 : -1).slice(0, 50)
                 })().map((customer: CustomerTypes) => (
                   <Customer
                     key={customer.id}
                     customer={customer}
-                    onSelect={props.onSelect}
+                    onSelect={onSelect}
                     setIncomer={(incomer: IncomeTypes | CustomerTypes) => {
                       State.set({
                         edited: incomer,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, MouseEvent, DragEventHandler } from "react";
 import clsx from "clsx";
 import './modele.scss';
 
@@ -24,20 +24,20 @@ const Modele = (props: any) => {
 
 
 
-  const addNewLogo = (event: any) => {
+  const addNewLogo = (event: MouseEvent<HTMLElement>) => {
     event.preventDefault()
-    const divLeft: any = document.getElementById("left")
+    const divLeft: HTMLElement | null = document.getElementById("left")
 
-    if (divLeft.children.length < 3) {
+    if ((divLeft as HTMLElement).children.length < 3) {
       const newLogo = document.createElement("div")
 
-      newLogo.classList.add("logo")
-      newLogo.setAttribute("draggable", "true")
-      newLogo.setAttribute("id", divLeft.children.length + 1)
-      newLogo.addEventListener('dragstart', onDragStart)
-      newLogo.addEventListener('dragover', onDragOver)
-      newLogo.addEventListener('onDrop', onDrop)
-      divLeft.appendChild(newLogo)
+      newLogo.classList.add("logo");
+      newLogo.setAttribute("draggable", "true");
+      newLogo.setAttribute("id", (divLeft as any).children.length + 1);
+      newLogo.addEventListener('dragstart', onDragStart);
+      newLogo.addEventListener('dragover', onDragOver);
+      newLogo.addEventListener('onDrop', onDrop);
+      (divLeft as HTMLElement).appendChild(newLogo)
     } else {
       alert("Efa feno ny place")
     }
@@ -47,38 +47,38 @@ const Modele = (props: any) => {
 
 
 
-  const saveModele = (event: any) => {
+  const saveModele = (event: MouseEvent<HTMLElement>) => {
     // LocalData.qq = 2
-    const divImage: any = document.getElementById("left")
-    const positionImage = divImage.getBoundingClientRect()
+    const divImage: HTMLElement | null = document.getElementById("left")
+    const positionImage = (divImage as HTMLElement).getBoundingClientRect()
     // localStorage.setItem(divImage.id + '-X', positionImage.left)
     // localStorage.setItem(divImage.id + '-Y', positionImage.top)
     
     
   }
 
-  const onDragStart = (event: any) => {
-    event.dataTransfer.effecAllowed = "move"
-    event.dataTransfer.setData('Text', "" + event.currentTarget.innerHTML + "," + event.currentTarget.id)
+  const onDragStart = (event: DragEvent ) => {
+    (event.dataTransfer as DataTransfer).effectAllowed = "move";
+    (event.dataTransfer as DataTransfer).setData('Text', "" + (event.currentTarget as HTMLElement).innerHTML + "," + (event.currentTarget as HTMLElement).id)
   }
 
-  const onDragOver = (event: any) => {
-    event.preventDefault()
-    event.dataTransfer.dropEffect = "move"
+  const onDragOver = (event: DragEvent) => {
+    event.preventDefault();
+    (event.dataTransfer as DataTransfer).dropEffect = "move";
   }
 
   const onDrop = (event: any) => {
-    const [elementSrc, idElementSrc] = event.dataTransfer.getData("Text").split(',')
-    const nodeA: any = document.getElementById(idElementSrc)
-    const nodeB: any = event.currentTarget
-    const parentA: any = nodeA.parentNode;
-    const siblingA: any = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
+    const [elementSrc, idElementSrc] = (event.dataTransfer as DataTransfer).getData("Text").split(',')
+    const nodeA: HTMLElement | null = document.getElementById(idElementSrc)
+    const nodeB: EventTarget | null = event.currentTarget
+    const parentA: ParentNode | undefined | null = nodeA?.parentNode;
+    const siblingA: ChildNode | undefined | null = nodeA?.nextSibling === nodeB ? nodeA : nodeA?.nextSibling;
 
     // Move `nodeA` to before the `nodeB`
-    nodeB.parentNode.insertBefore(nodeA, nodeB);
+    (nodeB as any).parentNode.insertBefore(nodeA, nodeB);
 
     // Move `nodeB` to before the sibling of `nodeA`
-    parentA.insertBefore(nodeB, siblingA);
+    parentA?.insertBefore(nodeB as Node, siblingA as ChildNode);
 
     // document.getElementById(elementSrcId).innerHTML = elementSrc
     // event.currentTarget.innerHTML = event.dataTransfer.getData("text/html")
@@ -94,8 +94,8 @@ const Modele = (props: any) => {
             <div className="logo"
               id="1"
               draggable="true"
-              onDragStart={onDragStart}
-              onDragOver={onDragOver}
+              onDragStart={onDragStart as any}
+              onDragOver={onDragOver as any}
               onDrop={onDrop}
             >
               A
@@ -103,8 +103,8 @@ const Modele = (props: any) => {
             <div className="logo"
               id="2"
               draggable="true"
-              onDragStart={onDragStart}
-              onDragOver={onDragOver}
+              onDragStart={onDragStart as any}
+              onDragOver={onDragOver as any}
               onDrop={onDrop}
             >
               B
