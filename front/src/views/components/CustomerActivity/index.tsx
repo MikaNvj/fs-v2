@@ -175,12 +175,12 @@ const format = (payment: PaymentTypes) => {
 }
 
 const FormatCert =( payment: PaymentTypes) => {
-  
+
   const paymentselected = useRecoilValue(selectedpayment)
   
   const certdetails = useRecoilValue(selectedcert)
   // const {formationId: fpid} = Store.getCurrentState(`cert.certs.${payment.targetId}`) || {}
-  const {formationId: fpid} = certdetails({id: `${payment.targetId}`})  || {}
+  const {formationId: fpid} = certdetails({id: `${payment.targetId}`}) || {}
   // const fpayment = Store.getCurrentState(`payment.payments.${fpid}`) || {}
   const fpayment: PaymentTypes | any = paymentselected({id: `${fpid}`}) || {}
   return (

@@ -197,7 +197,8 @@ class Sync {
   }
 
   update_recoil_one_model = (model: string) => {
-    triggerEvent(model)
+    // triggerEvent(model)
+    triggerEvent('changement', model)
   }
 
   update_recoil = (data: Obj<Data>) => {

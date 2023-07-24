@@ -1,3 +1,3 @@
 import {Data} from './data'
 
-export type CertTypes = Data
+export type CertTypes = Data & { formationId: any}
