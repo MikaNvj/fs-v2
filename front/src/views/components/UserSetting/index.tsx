@@ -5,7 +5,7 @@ import {connect} from '../../../redux/store/index'
 import { get } from '../../../services/functions'
 import { useAppContext } from '../../../services/provider'
 
-const UserSetting = (props: {logout: boolean}) => {
+const UserSetting = (props: any) => {
   const { logout } = props
   const {setConnected} = useAppContext()
   return (
