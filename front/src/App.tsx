@@ -21,7 +21,8 @@ const states = {
   connected: true
 }
 
-function App(props) {
+// function App(props) {
+export default function App(){
   const global = bulkSetter(...useState(states))
   const [_f,_setf] = useRecoilState(payementState);
   const [_programrecoil, _setprogramrecoil] = useRecoilState(customerState);
@@ -49,4 +50,4 @@ function App(props) {
 }
 
 // export default connect(App, ['auth'])
-export default App
+// export default App

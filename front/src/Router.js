@@ -9,7 +9,6 @@ import Input from './views/components/Input'
 import PaidConnexion from './views/components/PaidConnexion'
 import UserComponent from './views/components/UserComponent'
 
-
 function Router(props) {
   const {
     connected
@@ -24,7 +23,7 @@ function Router(props) {
               history.replace(component)
             }} />
           }
-          return <Route {...{ key, component, path, exact }} />
+          return <Route {...{ key, component, path, exact }}/>
         })
       }
     </Switch>
@@ -39,7 +38,7 @@ const protectedRoutes = [
   // ['/myroute/:params', Component],
 ].map(([path, component, exact]) => ({ path, component, exact, isProtected: true }))
 
-const V = _ => {
+const V = () => {
   const [state, setstate] = React.useState()
   return <div>
     <Input type='datetime' value={state} onChange={setstate}/>

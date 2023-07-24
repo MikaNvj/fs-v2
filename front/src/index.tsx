@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Store from './redux/store';
+// import Store from './redux/store';
 import { RecoilRoot } from "recoil";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Store.StoreProvider>
+    {/* <Store.StoreProvider> */}
       <RecoilRoot>
         <App />
       </RecoilRoot>
-    </Store.StoreProvider>
+    {/* </Store.StoreProvider> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

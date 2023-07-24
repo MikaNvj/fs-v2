@@ -10,7 +10,7 @@ export const toPhone = (txt = '', space = true) => {
   else return `${txt.substring(0, 3)} ${txt.substring(3, 5)} ${txt.substring(5, 8)} ${txt.substring(8)}`.trim()
 }
 
-export const computeAge = dob => {
+export const computeAge = (dob) => {
   dob = new Date(dob || new Date())
   return new Date().getFullYear() - dob.getFullYear()
 }
