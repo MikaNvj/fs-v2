@@ -18,6 +18,7 @@ import { _copyState } from '../../../recoil/atoms/copy'
 import { authObject } from '../../../services/iDB/Recoil'
 
 import {savePayment, saveSub, saveIncome, saveCopy} from '../../../recoil/controllers'
+import { CustomerTypes } from '../../../types'
 
 const others = [COPY, EMAIL, PRINT, REPAIR, SCAN, SUB]
 
@@ -29,7 +30,7 @@ const AutrePayement = () => {
   const [_paymentrecoil, _setpaymentrecoil ] = useRecoilState(payementState)
   const [subs, setSubs] = useRecoilState(_subState)
   const [customers, setCustomers] = useRecoilState(_customerState)
-  const [copies, setCopies] = useRecoilState(_copyState)
+  const [copies, setCopies] = useRecoilState< any>(_copyState)
 
   // const {
   //   savePayment, saveSub, saveIncome, saveCopy,
@@ -42,8 +43,8 @@ const AutrePayement = () => {
     console.log('payement recoil', _paymentrecoil)
 
   }, [_paymentrecoil])
-  const create = useMemo(() => async (type) => {
-    let id, creator
+  const create = useMemo(() => async (type: string) => {
+    let id, creator: any
     if(type === SUB) creator = saveSub
     else if([COPY, PRINT].includes(type)) creator = saveCopy
     id = (await creator({})).id
@@ -78,6 +79,7 @@ const AutrePayement = () => {
               _paymentrecoil.filter(({ type, rest = null, inactive }) => !inactive && others.includes(type) && rest === null)
                 .map((payment) => {
                   let Comp, objList, opts = {
+                    value: '',
                     key: payment.id,
                     customer: customers[payment.customerId],
                     saveIncome, savePayment,
@@ -89,7 +91,7 @@ const AutrePayement = () => {
                     opts = {
                       ...opts, value: subs[payment.targetId],
                       saveSub
-                    }
+                    } as any
                   }
                   else if([COPY, PRINT].includes(payment.type)){
                     objList = copies
@@ -97,11 +99,11 @@ const AutrePayement = () => {
                     opts = {
                       ...opts, value: copies[payment.targetId],
                       saveCopy
-                    }
+                    } as any
                   } 
 
                   return Comp && opts.value ? <Comp
-                    value = {objList && objList[payment.targetId]}
+                    value = {objList && objList[payment.targetId]} 
                     key={payment.id}
                     customer={ customers[payment.customerId]}
                     payment={payment}
@@ -120,7 +122,7 @@ const AutrePayement = () => {
         !!selectedPayment && <div className="customer-choose">
           <div onClick={_ => setSelectedPayment(false)} className="close-chooser"/>
           <UserList
-            onSelect={async customer => {
+            onSelect={async (customer: CustomerTypes) => {
               savePayment({
                 ...selectedPayment,
                 customerId: customer.id
