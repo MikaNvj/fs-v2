@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, {useState, useRef, useMemo} from 'react'
+import React, {useState, useRef, useMemo, MouseEvent} from 'react'
 import ScrollBar from 'react-perfect-scrollbar'
 import Store, { connect } from '../../../redux/store'
 import { Server } from '../../../services/api'
@@ -19,6 +19,7 @@ import { formationState } from '../../../recoil/atoms/formation'
 import { payementState } from '../../../recoil/atoms/payement'
 import { programState } from '../../../recoil/atoms/program'
 import { authObject } from '../../../services/iDB/Recoil'
+import { FormationTypes, PaymentTypes, ProgramTypes } from '../../../types'
 
 const mentions: {"AB": string,"B": string, "TB": string} = { AB: 'Assez bien', B: 'Bien', TB: 'Très bien' }
 const notes: {"AB": number, "B": number, "TB": number} = { AB: 13.5, B: 15.5, TB: 17.5 }
@@ -37,31 +38,36 @@ function getMention(note: number){
     else if(note < 16) return 'B'
     else if(note >= 16) return 'TB'
 }
-
-const Diploma = (props: any) => {
+interface propsdiploma{
+  active: boolean,
+  close: () => void,
+  actFormation: FormationTypes,
+  actProgram: ProgramTypes,
+}
+const Diploma = (props: propsdiploma) => {
   const [customers, setcustomers] = useRecoilState(customerState);
   const [_certs, setcerts] = useRecoilState(certState);
   const [formations, setformation] = useRecoilState(formationState)
   const [_payments, setpayments] = useRecoilState(payementState);
   const [programs, setprogram] = useRecoilState(programState)
-
-  const {
-    active = true, close, actFormation, actProgram,
-    // formation: {formations}, customer: {customers},
-    // cert: {_certs}, payment: {_payments},
-    // saveCert, savePayment
-  } = props
-  let program = actProgram
+  props.active = true;
+  // const {
+  //   active = true, close, actFormation, actProgram,
+  //   // formation: {formations}, customer: {customers},
+  //   // cert: {_certs}, payment: {_payments},
+  //   // saveCert, savePayment
+  // } = props
+  let program = props.actProgram
   const { formation, students} = useMemo(() => {
     return {
-      formation: actFormation || formations[program.formationId],
+      formation: props.actFormation || formations[program.formationId as any],
       students: _payments.filter(({type, targetId}) => {
         return type === FORMATION && targetId === program.id
       }).map((p: any) => {
         return {
           ...p,
           customer: customers[p.customerId],
-          cert: _certs.find((c: any) => c.formationId === p.id)
+          cert: _certs.find((c) => c.formationId === p.id)
         }
       })
     }
@@ -83,8 +89,8 @@ const Diploma = (props: any) => {
   }, [students, cur])
 
   // PRINT HANDLERS
-  const printAll = useMemo(() => async (e: any) => {
-    e.target.closest('.Diploma').classList.remove('single')
+  const printAll = useMemo(() => async (e: MouseEvent<HTMLDivElement>) => {
+    (e.target as typeof e.target & {closest: (e: string) => any}).closest('.Diploma').classList.remove('single')
     await bridge('print', {opts: {
       printBackground: true, color: false,
       marginsType: 1, landscape: true,
@@ -96,8 +102,8 @@ const Diploma = (props: any) => {
       }
     }})
   }, [program])
-  const printCurrent = useMemo(() => async (e: any) => {
-    e.target.closest('.Diploma').classList.add('single')
+  const printCurrent = useMemo(() => async (e: MouseEvent<HTMLDivElement>) => {
+   ( e.target as typeof e.target & {closest: (e: string) => any}).closest('.Diploma').classList.add('single')
     const {firstname, lastname} = students.find(({id}) => id === cur).customer
     await bridge('print', {opts: {
       printBackground: true, color: false,
@@ -119,16 +125,16 @@ const Diploma = (props: any) => {
           customerId: customer.id,
           amount: program.certprice || 0, rest: program.certprice || 0,
           // userId: Store.getCurrentState('auth.user.id')
-          userId: (authObject as any).user.id
+          userId: authObject.user.id
         })
       }
     })
   }, [students])
 
   return (
-    <Modal className='DiplomaParent' active={active} parentSelector="#root" >
+    <Modal className='DiplomaParent' active={props.active} parentSelector="#root" >
       <div className='Diploma' ref={ref}>
-        <div className="close-button button white inside" onClick={close}/>
+        <div className="close-button button white inside" onClick={props.close}/>
         <div className="student-list">
           <div className="tp-header">
             <div className='title'>Liste des étudiants</div>

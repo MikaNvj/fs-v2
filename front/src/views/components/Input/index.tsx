@@ -5,11 +5,36 @@ import { addZero, fuzzyFilter } from '../../../services/functions'
 import ScrollBar from 'react-perfect-scrollbar'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import Hour from '../Hour'
-
+// interface propsInput{
+//   text?: string,
+//   label?: string,
+//   onChange: (e?: any)=> void,
+//   readOnly?: boolean,
+//   autofill?: boolean,
+//   suffix?: any,
+//   prefix?: any,
+//   full?: any,
+//   value?: any,
+//   options?: any,
+//   time?: any,
+//   alwaysActive?: any,
+//   multiple?: any,
+//   required?: boolean,
+//   square?: any,
+//   error?: string,
+//   outline?: string,
+//   className?: string,
+//   type?: any,
+//   perline?: any,
+//   colored?: any,
+//   centered?: any,
+//   maxOption?: any,
+  
+// }
 export default function Input(props: any) {
   //Props
   let {
-    type = "text", label = '', onChange: _onChange, readOnly,
+    type, label = '', onChange: _onChange, readOnly,
     autofill, suffix, prefix, full, value, options, time, alwaysActive,
     multiple, required, square, error, outline = 'normal', className, ...rest
   } = props

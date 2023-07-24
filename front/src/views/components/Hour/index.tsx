@@ -1,10 +1,17 @@
 import './Hour.scss'
 import clsx from 'clsx'
 import Input from '../Input'
-import React, { useState, useEffect, useMemo, useRef } from 'react'
+import React, { useState, useEffect, useMemo, useRef, ChangeEvent } from 'react'
 import { addZero, basicFormatDate, bulkSetter, toSQLDate } from '../../../services/functions'
 
-const toObject: any = (date: any, autoHour: any) => {
+interface propstoObjet{
+  date: number,
+  month: number,
+  year: number,
+  hour: number | undefined,
+  minute: number | undefined,
+}
+function toObject(date: Date, autoHour?: boolean): propstoObjet{
   date = date ? new Date(date) : new Date()
   let ok = true
   if (!date.getTime()) {
@@ -20,12 +27,12 @@ const toObject: any = (date: any, autoHour: any) => {
   }
 }
 
-const toHour = (date: any) => {
+const toHour = (date: Date) => {
   date = new Date(date)
   return date.getTime() ? `${addZero(date.getHours())}:${addZero(date.getMinutes())}` : ''
 }
 
-const hourFormat: any = (str: any, simple: any) => {
+const hourFormat = (str: string, simple?: boolean) => {
   str = str.replace(/[^0-9]/g, '')
   if (str.length >= 2) {
     if (parseInt(str.substr(0, 2)) > 23) str = '0' + str
@@ -36,7 +43,7 @@ const hourFormat: any = (str: any, simple: any) => {
   return str ? `${str[0] || '-'}${str[1] || '-'}:${str[2] || '-'}${str[3] || '-'}` : ''
 }
 
-const dateLines = (y: any, m = new Date().getMonth()) => {
+const dateLines = (y: number, m = new Date().getMonth()) => {
   const date = new Date()
   date.setDate(1)
   y && date.setFullYear(y)
@@ -57,30 +64,38 @@ const dateLines = (y: any, m = new Date().getMonth()) => {
   }
 }
 
+interface propsHour{
+  time?: boolean,
+  alwaysOn?: boolean,
+  value: Date,
+  onChange?: (e: any) => void,
+  className?: string,
+}
 
-const Hour = (props: any) => {
-  const {
-    time = true, alwaysOn,
-    value, onChange, className
-  } = props
+const Hour = (props: propsHour) => {
+  // props.time = true
+  // const {
+  //   time = true, alwaysOn,
+  //   value, onChange, className
+  // } = props
 
   //States
   const hRef: any = useRef()
-  const state = bulkSetter(...useState(toObject(value, time)))
-  const [hourStr, setHourStr] = useState(time ? toHour(value) : '00:00')
+  const state = bulkSetter(...useState(toObject(props.value, props.time)))
+  const [hourStr, setHourStr] = useState(props.time ? toHour(props.value) : '00:00')
   const { date, month, year, hour, minute } = state
 
   // Effects
   useEffect(()=> {
-    const d = new Date(`${year}-${month + 1}-${addZero(date)}` + (time ? ` ${hour}:${minute}:00` : ' 00:00:00'))
+    const d = new Date(`${year}-${month + 1}-${addZero(date)}` + (props.time ? ` ${hour}:${minute}:00` : ' 00:00:00'))
     if (`${year}`.length === 4 && d.getTime()) {
-      if (toSQLDate(d) !== toSQLDate(value)) {
-        onChange && onChange(d)
+      if (toSQLDate(d) !== toSQLDate(props.value)) {
+        props.onChange && props.onChange(d)
       }
     } else {
-      onChange && onChange(null)
+      props.onChange && props.onChange(null)
     }
-  }, time ? [date, month, year, hour, minute] : [date, month, year])
+  }, props.time ? [date, month, year, hour, minute] : [date, month, year])
 
   useEffect(()=> {
     if (hourStr && hourStr.indexOf('-') < 0) {
@@ -90,16 +105,16 @@ const Hour = (props: any) => {
   }, [hourStr])
 
   useEffect(()=> {
-    if (value) {
-      if(`${year}`.length === 4) state.set(toObject(value))
-      setHourStr(toHour(value))
+    if (props.value) {
+      if(`${year}`.length === 4) state.set(toObject(props.value))
+      setHourStr(toHour(props.value))
     }
-  }, [toSQLDate(value)])
+  }, [toSQLDate(props.value)])
 
   useEffect(() => {
-    let val: any = 0
+    let val: number | NodeJS.Timer = 0
     const update = async () => {
-      const { current  = {} }: any = hRef
+      const { current  = {} } = hRef
       if (current && !current.value) current.placeholder = toHour(new Date())
     }
     update()
@@ -113,9 +128,9 @@ const Hour = (props: any) => {
   const dates = useMemo(() => dateLines(state.year, state.month), [state.month, state.year])
 
   return (
-    <div className={clsx('Hour', className, (alwaysOn || !time) && 'always-on')}>
+    <div className={clsx('Hour', props.className, (props.alwaysOn || !props.time) && 'always-on')}>
       {
-        time && <input ref={hRef}
+        props.time && <input ref={hRef}
           onChange={({ target, target: { value } }) => {
             const p = (p => p > 2 ? ++p : p)(hourFormat(value, true).length)
             setTimeout(() => target.setSelectionRange(p, p))
@@ -125,9 +140,9 @@ const Hour = (props: any) => {
           onDoubleClick={({ target }: any) => !target.value && setHourStr(target.placeholder)}
         />
       }
-      <div ref={time ? null : hRef} className="dates">
+      <div ref={props.time ? null : hRef} className="dates">
         <Input
-          onChange={(val: any) => {
+          onChange={(val: number) => {
             let {month, year, prevMax} = dates
             month = val > dates.max ? month + 1 : val <= 0 ? month - 1 : month
             if(month < 0){
@@ -160,7 +175,7 @@ const Hour = (props: any) => {
           ]}
           outline='none' className='month'
           value={state.month}
-          onChange={(v: any) => {
+          onChange={(v: ChangeEvent) => {
             state.set('month', v)
             setTimeout(() => {
               const dates = hRef.current.parentNode.querySelector('.dates')

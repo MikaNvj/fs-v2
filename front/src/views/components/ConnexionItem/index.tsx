@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, MouseEventHandler } from 'react';
+import React, { useState, useEffect, useRef, useMemo, MouseEvent, ChangeEvent } from 'react';
 import {
   bulkSetter, determinerPrix, extractNews,
   toPhone, toSimpleDate, toSQLDate
@@ -37,14 +37,14 @@ const Times = {
   }
 }
 interface propsConnexionItem{
-  value: any,
+  value: {start: string, stop: string},
   customer: CustomerTypes,
   paymnt: PaymentTypes,
   showUser: () => void,
   setChosenPayment: (a: PaymentTypes) => void
-  saveConnexion?: any,
-  savePayment?: any,
-  saveIncome?: any,
+  saveConnexion?: () => void,
+  savePayment?: () => void,
+  saveIncome?: () => void,
 }
 const ConnexionItem = (props: propsConnexionItem) => {
 
@@ -69,7 +69,7 @@ const ConnexionItem = (props: propsConnexionItem) => {
       start: props.value.start && new Date(props.value.start),
       stop: props.paymnt.amount ? props.value.stop && new Date(props.value.stop) : null
   }))
-  const [rest, setRest] = useState< any>(null)
+  const [rest, setRest] = useState< number | null>(null)
   const [canceled, setCanceled] = useState(false)
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const ConnexionItem = (props: propsConnexionItem) => {
   }, [state.start, state.stop])
 
   useEffect( () => {
-    let tmt: number | any;
+    let tmt: NodeJS.Timeout ;
     if (canceled) tmt = setTimeout(() => setCanceled(false), 3500)
     return ()=> clearTimeout(tmt)
   }, [canceled])
@@ -134,8 +134,8 @@ const ConnexionItem = (props: propsConnexionItem) => {
               <span className='lastname'>{lastname}</span>
               <span>{firstname}</span>
               <span className='phone'>{toPhone(phone)}</span>
-          </div> : <div onClick={(e: any) => {
-            const cl = e.target.closest('.customer-name').classList
+          </div> : <div onClick={(event: MouseEvent<HTMLDivElement>) => {
+            const cl = (event.target as typeof event.target & {closest: (e: string) => any}).closest('.customer-name').classList
             if(cl.contains('act')){
               savePayment({ ...props.paymnt, inactive: true })
             }
@@ -186,9 +186,9 @@ const ConnexionItem = (props: propsConnexionItem) => {
           onDoubleClick={_ => setRest(null)}
           type="text"
           value={rest || ''}
-          onChange={(e: any)=> {
-            const val = parseInt(e.target.value) || 0
-            setRest(e.target.value.lastIndexOf('-') > 0 ? -val : val)
+          onChange={(e: ChangeEvent<HTMLInputElement>)=> {
+            const val = parseInt((e.target as HTMLInputElement).value) || 0
+            setRest((e.target as HTMLInputElement).value.lastIndexOf('-') > 0 ? -val : val)
           }}
           placeholder="reste"
         />

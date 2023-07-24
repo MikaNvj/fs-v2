@@ -11,8 +11,15 @@ const states = {
   title: '',
   error: undefined
 }
-
-const ModalConfirm = (props: any) => {
+interface propsModalconfirm{
+  active: boolean,
+  close: () => void,
+  text: string,
+  handler: any,
+  error: string,
+  title: string,
+}
+const ModalConfirm = (props: propsModalconfirm) => {
   const {  active, close, text, handler, error, title } = props
   const S = bulkSetter(...useState(states))
   

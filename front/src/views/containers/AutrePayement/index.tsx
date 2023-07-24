@@ -109,7 +109,7 @@ const AutrePayement = () => {
                     payment={payment}
                     saveIncome={saveIncome}
                     savePayment={savePayment}
-                    saveSub={saveSub}
+                    // saveSub={saveSub}
                     saveCopy={saveCopy}
                     setSelectedPayment={setSelectedPayment}
                   /> : null

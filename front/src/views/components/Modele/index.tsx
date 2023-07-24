@@ -5,13 +5,13 @@ import './modele.scss';
 const parameter = require('./parameter.json')
 
 const zoomIt = (type: string) => {
-  let element: any = document.querySelector("#name")
-  let fontSize = parseFloat(window.getComputedStyle(element, null).getPropertyValue("font-size"))
+  let element: HTMLElement | null = document.querySelector("#name")
+  let fontSize = parseFloat(window.getComputedStyle(element as Element, null).getPropertyValue("font-size"))
 
   if (type === "plus") {
-    element.style.fontSize = (fontSize + 3) + "px";
+    (element as HTMLElement).style.fontSize = (fontSize + 3) + "px";
   } else {
-    element.style.fontSize = (fontSize - 3) + "px";
+    (element as HTMLElement).style.fontSize = (fontSize - 3) + "px";
   }
 
 }

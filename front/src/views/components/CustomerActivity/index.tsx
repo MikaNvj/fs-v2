@@ -23,7 +23,7 @@ const states = {
 interface propsCustomerActivity{
   close: () => void,
   incomer: IncomeTypes,
-  setActivity: any,
+  setActivity: (e: boolean) => void,
   activity: boolean
 }
 
