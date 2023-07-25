@@ -1,8 +1,14 @@
 import { useRef, useEffect } from 'react';
+interface propsuserportal{
+  parentSelector: string,
+  active: boolean,
+  classNames: string | string[],
+  close: () => void,
+}
 
-
-function usePortal({parentSelector, active, classNames, close}) {
-  const elemRef = useRef(null)
+const usePortal = (Props: propsuserportal ) => {
+  let {parentSelector, active, classNames, close} = Props
+  const elemRef = useRef< HTMLDivElement| null>(null)
   const createElem = () => {
     if(!elemRef.current) {
       elemRef.current = document.createElement('div')
@@ -21,10 +27,10 @@ function usePortal({parentSelector, active, classNames, close}) {
     }
     return elemRef.current
   }
-  useEffect(_ => {
+  useEffect(()=> {
     const parent = document.querySelector(parentSelector)
     createElem()
-    parent.appendChild(elemRef.current);
+    parent && parent.appendChild(elemRef.current as HTMLDivElement);
     return function removeElement() {
       elemRef.current && elemRef.current.remove()
     }
