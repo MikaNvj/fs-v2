@@ -4,13 +4,13 @@ import { createPortal } from 'react-dom';
 import usePortal from './usePortals';
 import './Modal.scss'
 interface propsmodal{
-  children: any,
-  parentSelector: string,
-  active: boolean,
-  className: string,
-  close: () => void,
-  optimize: boolean,
-  timeout: number,
+  children?: any,
+  parentSelector?: string,
+  active: boolean ,
+  className?: string,
+  close?: () => void,
+  optimize?: boolean,
+  timeout?: number,
 }
 const Modal = (props: propsmodal) =>  {
   const tmt = React.useRef< any>(null)
@@ -26,7 +26,7 @@ const Modal = (props: propsmodal) =>  {
   const target = usePortal({
     parentSelector,
     classNames: clsx('Modal', className),
-    active, close
+    active, close: close!
   })
   return createPortal(!show && optimize ? null : children, target)
 }
