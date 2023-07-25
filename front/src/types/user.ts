@@ -1,3 +1,11 @@
-import { Data } from "./data";
 
-export type UserTypes = Data
+
+export type UserTypes ={
+    id: string,
+    username: string,
+    email: string,
+    password: string,
+    firstname: string,
+    lastname: string,
+    inactive: boolean
+}

@@ -1,3 +1,7 @@
 export type SubTypes = {
-    id: string
+    id: string,
+    start: string,
+    end: string,
+    sub: number,
+    inactive: boolean,
 }
