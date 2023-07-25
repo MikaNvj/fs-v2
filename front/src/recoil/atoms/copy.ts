@@ -6,10 +6,11 @@ export const copyState = atom<CopyTypes[]>({
     default: []
 });
 
-export const _copyState = atom({
+export const _copyState = atom<{[id: string]: CopyTypes}>({
     key: '_copy',
     default: {}
 });
+
 export const selectedcopy = selector({
     key: 'detail-copy-selected',
     get: ({ get }) => ({id}: {id: string}) => {

@@ -12,4 +12,5 @@ export type ProgramTypes = {
     price: number,
     certprice: number,
     place: number,
+    formationId: string
 }

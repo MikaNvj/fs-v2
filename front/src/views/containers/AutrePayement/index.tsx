@@ -18,6 +18,7 @@ import { _copyState } from '../../../recoil/atoms/copy'
 import { authObject } from '../../../services/iDB/Recoil'
 
 import {savePayment, saveSub, saveIncome, saveCopy} from '../../../recoil/controllers'
+import { CopyTypes, CustomerTypes, SubTypes } from '../../../types'
 
 const others = [COPY, EMAIL, PRINT, REPAIR, SCAN, SUB]
 
@@ -42,11 +43,11 @@ const AutrePayement = () => {
     console.log('payement recoil', _paymentrecoil)
 
   }, [_paymentrecoil])
-  const create = useMemo(() => async (type) => {
+  const create = useMemo(() => async (type: string) => {
     let id, creator
     if(type === SUB) creator = saveSub
     else if([COPY, PRINT].includes(type)) creator = saveCopy
-    id = (await creator({})).id
+    id = (await creator!({})).id
     await savePayment({
       targetId: id, type,
       // customerId: customer.id,
@@ -77,7 +78,15 @@ const AutrePayement = () => {
               // _payments.filter(({ type, rest = null, inactive }) => !inactive && others.includes(type) && rest === null)
               _paymentrecoil.filter(({ type, rest = null, inactive }) => !inactive && others.includes(type) && rest === null)
                 .map((payment) => {
-                  let Comp, objList, opts = {
+                  let Comp, objList, opts: {
+                    key: string;
+                    customer: CustomerTypes;
+                    saveIncome: (income: any) => Promise<any>;
+                    savePayment: (payment: any) => Promise<any>;
+                    value?: SubTypes | CopyTypes,
+                    saveSub?: (sub: any) => Promise<any>,
+                    saveCopy?: (copy: any) => Promise<any>
+                } = {
                     key: payment.id,
                     customer: customers[payment.customerId],
                     saveIncome, savePayment,
@@ -120,7 +129,7 @@ const AutrePayement = () => {
         !!selectedPayment && <div className="customer-choose">
           <div onClick={_ => setSelectedPayment(false)} className="close-chooser"/>
           <UserList
-            onSelect={async customer => {
+            onSelect={async (customer: CustomerTypes) => {
               savePayment({
                 ...selectedPayment,
                 customerId: customer.id
