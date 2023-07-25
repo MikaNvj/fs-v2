@@ -13,11 +13,11 @@ import { customerState, _customerState, selectedCustomer } from '../../../recoil
 import { CustomerTypes, IncomeTypes } from '../../../types'
 
 interface propsUserlist {
-  selected?: any, 
+  selected?: any,
   onSelect?: any,
-   openedCustomer?: CustomerTypes,
-    setOpenedCustomer?: CustomerTypes | any,
-    
+  openedCustomer?: CustomerTypes,
+  setOpenedCustomer?: CustomerTypes | any,
+  programm?: any
 }
 
 const UserList = (props: propsUserlist) => {
@@ -39,7 +39,7 @@ const UserList = (props: propsUserlist) => {
     incomer: null, showPay: false
   }))
 
-  const searchRef: any= useRef(null)
+  const searchRef: any = useRef(null)
 
   const ref = useRef();
 
@@ -47,7 +47,7 @@ const UserList = (props: propsUserlist) => {
     if (showPay) setShowPay(false);
   })
 
-  const showCustomer= useCallback(( activity?: boolean, customer?: CustomerTypes) => {
+  const showCustomer = useCallback((activity?: boolean, customer?: CustomerTypes) => {
     State.set({
       edited: customer, activity
     })

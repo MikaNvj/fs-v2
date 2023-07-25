@@ -10,7 +10,7 @@ import { CustomerTypes, FormationTypes, ProgramTypes } from '../../../types'
 
 interface propsPrintList{
   active: boolean,
-  selected: [],
+  selected: string[] | null,
   close: () => void,
   formation: FormationTypes,
   program: ProgramTypes
@@ -57,7 +57,7 @@ function PrintList(props: propsPrintList) {
             </thead>
             <tbody>
               {
-                selected.map((id: string, i: number) => {
+                selected && selected.map((id: string, i: number) => {
                   // const customer = customers[id]
                   const customer: CustomerTypes = _customerrecoil({id: `${id}`})
                   return (

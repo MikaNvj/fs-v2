@@ -100,17 +100,17 @@ const AutrePayement = () => {
                       ...opts, value: copies[payment.targetId],
                       saveCopy
                     } as any
-                  } 
+                  }
 
                   return Comp && opts.value ? <Comp
                     value = {objList && objList[payment.targetId]} 
                     key={payment.id}
                     customer={ customers[payment.customerId]}
                     payment={payment}
-                    saveIncome={saveIncome}
-                    savePayment={savePayment}
+                    // saveIncome={saveIncome}
+                    // savePayment={savePayment}
                     // saveSub={saveSub}
-                    saveCopy={saveCopy}
+                    // saveCopy={saveCopy}
                     setSelectedPayment={setSelectedPayment}
                   /> : null
                 })
