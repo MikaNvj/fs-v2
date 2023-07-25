@@ -148,7 +148,7 @@ const CustomerActivity = (props: propsCustomerActivity) => {
                           .map(({ date, amount, id }) => {
                             return (
                               <div key={id} className="income">
-                                <div className="in-date">{formatDate(date)}</div>
+                                <div className="in-date">{formatDate(new Date(date))}</div>
                                 <div className="in-amount">{toAmount(amount)}</div>
                               </div>
                             )
@@ -208,11 +208,11 @@ const FormatFormation = (payment: PaymentTypes, ftion = true) => {
   )
 }
 
-const formatConnexion = (payment: ConnexionTypes) => {
+const formatConnexion = (payment: PaymentTypes) => {
   return (
     <span>
       <span className='pn-type'>Connexion</span>
-      <span className='pn-date'>{formatDate(payment.createdAt, { du: true })}</span>
+      <span className='pn-date'>{formatDate(new Date(payment.createdAt), { du: true })}</span>
     </span>
   )
 }

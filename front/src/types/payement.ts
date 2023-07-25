@@ -12,5 +12,6 @@ export type PaymentTypes = {
     inactive: boolean,
     type: string,
     rest: number,
+    createdAt: string,
     amount: number,
 }
