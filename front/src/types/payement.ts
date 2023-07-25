@@ -8,7 +8,7 @@ export type PaymentTypes = {
     customerId: string,
     // rest: any
     id: string,
-    targetId: number,
+    targetId: string,
     inactive: boolean,
     type: string,
     rest: number,

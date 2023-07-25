@@ -135,7 +135,7 @@ const Formation = () => {
                                       op ?
                                         {
                                           title: `Déjà inscrit${customer.sex === 'F' ? 'e' : ''}  `,
-                                          text: `${customer.firstname} est déjà inscrit${customer.sex === 'F' ? 'e' : ''} à la formation "${name}" du ${formatDate(date)}`,
+                                          text: `${customer.firstname} est déjà inscrit${customer.sex === 'F' ? 'e' : ''} à la formation "${name}" du ${formatDate(new Date(date))}`,
                                           error: true
                                         } :
                                         {
@@ -146,7 +146,7 @@ const Formation = () => {
                                             setOpenedCustomer(_customer({id: customer.id}))
                                           },
                                           title: 'Inscription',
-                                          text: `Inscrire ${customer.firstname} à la formation "${name}" du ${formatDate(date)}`
+                                          text: `Inscrire ${customer.firstname} à la formation "${name}" du ${formatDate(new Date(date))}`
                                         }
                                     )
                                   }}
