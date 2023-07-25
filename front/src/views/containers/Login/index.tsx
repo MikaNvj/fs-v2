@@ -65,8 +65,8 @@ const Login = ({ signin }: any) => {
           autoFocus = {!login}
         />
         <Input
-          onKeyPress={(e: any) => e.code === 'Enter' && logIn()}
-          onKeyUp={(e: any) => connectOnFly(e.target.value)}
+          onKeyPress={(e: KeyboardEvent) => e.code === 'Enter' && logIn()}
+          onKeyUp={(e: KeyboardEvent) => connectOnFly((e.target as HTMLInputElement).value)}
           {...input('password')}
           type='password'
           label="Mot de passe"
