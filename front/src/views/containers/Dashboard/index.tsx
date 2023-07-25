@@ -58,7 +58,7 @@ const Dashboard = () => {
     let incs = _incomes.filter(({ date }) => date && date.startsWith(month))
     const total: any = {}
     incs.forEach(({ date, amount, paymentId }) => {
-      date = parseInt(date.split('-').slice(-1)[0])
+      date = date.split('-').slice(-1)[0]
       if (!total[date]) total[date] = { total: 0 }
       // const { type } = Store.getCurrentState(`payment.payments.${paymentId}`) || {}
       const { type } = _payments({id: `${paymentId}`}) || {}
