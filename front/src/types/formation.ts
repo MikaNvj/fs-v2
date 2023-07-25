@@ -3,4 +3,5 @@ export type FormationTypes = {
     id: string,
     name: string,
     createdAt?: Date
+    inactive: boolean
 }

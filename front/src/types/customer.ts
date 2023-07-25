@@ -1,14 +1,15 @@
 export type CustomerTypes = {
-    adress: string,
-    birthdate: string,
-    birthplace: string
-    email: string,
-    facebook: string,
-    firstname: string,
-    id: string,
-    lastname: string,
-    phone: string,
-    photo: string | undefined,
-    sex: string,
     toCrop: string,
+    id: string,
+    sex: string,
+    firstname: string,
+    lastname: string,
+    adress: string,
+    email: string,
+    birthdate: string,
+    birthplace: string,
+    phone: string,
+    facebook: string,
+    photo: string,
+    inactive: boolean
 }

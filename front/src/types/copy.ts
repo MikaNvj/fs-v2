@@ -1,6 +1,7 @@
 export type CopyTypes = {
-    id: string, 
+    id: string,
     black: number,
     colored: number,
-    wasted: number
+    wasted: number,
+    inactive: boolean
 }

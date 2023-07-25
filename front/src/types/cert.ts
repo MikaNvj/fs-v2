@@ -1,3 +1,7 @@
-import {Data} from './data'
+import { Data } from './data'
 
-export type CertTypes = Data
+export type CertTypes = {
+    id: string,
+    mention: number,
+    inactive: boolean
+}
