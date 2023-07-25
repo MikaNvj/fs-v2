@@ -7,7 +7,7 @@ export const getCerts = async (certs = []) => {
   return certs
 }
 
-export const saveCert = async (cert: any) => {
+export const saveCert = async (cert: CertTypes) => {
   cert = await iDB.cert.save(cert)
   return cert
 }
