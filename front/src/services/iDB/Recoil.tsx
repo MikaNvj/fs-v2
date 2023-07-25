@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 // import * as Atoms from "../../recoil/atoms"
 import { useRecoilState } from 'recoil'
 import { authState } from '../../recoil/atoms/auth'
@@ -17,8 +17,11 @@ import DB from './db'
 import iDB from '.'
 import { AuthTypes, Data, Obj } from '../../types'
 
-export const triggerEvent = (evName: string, data?: AuthTypes) => {
+export const triggerEvent = (evName: string, data?: string) => {
     document.dispatchEvent(new CustomEvent(evName, { detail: data }))
+}
+export const callEventAuth = (evName: string, data: {user: any, token: string}) => {
+    document.dispatchEvent(new CustomEvent(evName, {detail: data}))
 }
 
 export let authObject: AuthTypes
@@ -45,64 +48,89 @@ export default function Recoil() {
 
     useEffect(() => {
 
-        authObject = { user: {...auth.user}, token: auth.token }
-    
+        authObject = { user: { ...auth.user }, token: auth.token }
+
     }, [auth])
 
-    const models = ['cert', 'connexion', 'copy', 'customer', 'formation',
-        'icomes', 'payment', 'program', 'sub', 'user']
+    useEffect(() => {
 
-    document.addEventListener('set-auth', (e: Event) => {
+        document.addEventListener('logout', () => {
+            setAuth({
+                user: {
+                    id: '',
+                    formationId: ''
+                },
+                token: ''
+            })
+        })
+        document.addEventListener('set-auth', (e: Event) => {
+            const { detail } = e as CustomEvent
+            setAuth(detail)
+        })
 
-        const { detail }  = e as CustomEvent
-        setAuth(detail)
-    })
+        DB.dbTables().then(_models => {
+            
+            for (const model of _models) {
+                update_recoil(model)
+                // document.addEventListener(model, (e) => {
+                //     update_recoil(model)
+                // })
+            }
+        })
+
+        document.addEventListener('changement', (e) => {
+
+            const { detail } = e as CustomEvent
+            update_recoil(detail)
+
+        })
+
+    }, [])
 
     async function update_recoil(model: string) {
 
         switch (model) {
             case 'cert':
-
                 setCert(await get_into_local_storage(model));
                 break;
-            case 'connexion':
 
+            case 'connexion':
                 setConnection(transform_to_object(await get_into_local_storage(model)))
                 break;
-            case 'copy':
 
+            case 'copy':
                 _setCopy(transform_to_object(await get_into_local_storage(model)))
                 setCopy(await get_into_local_storage(model));
                 break;
-            case 'customer':
 
+            case 'customer':
                 _setCustomer(transform_to_object(await get_into_local_storage(model)))
                 setCustomer(await get_into_local_storage(model))
                 break;
-            case 'formation':
 
+            case 'formation':
                 _setformation(transform_to_object(await get_into_local_storage(model)))
                 setFormation(await get_into_local_storage(model));
                 break;
-            case 'icomes':
 
+            case 'icomes':
                 setIcomes(await get_into_local_storage(model));
                 break;
-            case 'payment':
 
+            case 'payment':
                 setPayement(await get_into_local_storage(model));
                 break;
-            case 'program':
 
+            case 'program':
                 setProgram(await get_into_local_storage(model));
                 break;
-            case 'sub':
 
+            case 'sub':
                 _setSub(transform_to_object(await get_into_local_storage(model)))
                 setSub(await get_into_local_storage(model));
                 break;
-            case 'user':
 
+            case 'user':
                 setUser(await get_into_local_storage(model));
                 break;
         }
@@ -120,21 +148,16 @@ export default function Recoil() {
         return result
     }
 
-    useEffect(() => {
 
-        DB.dbTables().then(async models => {
-            for (const model of models) {
+    // useEffect(() => {
+    //     for (const model of models) {
 
-                update_recoil(model)
-
-                document.addEventListener(model, (e) => {
-                    update_recoil(model)
-                })
-            }
-        })
-
-    }, [])
-    // }, [dbTablesHadlers])
+    //         update_recoil(model)
+    //         document.addEventListener(model, (e) => {
+    //             update_recoil(model)
+    //         })
+    //     }
+    // }, [models])
 
     return (
         <div>
