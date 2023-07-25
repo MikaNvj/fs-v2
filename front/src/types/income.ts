@@ -5,4 +5,5 @@ export type IncomeTypes = {
     date: string,
     inactive: boolean,
     amount: number,
+    paymentId: string,
 }

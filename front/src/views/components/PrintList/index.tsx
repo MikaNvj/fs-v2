@@ -31,7 +31,7 @@ function PrintList(props: propsPrintList) {
         <div className="to-print">
           <div className="tp-header">
             <div className='title'>Liste de présence</div>
-            <div className='subtitle'>{props.formation.name} - {formatDate(props.program.date, {precise: true})}</div>
+            <div className='subtitle'>{props.formation.name} - {formatDate(new Date(props.program.date), {precise: true})}</div>
             <div className="print-button" onClick={async _ => {
               await bridge('print', {opts: {
                 printBackground: true,
