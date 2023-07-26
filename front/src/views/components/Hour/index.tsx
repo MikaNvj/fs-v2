@@ -3,8 +3,9 @@ import clsx from 'clsx'
 import Input from '../Input'
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { addZero, basicFormatDate, bulkSetter, toSQLDate } from '../../../services/functions'
+import { ChangeEvent } from 'react'
 
-const toObject: any = (date: any, autoHour: any) => {
+const toObject = (date: Date, autoHour?: boolean) => {
   date = date ? new Date(date) : new Date()
   let ok = true
   if (!date.getTime()) {
@@ -20,12 +21,12 @@ const toObject: any = (date: any, autoHour: any) => {
   }
 }
 
-const toHour = (date: any) => {
+const toHour = (date: Date) => {
   date = new Date(date)
   return date.getTime() ? `${addZero(date.getHours())}:${addZero(date.getMinutes())}` : ''
 }
 
-const hourFormat: any = (str: any, simple: any) => {
+const hourFormat = (str: any, simple?: any) => {
   str = str.replace(/[^0-9]/g, '')
   if (str.length >= 2) {
     if (parseInt(str.substr(0, 2)) > 23) str = '0' + str
@@ -36,7 +37,7 @@ const hourFormat: any = (str: any, simple: any) => {
   return str ? `${str[0] || '-'}${str[1] || '-'}:${str[2] || '-'}${str[3] || '-'}` : ''
 }
 
-const dateLines = (y: any, m = new Date().getMonth()) => {
+const dateLines = (y: number, m = new Date().getMonth()) => {
   const date = new Date()
   date.setDate(1)
   y && date.setFullYear(y)
@@ -56,16 +57,22 @@ const dateLines = (y: any, m = new Date().getMonth()) => {
     }), max, prevMax, month: m, year: y
   }
 }
+interface  propsHours{
+  time?: boolean,
+  alwaysOn?: boolean,
+  value?: any,
+  onChange?: (e: Date | null) => void,
+  className?: string,
+}
 
-
-const Hour = (props: any) => {
+const Hour = (props: propsHours) => {
   const {
     time = true, alwaysOn,
     value, onChange, className
   } = props
 
   //States
-  const hRef: any = useRef()
+  const hRef = useRef<  any>()
   const state = bulkSetter(...useState(toObject(value, time)))
   const [hourStr, setHourStr] = useState(time ? toHour(value) : '00:00')
   const { date, month, year, hour, minute } = state
@@ -97,7 +104,7 @@ const Hour = (props: any) => {
   }, [toSQLDate(value)])
 
   useEffect(() => {
-    let val: any = 0
+    let val: number | NodeJS.Timer = 0
     const update = async () => {
       const { current  = {} }: any = hRef
       if (current && !current.value) current.placeholder = toHour(new Date())
@@ -160,7 +167,7 @@ const Hour = (props: any) => {
           ]}
           outline='none' className='month'
           value={state.month}
-          onChange={(v: any) => {
+          onChange={(v: ChangeEvent) => {
             state.set('month', v)
             setTimeout(() => {
               const dates = hRef.current.parentNode.querySelector('.dates')

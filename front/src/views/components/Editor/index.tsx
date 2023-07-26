@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ChangeEvent } from 'react'
 import clsx from 'clsx'
 import './Editor.scss'
 import Input from '../Input'
@@ -19,13 +19,21 @@ const states = {
 
 const empty = {}
 
-const defields: any = [
-  { label: 'Photo de profil', name: "pdp", type: 'image' },
+const defields = [
+  { label: 'Photo de profil', name: "pdp", type: 'image', errorMessage: 'invalide' },
   { label: 'Pseudo', name: "pseudo", validator: Validator().min(3) },
   { label: 'Files', name: "files", type: 'file', multiple: true, validator: Validator().required() }
 ]
-
-const Editor = (props: any) => {
+interface propsEditor{
+  active: boolean,
+  close: () => void,
+  fields: typeof defields,
+  position: string,
+  title: string,
+  value: any,
+  save: any,
+}
+const Editor = (props: propsEditor) => {
   // Props & states
   const { active, close, fields = defields, position = 'center', title = 'Offre' } = props
   const value = props.value || empty
@@ -72,14 +80,14 @@ const Editor = (props: any) => {
         <div className="e-title">{title}</div>
         <ScrollBar className="e-fields">
           {
-            fields.filter(({ name }: any) => name in I).map((field: any, key: any) => {
+            fields.filter(({ name }) => name in I).map((field, key) => {
               const { name, errorMessage = `invalide`, validator = Validator().ignore(), ...rest } = field
               return <React.Fragment key={key}>
                 <Input {...rest}
                   required={validator.rq}
                   value={I[name]}
                   error={S.error && !validator.validate(I[name], I) && errorMessage}
-                  onChange={(val: any) => I.set(name, val)}
+                  onChange={(val: ChangeEvent) => I.set(name, val)}
                 />
               </React.Fragment>
             })
@@ -92,8 +100,8 @@ const Editor = (props: any) => {
 }
 
 export default Editor
-const transformFields = (fields: any, value: any = {}) => fields.reduce((obj: any, { name, type }: any) => {
+const transformFields = (fields: any[], value: any = {}) => fields.reduce((obj, { name, type }) => {
   return name ? ({ ...obj, [name]: value[name] || ('file' === type ? [] : '') }) : obj
 }, {})
-const validateFields = (fields: any, I: any) => fields.filter(({ validator }: any) => !!validator)
-  .reduce((ok: any, { validator, name }: any) => ok && validator.validate(I[name], I), true)
+const validateFields = (fields: any[], I: any) => fields.filter(({ validator }) => !!validator)
+  .reduce((ok, { validator, name }: any) => ok && validator.validate(I[name], I), true)

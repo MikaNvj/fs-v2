@@ -23,7 +23,7 @@ const states = {
 interface propsCustomerActivity{
   close: () => void,
   incomer: IncomeTypes,
-  setActivity: any,
+  setActivity: (e: boolean) => void,
   activity: boolean
 }
 
@@ -34,36 +34,36 @@ const CustomerActivity = (props: propsCustomerActivity) => {
   const [formationrecoil, setformationrecoil] = useRecoilState(formationState);
   const [programrecoil, setprogramrecoil] = useRecoilState(programState);
   
-  // const {
-  //   close, incomer, 
-  //   // saveIncome, savePayment,
-  //   // income: { _incomes }, payment: { _payments },
-  //   setActivity, activity
-  // } = props
+  const {
+    close, incomer, 
+   
+    // income: { _incomes }, payment: { _payments },
+    setActivity, activity
+  } = props
 
   const {
     customer, restEdited, ...State
   } = bulkSetter(...useState({ ...states }))
 
   useEffect(() => {
-    props.incomer && State.setCustomer(props.incomer)
-  }, [props.incomer])
+    incomer && State.setCustomer(incomer)
+  }, [incomer])
 
   useEffect(() => {
     !restEdited && State.setRestValue(0)
   }, [restEdited])
 
   const allPayments = useMemo(()=> {
-    return _paymentrecoil.filter(({ customerId, inactive, rest }) => !inactive && customerId === get(props.incomer, 'id') && rest != null)
+    return _paymentrecoil.filter(({ customerId, inactive, rest }) => !inactive && customerId === get(incomer, 'id') && rest != null)
       .sort(({ updatedAt: a }: any, { updatedAt: b }: any) => a < b ? 1 : -1)
-  }, [_paymentrecoil, props.incomer.id])
+  }, [_paymentrecoil, incomer.id])
 
 
   return (
     <div className="CustomerActivity">
       <div className="e-left">
         <div onClick={_ => {
-          props.setActivity && props.setActivity(!props.activity)
+          setActivity && setActivity(!activity)
         }} className='e-details'>Détails</div>
         <div
           className={clsx("e-avatar", customer.sex)}
@@ -76,11 +76,11 @@ const CustomerActivity = (props: propsCustomerActivity) => {
           {`${toPhone(customer.phone)}`}
         </div>
       </div>
-      <div onClick={props.close} className="e-close" />
+      <div onClick={close} className="e-close" />
       <div className="e-right">
         <ScrollBar className='payments'>
           {
-            !!props.incomer && allPayments.map((payment: PaymentTypes) => {
+            !!incomer && allPayments.map((payment: PaymentTypes) => {
               return (
                 <React.Fragment key={payment.id}>
                   {
@@ -196,7 +196,7 @@ const FormatFormation = (payment: PaymentTypes, ftion = true) => {
   const programdetails = useRecoilValue(selectedprogram)
   // const all = Store.getCurrentState(`program.programs.${payment.targetId}`) || {}
   const all = programdetails({id: `${payment.targetId}`}) || {}
-  const { date, formationId }: any = all
+  const { date, formationId }: any= all
   // const fname = Store.getCurrentState(`formation.formations.${formationId}.name`)
   const fname = (formationdetails(({id: `${formationId}`})) as FormationTypes).name
 

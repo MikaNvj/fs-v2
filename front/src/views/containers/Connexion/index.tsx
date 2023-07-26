@@ -101,9 +101,9 @@ const Connexion = () => {
               paymnt={payment}
               setChosenPayment={setChosenPayment}
               showUser={() => showCustomer(false, customers[payment.customerId as any])}
-              saveConnexion={saveConnexion}
-              savePayment={savePayment}
-              saveIncome={saveIncome}
+              // saveConnexion={saveConnexion}
+              // savePayment={savePayment}
+              // saveIncome={saveIncome}
             />
           })
         }

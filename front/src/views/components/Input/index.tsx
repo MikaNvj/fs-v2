@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo, useEffect, ChangeEvent } from 'react'
 import './Input.scss'
 import { addZero, fuzzyFilter } from '../../../services/functions'
 import ScrollBar from 'react-perfect-scrollbar'
@@ -226,6 +226,11 @@ const IFile = (props: any) => {
   )
 }
 
+// interface propsImage{
+//   value: any,
+//   onChange: (e?: any) => void,
+//   square: any,
+// }
 const IImage = (props: any) => {
   const { value = [], onChange, square } = props
   useEffect(()=> props.value === undefined && onChange && onChange(value), [props.value])
@@ -237,9 +242,9 @@ const IImage = (props: any) => {
       className={clsx("image-container", value.length && 'filled', square && 'square')}
     >
       <input
-        onChange={(e: any) => {
-          if (e.target.files.length) {
-            onChange && onChange(Array.from(e.target.files), e)
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          if ((e.target as HTMLInputElement).files?.length) {
+            onChange && onChange(Array.from((e.target as HTMLInputElement).files as FileList), e)
             e.target.value = ""
           }
         }}

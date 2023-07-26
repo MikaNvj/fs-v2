@@ -6,12 +6,19 @@ import { addZero, formatDate, get, toAmount } from '../../../services/functions'
 import { FORMATION } from '../../../services/constants'
 import { useRecoilState } from 'recoil'
 import { payementState } from '../../../recoil/atoms/payement'
+import { ProgramTypes } from '../../../types'
 
-const HeaderProgramm = (props: any) => {
+interface propsHeader{
+  curProgram: ProgramTypes,
+  close: () => void,
+  showList: (e: boolean) => void,
+  showDiploma: (e: boolean) => void,
+}
+const HeaderProgramm = (props: propsHeader) => {
 
   const [_payments, setPayments] = useRecoilState(payementState)
   const {
-    curProgram, close, printList, showList, showDiploma,
+    curProgram, close, showList, showDiploma,
     // payment: {_payments}
   } = props
 
@@ -37,7 +44,7 @@ const HeaderProgramm = (props: any) => {
           <span className="count">{addZero(count)} </span>
         </div>
         <div className="img-box date">
-          {curProgram && formatDate(curProgram.date)}
+          {curProgram && formatDate(new Date(curProgram.date))}
         </div>
         <div className="img-box price">
           {curProgram && toAmount(curProgram.price)}

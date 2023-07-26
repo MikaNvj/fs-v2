@@ -4,6 +4,8 @@ import { bulkSetter, extractNews, get, toPhone, toSimpleDate } from '../../../se
 import clsx from 'clsx'
 import './CopyItem.scss'
 import { baseUrl, Server } from '../../../services/api'
+import { CustomerTypes, PaymentTypes } from '../../../types';
+import { saveIncome, savePayment, saveCopy } from '../../../recoil/controllers';
 
 const states = {
   black: 0,
@@ -12,14 +14,22 @@ const states = {
   amount: 0
 }
 
-const CopyItem = (props: any) => {
+interface propsCopyItem{
+  value: any,
+  setSelectedPayment: (e:PaymentTypes) => void,
+  customer: CustomerTypes,
+  payment: PaymentTypes,
+
+
+}
+
+const CopyItem = (props: propsCopyItem) => {
   const {
     value, setSelectedPayment,
     customer: {
       facebook, lastname, firstname,
       sex, photo, phone, id
-    } = {} as any, customer, payment, saveIncome,
-    savePayment, saveCopy
+    } = {} as any, customer, payment
   } = props
 
   const {
@@ -30,7 +40,7 @@ const CopyItem = (props: any) => {
     wasted: value.wasted, amount: payment.amount
   }))
   
-  const [rest, setRest] = useState< any>(null)
+  const [rest, setRest] = useState< number | null>(null)
   const [canceled, setCanceled] = useState(false)
 
   useEffect(() => {
@@ -53,7 +63,7 @@ const CopyItem = (props: any) => {
 
 
   useEffect(()=> {
-    let tmt: any
+    let tmt: NodeJS.Timeout
     if (canceled) tmt = setTimeout(() => setCanceled(false), 3500)
     return ()=> clearTimeout(tmt)
   }, [canceled])

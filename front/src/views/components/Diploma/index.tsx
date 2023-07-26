@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, {useState, useRef, useMemo} from 'react'
+import React, {useState, useRef, useMemo, MouseEvent} from 'react'
 import ScrollBar from 'react-perfect-scrollbar'
 import Store, { connect } from '../../../redux/store'
 import { Server } from '../../../services/api'
@@ -19,6 +19,7 @@ import { formationState } from '../../../recoil/atoms/formation'
 import { payementState } from '../../../recoil/atoms/payement'
 import { programState } from '../../../recoil/atoms/program'
 import { authObject } from '../../../services/iDB/Recoil'
+import { AuthTypes, CertTypes, FormationTypes, ProgramTypes } from '../../../types'
 
 const mentions: {"AB": string,"B": string, "TB": string} = { AB: 'Assez bien', B: 'Bien', TB: 'Très bien' }
 const notes: {"AB": number, "B": number, "TB": number} = { AB: 13.5, B: 15.5, TB: 17.5 }
@@ -37,8 +38,13 @@ function getMention(note: number){
     else if(note < 16) return 'B'
     else if(note >= 16) return 'TB'
 }
-
-const Diploma = (props: any) => {
+interface propsDiploma{
+  active: boolean,
+  close: ()=>void,
+  actFormation: FormationTypes,
+  actProgram: ProgramTypes
+}
+const Diploma = (props: propsDiploma) => {
   const [customers, setcustomers] = useRecoilState(customerState);
   const [_certs, setcerts] = useRecoilState(certState);
   const [formations, setformation] = useRecoilState(formationState)
@@ -54,14 +60,14 @@ const Diploma = (props: any) => {
   let program = actProgram
   const { formation, students} = useMemo(() => {
     return {
-      formation: actFormation || formations[program.formationId],
+      formation: actFormation || formations[parseInt(program.formationId)],
       students: _payments.filter(({type, targetId}) => {
         return type === FORMATION && targetId === program.id
-      }).map((p: any) => {
+      }).map((p) => {
         return {
           ...p,
-          customer: customers[p.customerId],
-          cert: _certs.find((c: any) => c.formationId === p.id)
+          customer: customers[parseInt(p.customerId)],
+          cert: _certs.find((c) => c.formationId === p.id)
         }
       })
     }
@@ -83,29 +89,29 @@ const Diploma = (props: any) => {
   }, [students, cur])
 
   // PRINT HANDLERS
-  const printAll = useMemo(() => async (e: any) => {
-    e.target.closest('.Diploma').classList.remove('single')
+  const printAll = useMemo(() => async (e: MouseEvent<HTMLElement>) => {
+    (e.target as HTMLElement).closest('.Diploma')!.classList.remove('single')
     await bridge('print', {opts: {
       printBackground: true, color: false,
       marginsType: 1, landscape: true,
       pageSize: 'A4', pdf: {
         folder: "Certificats",
-        name: `${formation.name} - Rentrée(${formatDate(program.date, {precise: true})})`
+        name: `${formation.name} - Rentrée(${formatDate(new Date(program.date), {precise: true})})`
       }, margins: {
         marginType : 'printableArea'
       }
     }})
   }, [program])
-  const printCurrent = useMemo(() => async (e: any) => {
-    e.target.closest('.Diploma').classList.add('single')
-    const {firstname, lastname} = students.find(({id}) => id === cur).customer
+  const printCurrent = useMemo(() => async (e: MouseEvent<HTMLElement>) => {
+    (e.target as HTMLElement).closest('.Diploma')!.classList.add('single')
+    const {firstname, lastname} = students.find(({id}) => id === cur)!.customer
     await bridge('print', {opts: {
       printBackground: true, color: false,
       marginsType: 1, landscape: true, pageSize: 'A4',
       pdf: {
         folder: "Certificats",
         name: `[${new Date().getTime()}] ${formation.name}` +
-          ` - Rentrée(${formatDate(program.date, {precise: true})}) - ${lastname.toUpperCase()} ${firstname}`
+          ` - Rentrée(${formatDate(new Date(program.date), {precise: true})}) - ${lastname.toUpperCase()} ${firstname}`
       },
       margins: { marginType : 'printableArea' }
     }})
@@ -119,7 +125,7 @@ const Diploma = (props: any) => {
           customerId: customer.id,
           amount: program.certprice || 0, rest: program.certprice || 0,
           // userId: Store.getCurrentState('auth.user.id')
-          userId: (authObject as any).user.id
+          userId: (authObject as AuthTypes).user.id
         })
       }
     })
@@ -133,7 +139,7 @@ const Diploma = (props: any) => {
           <div className="tp-header">
             <div className='title'>Liste des étudiants</div>
             <div className='subtitle'>{formation.name}</div>
-            <div className='title'>{formatDate(program.date)}</div>
+            <div className='title'>{formatDate(new Date(program.date))}</div>
             <div className="d-buttons">
               {
                 printable ? (
@@ -183,7 +189,7 @@ const Diploma = (props: any) => {
                   return (
                     <div
                       key={i}
-                      className={clsx(key === getMention(curCert?.mention) && 'active', "mention")}
+                      className={clsx(key === getMention(curCert?.mention as number) && 'active', "mention")}
                       onClick={_ => {
                         if(curCert) saveCert({...curCert, mention: notes[key]})
                       }}
@@ -209,14 +215,14 @@ const Diploma = (props: any) => {
                             {customer.lastname} {customer.firstname}
                           </div>
                         </div>
-                        <div className="birth">Né{customer.sex === 'F' && 'e'} le {formatDate(customer.birthdate)} à {customer.birthplace}</div>
+                        <div className="birth">Né{customer.sex === 'F' && 'e'} le {formatDate(new Date(customer.birthdate))} à {customer.birthplace}</div>
                         <div className="finish">a terminé avec succès la formation</div>
                         <div className="formation">
                           <span className="val">{(formation.fullname || formation.name).toUpperCase()}</span>
                         </div>
                         <div className="mention">
                           <span>Mention : </span>
-                          <span className="val">{(mentions[getMention(cert?.mention ) || "AB" ] || "").toUpperCase()}</span>
+                          <span className="val">{(mentions[getMention(cert.mention as number) || "AB" ] || "").toUpperCase()}</span>
                         </div>
                         <div className="date">{formatDate(cdate, {precise: true, preciseYear: true})}</div> 
                       </div>

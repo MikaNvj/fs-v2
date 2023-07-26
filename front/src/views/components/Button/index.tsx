@@ -1,8 +1,24 @@
 import clsx from 'clsx'
-import React, {useState} from 'react'
+import React, {useState, MouseEventHandler, MouseEvent} from 'react'
 import  './Button.scss'
 
-const Button = (props: any) => {
+interface propsButton{
+  text?: string,
+  children?: string,
+  autowait?: boolean,
+  outlined?: boolean,
+  className?: string,
+  inactive?: boolean,
+  rounded?: boolean,
+  color?: string,
+  lower?: boolean,
+  waiting?: boolean,
+  full?: boolean,
+  onClick?: (e?: MouseEvent<HTMLButtonElement>) => void,
+  style?: any,
+  rest?: any,
+}
+const Button = (props: propsButton) => {
   const {
     text, children, autowait, outlined, className, inactive,
     rounded, color, lower, waiting, full, onClick, style, ...rest
@@ -10,7 +26,7 @@ const Button = (props: any) => {
   const [wait, setWait] = useState(false)
 
   return (
-    <button onClick={async (e: any) => {
+    <button onClick={async (e) => {
       autowait && setWait(true)
       try{ onClick && await onClick(e) }
       catch(err){ console.error(err) }

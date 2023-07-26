@@ -15,7 +15,7 @@ const states = {
   money: false
 }
 
-const Header = (props: any) => {
+const Header = () => {
   const state = bulkSetter(...useState({ ...states }))
   const { money, setMoney } = state
   const location = useLocation()

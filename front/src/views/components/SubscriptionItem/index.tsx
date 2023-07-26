@@ -8,6 +8,7 @@ import Hour from '../Hour'
 import { baseUrl, Server } from '../../../services/api'
 import Input from '../Input'
 import { SubTypes } from '../../../types';
+import { saveSub,saveIncome, savePayment } from '../../../recoil/controllers';
 const subs = [
   {label: 'Jour 1 Mois', amount: 40000, dd: 31, value: 1},
   {label: 'Soir 1 Mois', amount: 50000, dd: 31, value: 2},
@@ -26,8 +27,9 @@ const SubscriptionItem = (props: any) => {
     value, setSelectedPayment, customer: {
       facebook, lastname, firstname,
       sex, photo, phone
-    } = {} as any, customer, payment, saveIncome,
-    savePayment, saveSub
+    } = {} as any, customer, payment, 
+    // saveIncome,
+    // savePayment, saveSub
   } = props
 
   const state = bulkSetter(...useState({...states}))
