@@ -44,7 +44,7 @@ const AutrePayement = () => {
 
   }, [_paymentrecoil])
   const create = useMemo(() => async (type: string) => {
-    let id, creator: any
+    let id, creator
     if(type === SUB) creator = saveSub
     else if([COPY, PRINT].includes(type)) creator = saveCopy
     id = (await creator!({})).id

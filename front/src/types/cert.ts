@@ -1,8 +1,8 @@
 import { Data } from './data'
 
 export type CertTypes = {
-    id: string,
+    id?: string,
     mention: number,
-    inactive: boolean,
+    inactive?: boolean,
     formationId: string,
 }
