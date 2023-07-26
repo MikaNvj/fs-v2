@@ -100,7 +100,7 @@ const Connexion = () => {
               customer={_customers[payment.customerId]}
               paymnt={payment}
               setChosenPayment={setChosenPayment}
-              showUser={() => showCustomer(false, customers[payment.customerId as any])}
+              showUser={() => showCustomer(false, _customers[payment.customerId])}
               saveConnexion={saveConnexion}
               savePayment={savePayment}
               saveIncome={saveIncome}
