@@ -61,7 +61,7 @@ interface  propsHours{
   time?: boolean,
   alwaysOn?: boolean,
   value?: any,
-  onChange?: (e: Date | null) => void,
+  onChange?: any,
   className?: string,
 }
 
