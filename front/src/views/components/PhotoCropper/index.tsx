@@ -7,24 +7,24 @@ import "cropperjs/dist/cropper.css";
 
 let lastUrl = ""
 interface propsPhotocropper{
-  url: any,
-  close: any,
+  url: File,
+  close: () => void,
   onChange: any
 }
 
 const PhotoCropper = (props: propsPhotocropper) => {
-  // const { url, close, onChange } = props
+  const { url, close, onChange } = props
 
   const [cropper, setCropper] = useState< any>()
   const [src, setSrc] = useState('')
   useEffect(()=> {
-    const nurl = props.url instanceof File ? URL.createObjectURL(props.url) : props.url
+    const nurl = url instanceof File ? URL.createObjectURL(url) : url
     setSrc(nurl)
     return () => URL.revokeObjectURL(nurl)
-  }, [props.url])
+  }, [url])
 
   return (
-    <Modal active={!!props.url} className='PhotoCropperParent' parentSelector='.App>.AppBody'>
+    <Modal active={!!url} className='PhotoCropperParent' parentSelector='.App>.AppBody'>
       <div className={clsx('PhotoCropper')}>
         <div
           className="preview"
@@ -32,15 +32,15 @@ const PhotoCropper = (props: propsPhotocropper) => {
             cropper.getCroppedCanvas().toBlob((blob: Blob) => {
               const file = new File([blob], "image.jpg")
               const url = URL.createObjectURL(file)
-              props.onChange({ file, url })
-              props.close()
+              onChange({ file, url })
+              close()
               lastUrl && URL.revokeObjectURL(lastUrl)
               lastUrl = url
             }, 'image/jpeg', 1)
           }}
         />
         <div className="the-cropper-parent">
-          <div onClick={props.close} className="close-cropper"/>
+          <div onClick={close} className="close-cropper"/>
           <Cropper
             className='the-cropper'
             zoomTo={.5}

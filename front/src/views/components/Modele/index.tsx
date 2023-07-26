@@ -1,43 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, MouseEvent } from "react";
 import clsx from "clsx";
 import './modele.scss';
 
 const parameter = require('./parameter.json')
 
 const zoomIt = (type: string) => {
-  let element: any = document.querySelector("#name")
-  let fontSize = parseFloat(window.getComputedStyle(element, null).getPropertyValue("font-size"))
+  let element: HTMLElement | null = document.querySelector("#name")
+  let fontSize = parseFloat(window.getComputedStyle(element as HTMLElement, null).getPropertyValue("font-size"))
 
   if (type === "plus") {
-    element.style.fontSize = (fontSize + 3) + "px";
+    element!.style.fontSize = (fontSize + 3) + "px";
   } else {
-    element.style.fontSize = (fontSize - 3) + "px";
+    element!.style.fontSize = (fontSize - 3) + "px";
   }
 
 }
 
+interface propsModele{
+  id: string,
+  open: boolean
+}
 
-
-const Modele = (props: any) => {
+const Modele = (props: propsModele) => {
   const [loaded, setLoaded] = useState(false)
   const [newModele, setNewModele] = useState(false)
 
 
 
-  const addNewLogo = (event: any) => {
+  const addNewLogo = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    const divLeft: any = document.getElementById("left")
+    const divLeft: HTMLElement | null = document.getElementById("left")
 
-    if (divLeft.children.length < 3) {
+    if (divLeft!.children.length < 3) {
       const newLogo = document.createElement("div")
 
       newLogo.classList.add("logo")
       newLogo.setAttribute("draggable", "true")
-      newLogo.setAttribute("id", divLeft.children.length + 1)
+      newLogo.setAttribute("id", (divLeft!.children.length + 1).toString())
       newLogo.addEventListener('dragstart', onDragStart)
       newLogo.addEventListener('dragover', onDragOver)
       newLogo.addEventListener('onDrop', onDrop)
-      divLeft.appendChild(newLogo)
+      divLeft!.appendChild(newLogo)
     } else {
       alert("Efa feno ny place")
     }

@@ -16,7 +16,7 @@ const states = {
 }
 interface propsPopupMoney{
   active: boolean,
-  close: any,
+  close: () => void,
 }
 
 const PopupMoney = (props: propsPopupMoney) => {
@@ -26,14 +26,14 @@ const PopupMoney = (props: propsPopupMoney) => {
   const state = bulkSetter(...useState({ ...states }))
   const { input, ...State } = state
   // const { active, close, income: { _incomes } } = props
-  // const { active, close, } = props
+  const { active, close, } = props
 
   // Methods
   const pmRef: any = useRef(null)
 
   useEffect(() => {
-    props.active && pmRef.current && pmRef.current.focus()
-  }, [props.active])
+    active && pmRef.current && pmRef.current.focus()
+  }, [active])
 
   const total = useMemo(() => {
     const today = `${new Date().getFullYear()}-${addZero(new Date().getMonth() + 1)}-${addZero(new Date().getDate())}`
@@ -42,10 +42,10 @@ const PopupMoney = (props: propsPopupMoney) => {
       const { date = "", paymentId } = one
       if (date.startsWith(today)) {
         // const { type, inactive, amount, rest } = Store.getCurrentState(`payment.payments.${paymentId}`) || {}
-        const { type, inactive, amount, rest }: any = paymentselected({id: `${paymentId}`}) || {}
+        const { type, inactive, amount, rest } = paymentselected({id: `${paymentId}`}) || {}
         if (type && !inactive) {
           if (!incs[type]) incs[type] = 0
-          incs[type] += amount - rest
+          incs[type] += (amount)! - (rest)!
         }
       }
     })
@@ -67,10 +67,10 @@ const PopupMoney = (props: propsPopupMoney) => {
       setTimeout(() => {
         if (!document.activeElement?.closest('.PopupMoney')) {
           state.setIsLogin(true)
-          props.close()
+          close()
         }
       }, 250)
-    }} tabIndex={1} className={clsx('PopupMoney', props.active && 'active')}>
+    }} tabIndex={1} className={clsx('PopupMoney', active && 'active')}>
       {
         state.isLogin ?
           <div>

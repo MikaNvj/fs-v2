@@ -8,7 +8,7 @@ import Hour from '../Hour'
 import { baseUrl, Server } from '../../../services/api'
 import Input from '../Input'
 import { SubTypes } from '../../../types';
-import { saveSub,saveIncome, savePayment } from '../../../recoil/controllers';
+import { saveIncome, saveSub, savePayment } from '../../../recoil/controllers';
 const subs = [
   {label: 'Jour 1 Mois', amount: 40000, dd: 31, value: 1},
   {label: 'Soir 1 Mois', amount: 50000, dd: 31, value: 2},

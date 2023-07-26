@@ -25,13 +25,13 @@ const defields = [
   { label: 'Files', name: "files", type: 'file', multiple: true, validator: Validator().required() }
 ]
 interface propsEditor{
-  active: boolean,
-  close: () => void,
-  fields: typeof defields,
-  position: string,
-  title: string,
-  value: any,
-  save: any,
+  active?: boolean,
+  close?: () => void,
+  fields?: any,
+  position?: string,
+  title?: string,
+  value?: any,
+  save?: any,
 }
 const Editor = (props: propsEditor) => {
   // Props & states
@@ -61,7 +61,7 @@ const Editor = (props: propsEditor) => {
           )
         }
         S.setWait(false)
-        close()
+        close!()
       }
       else S.setError(true)
     }
@@ -80,7 +80,7 @@ const Editor = (props: propsEditor) => {
         <div className="e-title">{title}</div>
         <ScrollBar className="e-fields">
           {
-            fields.filter(({ name }) => name in I).map((field, key) => {
+            fields.filter(({ name }: any) => name in I).map((field: any, key: any) => {
               const { name, errorMessage = `invalide`, validator = Validator().ignore(), ...rest } = field
               return <React.Fragment key={key}>
                 <Input {...rest}

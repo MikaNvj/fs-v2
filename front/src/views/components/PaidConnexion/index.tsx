@@ -10,17 +10,18 @@ import { payementState } from '../../../recoil/atoms/payement'
 import { useRecoilState } from 'recoil'
 import { connexionState } from '../../../recoil/atoms/connexion'
 import { customerState } from '../../../recoil/atoms/customer'
+import { CustomerTypes } from '../../../types'
 
 const states = {
   curDay: new Date()
 }
 interface propsPaidconnexion{
-  showCustomer: any
+  showCustomer: (e?: any) => void
 }
 
 const PaidConnexion = (props: propsPaidconnexion) => {
   const [_paymentrecoil, _setpaymentrecoil] = useRecoilState(payementState)
-  const [_connexionrecoil, _setconnexionrecoil] = useRecoilState<any>(connexionState)
+  const [_connexionrecoil, _setconnexionrecoil] = useRecoilState(connexionState)
   const [_customer, _setcustomerrecoil] = useRecoilState(customerState)
   // const {
   //   // payment: { _payments }, connexion: { connexions },
@@ -33,10 +34,10 @@ const PaidConnexion = (props: propsPaidconnexion) => {
   } = bulkSetter(...useState({ ...states }))
 
   const allPaids = useMemo(() => {
-    const today: any = toSimpleDate(curDay)
-    return _paymentrecoil.filter(({ type, createdAt, rest = null, targetId, inactive }: any) => {
-      const start = _connexionrecoil[targetId] ? toSimpleDate(_connexionrecoil[targetId].start) : ""
-      return !inactive && type === CONNEXION && start && start.startsWith(today) && rest !== null
+    const today = toSimpleDate(curDay)
+    return _paymentrecoil.filter(({ type, createdAt, rest = null, targetId, inactive }) => {
+      const start = _connexionrecoil[targetId] ? toSimpleDate(new Date(_connexionrecoil[targetId].start)) : ""
+      return !inactive && type === CONNEXION && start && start.startsWith(today as string) && rest !== null
     })
   }, [])
 
@@ -50,19 +51,19 @@ const PaidConnexion = (props: propsPaidconnexion) => {
           <div className="paid-list">
             {
               allPaids.map((payment) => {
-                const { targetId, customerId, amount, rest, id }: any = payment
+                const { targetId, customerId, amount, rest, id } = payment
                 const { start, stop } = _connexionrecoil[targetId]
-                const { facebook, lastname, firstname, sex, photo, phone } = _customer[customerId]
+                const { facebook, lastname, firstname, sex, photo, phone } = _customer[parseInt(customerId)]
 
                 return <div className="connexion" key={id}>
-                  <div onDoubleClick={_ => props.showCustomer(_customer[customerId])} className="customer-name">
+                  <div onDoubleClick={_ => props.showCustomer(_customer[parseInt(customerId)])} className="customer-name">
                     <span className='lastname'>{lastname}</span>
                     <span>{firstname}</span>
                     <span className='phone'>{toPhone(phone)}</span>
                   </div>
                   <div className="hours">
-                    <span>{fullFormatDate(start, { baseDate: curDay })}</span>
-                    <span>{fullFormatDate(stop, { baseDate: curDay })}</span>
+                    <span>{fullFormatDate(new Date(start), { baseDate: curDay })}</span>
+                    <span>{fullFormatDate(new Date(stop), { baseDate: curDay })}</span>
                   </div>
                   <div className="amount">{toAmount(amount)}</div>
                   {!!rest && <div className="rest">{rest > 0 ? "Il nous doit" : "On lui doit"} encore <span>{toAmount(Math.abs(rest))}</span></div>}

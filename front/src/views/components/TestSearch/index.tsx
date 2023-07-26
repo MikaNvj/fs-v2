@@ -58,19 +58,25 @@ const customer = [
   },
 ]
 
+interface propsTestSearch{
+  hide: any,
+  active: boolean,
+  data: any
+}
 
-
-const TestSearch = (props: any) => {
+const TestSearch = (props: propsTestSearch) => {
   const [show, setShow] = useState(false)
   const { 
     hide,
+    active,
+    data
     // savePayment,
    } = props
-  useEffect(() => setShow(props.active === true))
+  useEffect(() => setShow(active === true))
   return (
 
     <div className="container">
-      {/* <button  onClick={savePayment({...props.data})} 
+      {/* <button  onClick={savePayment({...data})} 
       onClick={_ => showModal(_)}
       >Show me</button> */}
       <div className={clsx("modal", show && "show")}>
@@ -80,9 +86,9 @@ const TestSearch = (props: any) => {
           onClick={hide}
           >&times;</span>
           <div id="id-1" className="message">
-            <h6>Voulez-vous ajouter le client n° {props.data.customerId} dans le programme n° {Number(props.data.targetId)} ?</h6>
+            <h6>Voulez-vous ajouter le client n° {data.customerId} dans le programme n° {Number(data.targetId)} ?</h6>
             <button className="btn-annuler">Annuler</button>
-            <button className="btn-save" onClick={() => savePayment(props.data)}>Oui, je l'ajouterai</button>
+            <button className="btn-save" onClick={() => savePayment(data)}>Oui, je l'ajouterai</button>
           </div>
         </div>
       </div>

@@ -10,14 +10,14 @@ import { useCallback } from 'react'
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { customerState, _customerState, selectedCustomer } from '../../../recoil/atoms/customer';
-import { CustomerTypes, IncomeTypes } from '../../../types'
+import { CustomerTypes, IncomeTypes, ProgramTypes } from '../../../types'
 
 interface propsUserlist {
   selected?: any, 
-  onSelect?: any,
+  onSelect?: (e: CustomerTypes) => void,
    openedCustomer?: CustomerTypes,
     setOpenedCustomer?: CustomerTypes | any,
-    programm?: any
+    programm?: ProgramTypes
 }
 
 const UserList = (props: propsUserlist) => {
@@ -39,7 +39,7 @@ const UserList = (props: propsUserlist) => {
     incomer: null, showPay: false
   }))
 
-  const searchRef: any = useRef(null)
+  const searchRef = useRef< NodeJS.Timeout | null>(null)
 
   const ref = useRef();
 
@@ -47,7 +47,7 @@ const UserList = (props: propsUserlist) => {
     if (showPay) setShowPay(false);
   })
 
-  const showCustomer: any = useCallback((customer: CustomerTypes, activity: boolean) => {
+  const showCustomer = useCallback((activity: boolean, customer?: CustomerTypes) => {
     State.set({
       edited: customer, activity
     })
@@ -55,7 +55,7 @@ const UserList = (props: propsUserlist) => {
 
   useEffect(() => {
     if (openedCustomer) {
-      showCustomer(openedCustomer, true)
+      showCustomer(true, openedCustomer)
       setOpenedCustomer(null)
     }
   }, [openedCustomer])
@@ -77,7 +77,7 @@ const UserList = (props: propsUserlist) => {
           <div className="search">
             <input type="text"
               onChange={(e) => {
-                clearTimeout(searchRef.current)
+                clearTimeout(searchRef.current!)
                 searchRef.current = setTimeout(() => {
                   setSearch(e.target.value)
                 }, 600)
@@ -103,7 +103,7 @@ const UserList = (props: propsUserlist) => {
                   <Customer
                     key={customer.id}
                     customer={customer}
-                    onSelect={onSelect}
+                    onSelect={onSelect!}
                     setIncomer={(incomer: IncomeTypes | CustomerTypes) => {
                       State.set({
                         edited: incomer,
