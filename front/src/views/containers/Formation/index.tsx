@@ -64,7 +64,7 @@ const Formation = () => {
         ...formation,
         programs, filter
       }
-    }).sort(({filter: fa}: any, {filter: fb}: any) => fa > fb ? -1 : 1)
+    }).sort(({filter: fa}, {filter: fb}) => (fa!) > (fb!) ? -1 : 1)
   }, [_formations, _programs])
 
   
