@@ -57,7 +57,6 @@ let UserComponent = (props: propsusercomponent) => {
     close, edited,
     setActivity, activity
   } = props
-
   const State = bulkSetter(...useState({ ...states }))
 
   const quit = useMemo(() => async () => {

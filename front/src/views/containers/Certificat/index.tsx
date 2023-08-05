@@ -25,7 +25,7 @@ const Certificat = () => {
     <div>
       <div className="outils">
         <button onClick={openNewModele}>New modele</button>
-        <Modele id={idModele} open={isOpen} />
+        <Modele id={idModele.toString()} open={isOpen} />
       </div>
     </div>
 
